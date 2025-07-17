@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/Users/puskarghimire/Documents/Genesis/Customer_Relationship_Management/CRM/CRM.csproj": {}
+    "C:\\Users\\ighim\\OneDrive\\Genesis\\Customer_Relation_Manager\\CRM\\CRM.csproj": {}
   },
   "projects": {
-    "/Users/puskarghimire/Documents/Genesis/Customer_Relationship_Management/CRM/CRM.csproj": {
+    "C:\\Users\\ighim\\OneDrive\\Genesis\\Customer_Relation_Manager\\CRM\\CRM.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/puskarghimire/Documents/Genesis/Customer_Relationship_Management/CRM/CRM.csproj",
+        "projectUniqueName": "C:\\Users\\ighim\\OneDrive\\Genesis\\Customer_Relation_Manager\\CRM\\CRM.csproj",
         "projectName": "CRM",
-        "projectPath": "/Users/puskarghimire/Documents/Genesis/Customer_Relationship_Management/CRM/CRM.csproj",
-        "packagesPath": "/Users/puskarghimire/.nuget/packages/",
-        "outputPath": "/Users/puskarghimire/Documents/Genesis/Customer_Relationship_Management/CRM/obj/",
+        "projectPath": "C:\\Users\\ighim\\OneDrive\\Genesis\\Customer_Relation_Manager\\CRM\\CRM.csproj",
+        "packagesPath": "C:\\Users\\ighim\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\ighim\\OneDrive\\Genesis\\Customer_Relation_Manager\\CRM\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/puskarghimire/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\ighim\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
@@ -38,7 +38,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.200"
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
         "net9.0": {
@@ -72,7 +72,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.203/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
