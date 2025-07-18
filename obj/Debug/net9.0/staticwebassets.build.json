@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "vh0ck0U+feuMYf4Vji8ZHe2CmogzgnJUaHkiz740KIg=",
+  "Hash": "AH2QzrmZPQsZGyxiDmtv8ugbYGWcC1641ji/YZydWgM=",
   "Source": "CRM",
   "BasePath": "_content/CRM",
   "Mode": "Default",
@@ -206,12 +206,12 @@
       "OriginalItemSpec": "C:\\Users\\ighim\\OneDrive\\Genesis\\Customer_Relation_Manager\\CRM\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map"
     },
     {
-      "Identity": "C:\\Users\\ighim\\OneDrive\\Genesis\\Customer_Relation_Manager\\CRM\\obj\\Debug\\net9.0\\compressed\\5rbt1g9bes-mv3u2atfye.gz",
+      "Identity": "C:\\Users\\ighim\\OneDrive\\Genesis\\Customer_Relation_Manager\\CRM\\obj\\Debug\\net9.0\\compressed\\5rbt1g9bes-psutvb8dml.gz",
       "SourceId": "CRM",
       "SourceType": "Computed",
       "ContentRoot": "C:\\Users\\ighim\\OneDrive\\Genesis\\Customer_Relation_Manager\\CRM\\obj\\Debug\\net9.0\\compressed\\",
       "BasePath": "_content/CRM",
-      "RelativePath": "CRM#[.{fingerprint=mv3u2atfye}]!.bundle.scp.css.gz",
+      "RelativePath": "CRM#[.{fingerprint=psutvb8dml}]!.bundle.scp.css.gz",
       "AssetKind": "All",
       "AssetMode": "Reference",
       "AssetRole": "Alternative",
@@ -220,8 +220,8 @@
       "RelatedAsset": "C:\\Users\\ighim\\OneDrive\\Genesis\\Customer_Relation_Manager\\CRM\\obj\\Debug\\net9.0\\scopedcss\\projectbundle\\CRM.bundle.scp.css",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
-      "Fingerprint": "8zrvpimni6",
-      "Integrity": "ZADESeDHuGR+UhJCYX/QIJ6nAP+pDg2KRKZDJ3gm084=",
+      "Fingerprint": "h3imlk4vkr",
+      "Integrity": "HQoF8+wsYLQ4mWbmiKJm5BF44UwfDzxpmJQXbu5eFp4=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Users\\ighim\\OneDrive\\Genesis\\Customer_Relation_Manager\\CRM\\obj\\Debug\\net9.0\\scopedcss\\projectbundle\\CRM.bundle.scp.css"
@@ -416,12 +416,12 @@
       "OriginalItemSpec": "C:\\Users\\ighim\\OneDrive\\Genesis\\Customer_Relation_Manager\\CRM\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.min.js"
     },
     {
-      "Identity": "C:\\Users\\ighim\\OneDrive\\Genesis\\Customer_Relation_Manager\\CRM\\obj\\Debug\\net9.0\\compressed\\cbus0ac4yv-mv3u2atfye.gz",
+      "Identity": "C:\\Users\\ighim\\OneDrive\\Genesis\\Customer_Relation_Manager\\CRM\\obj\\Debug\\net9.0\\compressed\\cbus0ac4yv-psutvb8dml.gz",
       "SourceId": "CRM",
       "SourceType": "Computed",
       "ContentRoot": "C:\\Users\\ighim\\OneDrive\\Genesis\\Customer_Relation_Manager\\CRM\\obj\\Debug\\net9.0\\compressed\\",
       "BasePath": "_content/CRM",
-      "RelativePath": "CRM#[.{fingerprint=mv3u2atfye}]?.styles.css.gz",
+      "RelativePath": "CRM#[.{fingerprint=psutvb8dml}]?.styles.css.gz",
       "AssetKind": "All",
       "AssetMode": "CurrentProject",
       "AssetRole": "Alternative",
@@ -430,8 +430,8 @@
       "RelatedAsset": "C:\\Users\\ighim\\OneDrive\\Genesis\\Customer_Relation_Manager\\CRM\\obj\\Debug\\net9.0\\scopedcss\\bundle\\CRM.styles.css",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
-      "Fingerprint": "8zrvpimni6",
-      "Integrity": "ZADESeDHuGR+UhJCYX/QIJ6nAP+pDg2KRKZDJ3gm084=",
+      "Fingerprint": "h3imlk4vkr",
+      "Integrity": "HQoF8+wsYLQ4mWbmiKJm5BF44UwfDzxpmJQXbu5eFp4=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Users\\ighim\\OneDrive\\Genesis\\Customer_Relation_Manager\\CRM\\obj\\Debug\\net9.0\\scopedcss\\bundle\\CRM.styles.css"
@@ -1375,8 +1375,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "ScopedCss",
       "AssetTraitValue": "ApplicationBundle",
-      "Fingerprint": "mv3u2atfye",
-      "Integrity": "Iql3LdiJu41aqLbY+vA7blVMx42Jkysgws/Bk/nQX/s=",
+      "Fingerprint": "psutvb8dml",
+      "Integrity": "KYwwMofvENgijtH6pIYpZaCCSl2/TVHZJKD3FUa6xUQ=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Users\\ighim\\OneDrive\\Genesis\\Customer_Relation_Manager\\CRM\\obj\\Debug\\net9.0\\scopedcss\\bundle\\CRM.styles.css"
@@ -1396,8 +1396,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "ScopedCss",
       "AssetTraitValue": "ProjectBundle",
-      "Fingerprint": "mv3u2atfye",
-      "Integrity": "Iql3LdiJu41aqLbY+vA7blVMx42Jkysgws/Bk/nQX/s=",
+      "Fingerprint": "psutvb8dml",
+      "Integrity": "KYwwMofvENgijtH6pIYpZaCCSl2/TVHZJKD3FUa6xUQ=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Users\\ighim\\OneDrive\\Genesis\\Customer_Relation_Manager\\CRM\\obj\\Debug\\net9.0\\scopedcss\\projectbundle\\CRM.bundle.scp.css"
@@ -2771,12 +2771,12 @@
   "Endpoints": [
     {
       "Route": "CRM.bundle.scp.css",
-      "AssetFile": "C:\\Users\\ighim\\OneDrive\\Genesis\\Customer_Relation_Manager\\CRM\\obj\\Debug\\net9.0\\compressed\\5rbt1g9bes-mv3u2atfye.gz",
+      "AssetFile": "C:\\Users\\ighim\\OneDrive\\Genesis\\Customer_Relation_Manager\\CRM\\obj\\Debug\\net9.0\\compressed\\5rbt1g9bes-psutvb8dml.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.001855287570"
+          "Quality": "0.001862197393"
         }
       ],
       "ResponseHeaders": [
@@ -2786,15 +2786,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "538"
+          "Value": "536"
         },
         {
           "Name": "ETag",
-          "Value": "\"ZADESeDHuGR+UhJCYX/QIJ6nAP+pDg2KRKZDJ3gm084=\""
+          "Value": "\"HQoF8+wsYLQ4mWbmiKJm5BF44UwfDzxpmJQXbu5eFp4=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 11 Jul 2025 10:16:20 GMT"
+          "Value": "Fri, 18 Jul 2025 13:00:28 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2814,13 +2814,13 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"Iql3LdiJu41aqLbY+vA7blVMx42Jkysgws/Bk/nQX/s=\""
+          "Value": "W/\"KYwwMofvENgijtH6pIYpZaCCSl2/TVHZJKD3FUa6xUQ=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-Iql3LdiJu41aqLbY+vA7blVMx42Jkysgws/Bk/nQX/s="
+          "Value": "sha256-KYwwMofvENgijtH6pIYpZaCCSl2/TVHZJKD3FUa6xUQ="
         }
       ]
     },
@@ -2843,11 +2843,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"Iql3LdiJu41aqLbY+vA7blVMx42Jkysgws/Bk/nQX/s=\""
+          "Value": "\"KYwwMofvENgijtH6pIYpZaCCSl2/TVHZJKD3FUa6xUQ=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 11 Jul 2025 10:16:20 GMT"
+          "Value": "Fri, 18 Jul 2025 13:00:28 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2857,13 +2857,13 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-Iql3LdiJu41aqLbY+vA7blVMx42Jkysgws/Bk/nQX/s="
+          "Value": "sha256-KYwwMofvENgijtH6pIYpZaCCSl2/TVHZJKD3FUa6xUQ="
         }
       ]
     },
     {
       "Route": "CRM.bundle.scp.css.gz",
-      "AssetFile": "C:\\Users\\ighim\\OneDrive\\Genesis\\Customer_Relation_Manager\\CRM\\obj\\Debug\\net9.0\\compressed\\5rbt1g9bes-mv3u2atfye.gz",
+      "AssetFile": "C:\\Users\\ighim\\OneDrive\\Genesis\\Customer_Relation_Manager\\CRM\\obj\\Debug\\net9.0\\compressed\\5rbt1g9bes-psutvb8dml.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -2872,7 +2872,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "538"
+          "Value": "536"
         },
         {
           "Name": "Content-Type",
@@ -2880,11 +2880,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"ZADESeDHuGR+UhJCYX/QIJ6nAP+pDg2KRKZDJ3gm084=\""
+          "Value": "\"HQoF8+wsYLQ4mWbmiKJm5BF44UwfDzxpmJQXbu5eFp4=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 11 Jul 2025 10:16:20 GMT"
+          "Value": "Fri, 18 Jul 2025 13:00:28 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2902,18 +2902,18 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-ZADESeDHuGR+UhJCYX/QIJ6nAP+pDg2KRKZDJ3gm084="
+          "Value": "sha256-HQoF8+wsYLQ4mWbmiKJm5BF44UwfDzxpmJQXbu5eFp4="
         }
       ]
     },
     {
-      "Route": "CRM.mv3u2atfye.bundle.scp.css",
-      "AssetFile": "C:\\Users\\ighim\\OneDrive\\Genesis\\Customer_Relation_Manager\\CRM\\obj\\Debug\\net9.0\\compressed\\5rbt1g9bes-mv3u2atfye.gz",
+      "Route": "CRM.psutvb8dml.bundle.scp.css",
+      "AssetFile": "C:\\Users\\ighim\\OneDrive\\Genesis\\Customer_Relation_Manager\\CRM\\obj\\Debug\\net9.0\\compressed\\5rbt1g9bes-psutvb8dml.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.001855287570"
+          "Quality": "0.001862197393"
         }
       ],
       "ResponseHeaders": [
@@ -2923,15 +2923,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "538"
+          "Value": "536"
         },
         {
           "Name": "ETag",
-          "Value": "\"ZADESeDHuGR+UhJCYX/QIJ6nAP+pDg2KRKZDJ3gm084=\""
+          "Value": "\"HQoF8+wsYLQ4mWbmiKJm5BF44UwfDzxpmJQXbu5eFp4=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 11 Jul 2025 10:16:20 GMT"
+          "Value": "Fri, 18 Jul 2025 13:00:28 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -2951,13 +2951,13 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"Iql3LdiJu41aqLbY+vA7blVMx42Jkysgws/Bk/nQX/s=\""
+          "Value": "W/\"KYwwMofvENgijtH6pIYpZaCCSl2/TVHZJKD3FUa6xUQ=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "mv3u2atfye"
+          "Value": "psutvb8dml"
         },
         {
           "Name": "label",
@@ -2965,12 +2965,12 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-Iql3LdiJu41aqLbY+vA7blVMx42Jkysgws/Bk/nQX/s="
+          "Value": "sha256-KYwwMofvENgijtH6pIYpZaCCSl2/TVHZJKD3FUa6xUQ="
         }
       ]
     },
     {
-      "Route": "CRM.mv3u2atfye.bundle.scp.css",
+      "Route": "CRM.psutvb8dml.bundle.scp.css",
       "AssetFile": "C:\\Users\\ighim\\OneDrive\\Genesis\\Customer_Relation_Manager\\CRM\\obj\\Debug\\net9.0\\scopedcss\\projectbundle\\CRM.bundle.scp.css",
       "Selectors": [],
       "ResponseHeaders": [
@@ -2988,11 +2988,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"Iql3LdiJu41aqLbY+vA7blVMx42Jkysgws/Bk/nQX/s=\""
+          "Value": "\"KYwwMofvENgijtH6pIYpZaCCSl2/TVHZJKD3FUa6xUQ=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 11 Jul 2025 10:16:20 GMT"
+          "Value": "Fri, 18 Jul 2025 13:00:28 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3002,7 +3002,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "mv3u2atfye"
+          "Value": "psutvb8dml"
         },
         {
           "Name": "label",
@@ -3010,13 +3010,13 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-Iql3LdiJu41aqLbY+vA7blVMx42Jkysgws/Bk/nQX/s="
+          "Value": "sha256-KYwwMofvENgijtH6pIYpZaCCSl2/TVHZJKD3FUa6xUQ="
         }
       ]
     },
     {
-      "Route": "CRM.mv3u2atfye.bundle.scp.css.gz",
-      "AssetFile": "C:\\Users\\ighim\\OneDrive\\Genesis\\Customer_Relation_Manager\\CRM\\obj\\Debug\\net9.0\\compressed\\5rbt1g9bes-mv3u2atfye.gz",
+      "Route": "CRM.psutvb8dml.bundle.scp.css.gz",
+      "AssetFile": "C:\\Users\\ighim\\OneDrive\\Genesis\\Customer_Relation_Manager\\CRM\\obj\\Debug\\net9.0\\compressed\\5rbt1g9bes-psutvb8dml.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3025,7 +3025,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "538"
+          "Value": "536"
         },
         {
           "Name": "Content-Type",
@@ -3033,11 +3033,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"ZADESeDHuGR+UhJCYX/QIJ6nAP+pDg2KRKZDJ3gm084=\""
+          "Value": "\"HQoF8+wsYLQ4mWbmiKJm5BF44UwfDzxpmJQXbu5eFp4=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 11 Jul 2025 10:16:20 GMT"
+          "Value": "Fri, 18 Jul 2025 13:00:28 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3055,7 +3055,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "mv3u2atfye"
+          "Value": "psutvb8dml"
         },
         {
           "Name": "label",
@@ -3063,18 +3063,18 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-ZADESeDHuGR+UhJCYX/QIJ6nAP+pDg2KRKZDJ3gm084="
+          "Value": "sha256-HQoF8+wsYLQ4mWbmiKJm5BF44UwfDzxpmJQXbu5eFp4="
         }
       ]
     },
     {
-      "Route": "CRM.mv3u2atfye.styles.css",
-      "AssetFile": "C:\\Users\\ighim\\OneDrive\\Genesis\\Customer_Relation_Manager\\CRM\\obj\\Debug\\net9.0\\compressed\\cbus0ac4yv-mv3u2atfye.gz",
+      "Route": "CRM.psutvb8dml.styles.css",
+      "AssetFile": "C:\\Users\\ighim\\OneDrive\\Genesis\\Customer_Relation_Manager\\CRM\\obj\\Debug\\net9.0\\compressed\\cbus0ac4yv-psutvb8dml.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.001855287570"
+          "Quality": "0.001862197393"
         }
       ],
       "ResponseHeaders": [
@@ -3084,15 +3084,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "538"
+          "Value": "536"
         },
         {
           "Name": "ETag",
-          "Value": "\"ZADESeDHuGR+UhJCYX/QIJ6nAP+pDg2KRKZDJ3gm084=\""
+          "Value": "\"HQoF8+wsYLQ4mWbmiKJm5BF44UwfDzxpmJQXbu5eFp4=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 11 Jul 2025 10:16:20 GMT"
+          "Value": "Fri, 18 Jul 2025 13:00:28 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3112,13 +3112,13 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"Iql3LdiJu41aqLbY+vA7blVMx42Jkysgws/Bk/nQX/s=\""
+          "Value": "W/\"KYwwMofvENgijtH6pIYpZaCCSl2/TVHZJKD3FUa6xUQ=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "mv3u2atfye"
+          "Value": "psutvb8dml"
         },
         {
           "Name": "label",
@@ -3126,12 +3126,12 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-Iql3LdiJu41aqLbY+vA7blVMx42Jkysgws/Bk/nQX/s="
+          "Value": "sha256-KYwwMofvENgijtH6pIYpZaCCSl2/TVHZJKD3FUa6xUQ="
         }
       ]
     },
     {
-      "Route": "CRM.mv3u2atfye.styles.css",
+      "Route": "CRM.psutvb8dml.styles.css",
       "AssetFile": "C:\\Users\\ighim\\OneDrive\\Genesis\\Customer_Relation_Manager\\CRM\\obj\\Debug\\net9.0\\scopedcss\\bundle\\CRM.styles.css",
       "Selectors": [],
       "ResponseHeaders": [
@@ -3149,11 +3149,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"Iql3LdiJu41aqLbY+vA7blVMx42Jkysgws/Bk/nQX/s=\""
+          "Value": "\"KYwwMofvENgijtH6pIYpZaCCSl2/TVHZJKD3FUa6xUQ=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 11 Jul 2025 10:16:20 GMT"
+          "Value": "Fri, 18 Jul 2025 13:00:28 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3163,7 +3163,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "mv3u2atfye"
+          "Value": "psutvb8dml"
         },
         {
           "Name": "label",
@@ -3171,13 +3171,13 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-Iql3LdiJu41aqLbY+vA7blVMx42Jkysgws/Bk/nQX/s="
+          "Value": "sha256-KYwwMofvENgijtH6pIYpZaCCSl2/TVHZJKD3FUa6xUQ="
         }
       ]
     },
     {
-      "Route": "CRM.mv3u2atfye.styles.css.gz",
-      "AssetFile": "C:\\Users\\ighim\\OneDrive\\Genesis\\Customer_Relation_Manager\\CRM\\obj\\Debug\\net9.0\\compressed\\cbus0ac4yv-mv3u2atfye.gz",
+      "Route": "CRM.psutvb8dml.styles.css.gz",
+      "AssetFile": "C:\\Users\\ighim\\OneDrive\\Genesis\\Customer_Relation_Manager\\CRM\\obj\\Debug\\net9.0\\compressed\\cbus0ac4yv-psutvb8dml.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3186,7 +3186,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "538"
+          "Value": "536"
         },
         {
           "Name": "Content-Type",
@@ -3194,11 +3194,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"ZADESeDHuGR+UhJCYX/QIJ6nAP+pDg2KRKZDJ3gm084=\""
+          "Value": "\"HQoF8+wsYLQ4mWbmiKJm5BF44UwfDzxpmJQXbu5eFp4=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 11 Jul 2025 10:16:20 GMT"
+          "Value": "Fri, 18 Jul 2025 13:00:28 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3216,7 +3216,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "mv3u2atfye"
+          "Value": "psutvb8dml"
         },
         {
           "Name": "label",
@@ -3224,18 +3224,18 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-ZADESeDHuGR+UhJCYX/QIJ6nAP+pDg2KRKZDJ3gm084="
+          "Value": "sha256-HQoF8+wsYLQ4mWbmiKJm5BF44UwfDzxpmJQXbu5eFp4="
         }
       ]
     },
     {
       "Route": "CRM.styles.css",
-      "AssetFile": "C:\\Users\\ighim\\OneDrive\\Genesis\\Customer_Relation_Manager\\CRM\\obj\\Debug\\net9.0\\compressed\\cbus0ac4yv-mv3u2atfye.gz",
+      "AssetFile": "C:\\Users\\ighim\\OneDrive\\Genesis\\Customer_Relation_Manager\\CRM\\obj\\Debug\\net9.0\\compressed\\cbus0ac4yv-psutvb8dml.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.001855287570"
+          "Quality": "0.001862197393"
         }
       ],
       "ResponseHeaders": [
@@ -3245,15 +3245,15 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "538"
+          "Value": "536"
         },
         {
           "Name": "ETag",
-          "Value": "\"ZADESeDHuGR+UhJCYX/QIJ6nAP+pDg2KRKZDJ3gm084=\""
+          "Value": "\"HQoF8+wsYLQ4mWbmiKJm5BF44UwfDzxpmJQXbu5eFp4=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 11 Jul 2025 10:16:20 GMT"
+          "Value": "Fri, 18 Jul 2025 13:00:28 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3273,13 +3273,13 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"Iql3LdiJu41aqLbY+vA7blVMx42Jkysgws/Bk/nQX/s=\""
+          "Value": "W/\"KYwwMofvENgijtH6pIYpZaCCSl2/TVHZJKD3FUa6xUQ=\""
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-Iql3LdiJu41aqLbY+vA7blVMx42Jkysgws/Bk/nQX/s="
+          "Value": "sha256-KYwwMofvENgijtH6pIYpZaCCSl2/TVHZJKD3FUa6xUQ="
         }
       ]
     },
@@ -3302,11 +3302,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"Iql3LdiJu41aqLbY+vA7blVMx42Jkysgws/Bk/nQX/s=\""
+          "Value": "\"KYwwMofvENgijtH6pIYpZaCCSl2/TVHZJKD3FUa6xUQ=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 11 Jul 2025 10:16:20 GMT"
+          "Value": "Fri, 18 Jul 2025 13:00:28 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3316,13 +3316,13 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-Iql3LdiJu41aqLbY+vA7blVMx42Jkysgws/Bk/nQX/s="
+          "Value": "sha256-KYwwMofvENgijtH6pIYpZaCCSl2/TVHZJKD3FUa6xUQ="
         }
       ]
     },
     {
       "Route": "CRM.styles.css.gz",
-      "AssetFile": "C:\\Users\\ighim\\OneDrive\\Genesis\\Customer_Relation_Manager\\CRM\\obj\\Debug\\net9.0\\compressed\\cbus0ac4yv-mv3u2atfye.gz",
+      "AssetFile": "C:\\Users\\ighim\\OneDrive\\Genesis\\Customer_Relation_Manager\\CRM\\obj\\Debug\\net9.0\\compressed\\cbus0ac4yv-psutvb8dml.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3331,7 +3331,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "538"
+          "Value": "536"
         },
         {
           "Name": "Content-Type",
@@ -3339,11 +3339,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"ZADESeDHuGR+UhJCYX/QIJ6nAP+pDg2KRKZDJ3gm084=\""
+          "Value": "\"HQoF8+wsYLQ4mWbmiKJm5BF44UwfDzxpmJQXbu5eFp4=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 11 Jul 2025 10:16:20 GMT"
+          "Value": "Fri, 18 Jul 2025 13:00:28 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3361,7 +3361,7 @@
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-ZADESeDHuGR+UhJCYX/QIJ6nAP+pDg2KRKZDJ3gm084="
+          "Value": "sha256-HQoF8+wsYLQ4mWbmiKJm5BF44UwfDzxpmJQXbu5eFp4="
         }
       ]
     },
