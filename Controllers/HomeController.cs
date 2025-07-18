@@ -16,10 +16,10 @@ public class HomeController : Controller
         _context = context;
     }
 
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
-        var users = await _context.users.ToListAsync();
-        return View(users);
+        //var users = await _context.users.ToListAsync();
+        return View();
     }
 
     public IActionResult Privacy()
