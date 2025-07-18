@@ -1,4 +1,5 @@
 namespace CRM.Models;
+
 public class AspNetUserClaims
 {
     public int Id { get; set; }
