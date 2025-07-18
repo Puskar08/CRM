@@ -17,7 +17,7 @@ public class AspNetUsers
     public bool LockoutEnabled { get; set; }
     public int AccessFailedCount { get; set; }
 
-    // Additional properties can be added here if needed
+    // Additional properties can be added here if needed//
 
     public virtual ICollection<AspNetUserRoles> UserRoles { get; set; }
     public virtual ICollection<AspNetUserLogins> UserLogins { get; set; }
