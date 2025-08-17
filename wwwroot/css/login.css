@@ -1,0 +1,109 @@
+/* Root variables */
+:root {
+    --base-clr: #f5f6fa; /* soft off-white background */
+    --line-clr: #dcdde1; /* subtle light gray for borders/lines */
+    --hover-clr: #e9ebf3; /* slightly darker for hover effect */
+    --text-clr: #2f3640; /* dark gray for main text */
+    --accent-clr: #4b7bec; /* soft blue accent */
+    --secondary-text-clr: #636e72; /* medium gray for secondary text */
+  }
+  body{
+    background-color: var(--base-clr);
+    font-family: Poppins, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.5rem;
+    display: grid;
+    grid-template-areas: "main";
+    grid-template-rows: auto;
+    grid-template-columns: 1fr; /* Reserve space for sidebar */
+  }
+main{
+    grid-area: main;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Full viewport height */
+
+    /* padding: 20px; */
+}
+    /* Login Container */
+    .login-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        padding: 20px;
+        width: 100%;
+    }
+
+    /* Login Logo */
+    .login-logo {
+        width: 200px;
+        /* Match navbar logo */
+        height: auto;
+    }
+
+    /* Login Box */
+    .login-box {
+        background-color: rgb(255, 255, 255);
+        border: 1px solid var(--line-clr);
+        border-radius: 8px;
+        padding: 20px;
+        width: 100%;
+        max-width: 400px;
+        /* Limit width for larger screens */
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+    }
+
+    /* Login Box Heading */
+    .login-box h2 {
+        font-size: 1.5rem;
+        color: var(--text-clr);
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    /* Form Group */
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        display: block;
+        color: var(--text-clr);
+        margin-bottom: 5px;
+        font-weight: 500;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid var(--line-clr);
+        border-radius: 5px;
+        font-size: 1rem;
+        color: var(--text-clr);
+    }
+
+    .form-group input:focus {
+        outline: none;
+        border-color: var(--accent-clr);
+        box-shadow: 0 0 0 2px rgba(75, 123, 236, 0.2);
+    }
+
+    /* Login Button */
+    .login-btn {
+        width: 100%;
+        padding: 10px;
+        background-color: var(--accent-clr);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+    }
+
+    .login-btn:hover {
+        background-color: #3b6bd6;
+        /* Darker shade of accent color */
+    }

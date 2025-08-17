@@ -1,31 +1,267 @@
+/* Import Google Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+/* Root variables */
+:root {
+  --base-clr: #f5f6fa; /* soft off-white background */
+  --line-clr: #dcdde1; /* subtle light gray for borders/lines */
+  --hover-clr: #e9ebf3; /* slightly darker for hover effect */
+  --text-clr: #2f3640; /* dark gray for main text */
+  --accent-clr: #4b7bec; /* soft blue accent */
+  --secondary-text-clr: #636e72; /* medium gray for secondary text */
+}
+
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+/* HTML */
 html {
-  font-size: 14px;
+  font-family: Poppins, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.5rem;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
-}
-
+/* Body (Grid Layout) */
 body {
-  margin-bottom: 60px;
+  display: grid;
+  grid-template-areas:
+      "nav nav"
+      "sidebar main"
+      "sidebar footer";
+  grid-template-rows: auto 1fr auto;
+  grid-template-columns: 200px 1fr; /* Reserve space for sidebar */
+  min-height: 100dvh;
+  margin: 0;
+  background-color: rgb(247, 247, 247);
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+/* Navbar */
+nav {
+  grid-area: nav;
+  position: sticky; /* Sticky at top of grid area */
+  top: 0;
+  width: 100%; /* Full width */
+  padding: 2px;
+  background-color: rgb(247, 247, 247);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+  z-index: 30; /* Above most elements */
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+/* Logo */
+#navbar .logo {
+  position: relative;
+  min-width: 120px; /* Adjusted for logo */
+  height: 30px; /* Adjust based on logo height */
+}
+
+#navbar .logo img {
+  position: absolute;
+  width: 120px; /* Logo size */
+  height: auto; /* Maintain aspect ratio */
+  top: 0;
+  left: 18px;
+}
+
+/* Toggle Button */
+#navbar .toggle-btn {
+  display: none; /* Hidden on large screens */
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+#navbar .toggle-btn svg {
+  fill: var(--text-clr);
+  width: 24px;
+  height: 24px;
+}
+
+#navbar .toggle-btn svg:hover {
+  fill: var(--accent-clr);
+}
+
+/* Navbar Links */
+#navbar ul {
+  list-style-type: none;
+  display: flex;
+  margin-left: auto;
+}
+
+#navbar ul li {
+  display: inline;
+}
+
+#navbar ul li a {
+  color: var(--text-clr);
+  padding: 10px;
+  border-radius: 5px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+#navbar ul li a:hover {
+  background-color: var(--hover-clr);
+}
+
+/* Sidebar */
+aside {
+  grid-area: sidebar;
+  position: fixed; /* Fixed on all screens */
+  top: 50px; /* Below sticky navbar on desktop */
+  left: 0;
+  width: 200px; 
+  height: calc(100vh - 50px); /* Fill viewport below navbar */
+  background-color: rgb(247, 247, 247);
+  padding: 10px;
+  padding-top: 0px !important;
+  overflow-y: auto; /* Scroll internal content */
+  /* border-top: 1px solid var(--line-clr); */
+  transition: transform 0.3s ease; /* Smooth slide animation */
+  z-index: 20; /* Below navbar on desktop */
+}
+
+/* Cancel Button */
+.cancel-btn {
+  display: none; /* Hidden on large screens */
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 10px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.cancel-btn svg {
+  fill: var(--text-clr);
+  width: 24px;
+  height: 24px;
+}
+
+.cancel-btn svg:hover {
+  fill: var(--accent-clr);
+}
+
+/* Sidebar Open State */
+aside.sidebar-open {
+  transform: translateX(0); /* Visible when toggled */
+}
+
+/* Sidebar Links */
+.sidebar ul {
+  list-style-type: none;
+  padding: 10px;
+  margin-top: 0; /* No extra margin on desktop */
+}
+
+.sidebar ul li {
+  margin: 10px 0;
+}
+
+.sidebar ul li a {
+  text-decoration: none;
+  color: var(--text-clr);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0.85em;
+  border-radius: 5px;
+}
+
+.sidebar ul li a:hover {
+  background-color: var(--hover-clr);
+}
+
+.sidebar ul li.active a {
+  color: var(--accent-clr);
+}
+
+.sidebar ul li.active a svg {
+  fill: var(--accent-clr);
+}
+
+/* Main */
+main {
+  grid-area: main;
+  padding: 10px;
+  /* padding-top: 50px;  */
+  overflow-y: auto;
+  background-color: rgb(255, 255, 255);
+  border-radius: 0%;
+  border: 1px solid var(--line-clr);
+  border-top:none;
+}
+
+/* Footer */
+footer {
+  grid-area: footer;
+  text-align: center;
+  padding: 1px;
+  background-color: rgb(247, 247, 247);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  /* Adjust body grid for collapsed sidebar */
+  body {
+    grid-template-columns: 0 1fr; /* No sidebar width */
+  }
+
+  /* Sidebar: Cover entire viewport */
+  aside {
+    transform: translateX(-100%); /* Slide out to the left */
+    top: 0; /* Cover navbar */
+    height: 100%; /* Full viewport height */
+    z-index: 20; /* Default z-index */
+    width: 200px;
+  }
+
+  /* Sidebar when open: Cover navbar and main */
+  aside.sidebar-open {
+    transform: translateX(0); /* Slide in */
+    z-index: 40; /* Above navbar (z-index: 30) */
+  }
+
+  /* Show toggle button */
+  #navbar .toggle-btn {
+    display: inline-block;
+  }
+
+  /* Show cancel button when sidebar is open */
+  aside.sidebar-open .cancel-btn {
+    display: block;
+  }
+
+  /* Adjust sidebar links for cancel button */
+  .sidebar ul {
+    margin-top: 40px; /* Space for cancel button */
+  }
+
+  /* Adjust navbar for mobile */
+  #navbar {
+    flex-wrap: wrap; /* Allow wrapping if needed */
+  }
+
+  #navbar .logo {
+    min-width: 120px; /* Match logo image width */
+  }
+
+  #navbar .logo img {
+    width: 100px; /* Smaller logo for mobile */
+    position: static; /* Revert to normal flow */
+  }
+
+  #navbar ul {
+    margin-left: auto;
+  }
+  /* Login Box on Mobile */
+  .login-box {
+    max-width: 90%; /* Responsive width */
+  }
 }
