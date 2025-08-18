@@ -1,7 +1,4 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using CRM.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace CRM.Controllers;
 

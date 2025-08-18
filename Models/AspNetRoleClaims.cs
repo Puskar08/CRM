@@ -1,6 +1,5 @@
 namespace CRM.Models;
 
-using CRM.Models;
 public class AspNetRoleClaims
 {
     public int Id { get; set; }

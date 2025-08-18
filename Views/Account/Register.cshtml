@@ -1,0 +1,87 @@
+@model CRM.Models.RegisterViewModel
+
+<h2>Register</h2>
+<form asp-action="Register" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="PhoneNumber"></label>
+        <input asp-for="PhoneNumber" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Password"></label>
+        <input asp-for="Password" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="ConfirmPassword"></label>
+        <input asp-for="ConfirmPassword" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Register</button>
+</form>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Custom jQuery validation or other scripts can go here
+        document.querySelector('form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            // Perform your custom validation here
+            // Example: Check if email is valid
+            if (document.querySelector('#Email').value === '') {
+                document.querySelector('#Email').classList.add('is-invalid');
+                document.querySelector('#Email').nextElementSibling.textContent = 'Email is required.';
+            }
+            if (document.querySelector('#Password').value === '') {
+                document.querySelector('#Password').classList.add('is-invalid');
+                document.querySelector('#Password').nextElementSibling.textContent = 'Password is required.';
+            }
+            if (document.querySelector('#ConfirmPassword').value === '') {
+                document.querySelector('#ConfirmPassword').classList.add('is-invalid');
+                document.querySelector('#ConfirmPassword').nextElementSibling.textContent = 'Confirm Password is required.';
+            }
+            if (document.querySelector('#Password').value !== document.querySelector('#ConfirmPassword').value) {
+                document.querySelector('#ConfirmPassword').classList.add('is-invalid');
+                document.querySelector('#ConfirmPassword').nextElementSibling.textContent = 'Passwords do not match.';
+            }
+
+            if (document.querySelectorAll('.is-invalid').length === 0) {
+                //submit using fetch
+                fetch(document.querySelector('form').action, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        Email: $('#Email').val(),
+                        Name: $('#Name').val(),
+                        PhoneNumber: $('#PhoneNumber').val(),
+                        Password: $('#Password').val(),
+                        ConfirmPassword: $('#ConfirmPassword').val()
+                    })
+                })
+                .then(async response =>{
+                    const data = await response.json();
+                    if(response.ok){
+                        window.location.href = data.redirectUrl;
+                    }else{
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'error',
+                            title: 'Error!',
+                            text: data.message,
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true
+                        });
+                    }
+                })
+            }
+        });
+    });
+</script>

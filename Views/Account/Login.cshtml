@@ -1,0 +1,116 @@
+@model CRM.Models.LoginViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link rel="stylesheet" href="~/css/login.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <main>
+        <div class="login-container">
+            <img src="~/images/gcfxlogo.png" alt="CRM Logo" class="login-logo" />
+            <div class="login-box">
+                <form id="loginForm" asp-action="Login" method="post">
+                    <div class="form-group mb-3">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="Email" class="form-control" placeholder="Enter your email" required />
+                        <span class="text-danger small"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="Password" class="form-control" placeholder="Enter your password" required />
+                        <span class="text-danger small"></span>
+                    </div>
+                    <div class="form-group mb-3 form-check">
+                        <input type="checkbox" id="rememberMe" name="RememberMe" class="form-check-input" />
+                        <label for="rememberMe" class="form-check-label">Remember Me</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100" id="loginBtn">Login</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.querySelector('#loginForm');
+            const loginBtn = document.querySelector('#loginBtn');
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                // Reset errors
+                document.querySelectorAll('.text-danger').forEach(el => el.textContent = '');
+                document.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
+
+                let hasError = false;
+                if (!form.email.value.trim()) {
+                    form.email.classList.add('is-invalid');
+                    form.email.nextElementSibling.textContent = 'Email is required.';
+                    hasError = true;
+                }
+                if (!form.password.value.trim()) {
+                    form.password.classList.add('is-invalid');
+                    form.password.nextElementSibling.textContent = 'Password is required.';
+                    hasError = true;
+                }
+                if (hasError) return;
+
+                // Disable button while processing
+                loginBtn.disabled = true;
+                loginBtn.textContent = "Logging in...";
+
+                try {
+                    const response = await fetch(form.action, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            Email: form.email.value,
+                            Password: form.password.value,
+                            RememberMe: form.rememberMe.checked
+                        })
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok && data.success) {
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Login successful!',
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                        setTimeout(() => window.location.href = data.redirectUrl, 1500);
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Login Failed',
+                            text: data.message || 'Invalid credentials.',
+                        });
+                    }
+                } catch (err) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Something went wrong. Please try again.'
+                    });
+                } finally {
+                    loginBtn.disabled = false;
+                    loginBtn.textContent = "Login";
+                }
+            });
+        });
+    </script>
+</body>
+</html>
