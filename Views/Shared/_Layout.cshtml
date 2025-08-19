@@ -5,10 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CRM</title>
-    <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        
+    </style>
 </head>
 
 <body>
@@ -24,8 +28,8 @@
                 </svg>
             </button>
         </div>
-        <ul>
-            <li><a href="@Url.Action("Privacy", "Home")">
+        <ul class="nav-links">
+            <li><a href="#" id="profileButton">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                         fill="#000000">
                         <path
@@ -33,6 +37,9 @@
                     </svg>
                     <span>Profile</span>
                 </a>
+                <div class="dropdown-menu" id="profileDropdown">
+                    <button class="dropdown-item" id="logoutButton">Logout</button>
+                </div>
             </li>
         </ul>
     </nav>
@@ -44,7 +51,7 @@
             </svg>
         </button>
         <ul>
-            <li class="active">
+            <li class="">
                 <a href="@Url.Action("Index", "Home")">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                         fill="#000000">
@@ -55,7 +62,7 @@
                 </a>
             </li>
             <li>
-                <a href="@Url.Action("Privacy", "Home")">
+                <a href="@Url.Action("Index", "Clients")">
                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                         fill="#000000">
                         <path
@@ -140,7 +147,7 @@
         @RenderBody()
     </main>
     <footer>
-        <p>© 2023 CRM Application</p>
+        <p>© 2025 CRM Application</p>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

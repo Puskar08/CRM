@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using CRM.Models;
+using Microsoft.AspNetCore.Builder;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,13 +26,14 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 // })
 // .AddEntityFrameworkStores<AppDbContext>()
 // .AddDefaultTokenProviders();
-
 // Configure authentication cookie
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // HTTPS only
     options.LoginPath = "/Account/Login";
     options.AccessDeniedPath = "/Account/AccessDenied";
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(1); // 10-minute inactivity timeout
+    options.SlidingExpiration = true; // Reset timeout on activity
 });
 
 var app = builder.Build();

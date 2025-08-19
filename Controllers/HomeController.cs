@@ -17,13 +17,12 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        //var users = await _context.users.ToListAsync();
         return View();
     }
 
     public IActionResult Privacy()
     {
-        return View("Login");
+        return View();
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

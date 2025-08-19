@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using CRM.Models;
+using Microsoft.AspNetCore.Authentication;
 
 namespace CRM.Controllers
 {
@@ -95,8 +96,30 @@ namespace CRM.Controllers
             if (result.Succeeded)
             {
                 // For toaster notification on redirected page
-                TempData["ShowSuccessToaster"] = true;
-
+                TempData["ShowLoginSuccessToaster"] = true;
+                // Customize authentication properties for RememberMe
+                if (model.RememberMe)
+                {
+                    var authProperties = new AuthenticationProperties
+                    {
+                        IsPersistent = true, // Persist across browser sessions
+                        ExpiresUtc = DateTimeOffset.UtcNow.AddDays(7) // 7-day total lifetime
+                    };
+                    // Re-sign in with custom properties
+                    var user = await _signInManager.UserManager.FindByEmailAsync(model.Email);
+                    if (user != null)
+                    {
+                        await _signInManager.SignInAsync(user, authProperties);
+                    }
+                    else
+                    {
+                        return BadRequest(new
+                        {
+                            success = false,
+                            message = "User not found."
+                        });
+                    }
+                }
                 if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
                 {
                     return Ok(new
@@ -119,6 +142,18 @@ namespace CRM.Controllers
             {
                 success = false,
                 message = "Invalid login attempt. Please check your email and password."
+            });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return Ok(new
+            {
+                success = true,
+                message = "Logout successful",
+                redirectUrl = Url.Action("Login", "Account")
             });
         }
 
