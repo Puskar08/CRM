@@ -1,12 +1,15 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace CRM.Models;
 
 public class ClientsAccount
 {
+    [Key]
     public int Id { get; set; }
     public string UserId { get; set; }
     public int Mt5LoginID { get; set; }
     public DateTime CreatedDate { get; set; }
-    public string Currency { get; set; }
+    public string Currency { get; set; } = "USD";
     public decimal Balance { get; set; }
     public decimal CreditBalance { get; set; }
 

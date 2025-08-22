@@ -8,5 +8,7 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
         : base(options)
     {
     }
- 
+    public DbSet<ClientsAccount> ClientsAccounts { get; set; }
+    public DbSet<Transaction> Transactions { get; set; }
+    public DbSet<ClientsUserInfo> ClientsUserInfos { get; set; }
 }
