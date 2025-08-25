@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Primitives;
 
 namespace CRM.Models;
 
@@ -14,5 +16,8 @@ public class Transaction
     public decimal Fee { get; set; } // if any fee applied
     public string Description { get; set; } // Description of the transaction
     public string UserId { get; set; } // who did the transaction
+    public StringValues TransactionNote { get; internal set; }
+    public int ApprovalStatus { get; set; } // 0 = Pending, 1 = Approved, 2 = Rejected
+
     // Additional properties can be added here if needed
 }

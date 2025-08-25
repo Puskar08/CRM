@@ -17,16 +17,13 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Create Transaction</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add Transaction</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form class="form-horizontal" action="@Url.Action("Deposit", "Transaction")" method="post">
+                    <form class="form-horizontal" id="transactionForm"
+                        action="@Url.Action("AddTransaction", "Transaction")" method="post">
                         <div class="row mb-3">
-                            @* <div class="col-md-6">
-                                <label for="loginId" class="form-label">Login ID</label>
-                                <input type="text" class="form-control" id="loginId" name="loginId" required />
-                            </div> *@
                             <div class="col-md-6">
                                 <label for="loginId" class="form-label">Login ID</label>
                                 <input type="text" class="form-control" id="loginId" name="loginId" required
@@ -63,7 +60,9 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" id="submitTransaction" class="btn btn-primary">Submit</button>
+                    <button type="button" id="submitAndApproveTransaction" class="btn btn-success">Submit &
+                        Approve</button>
                 </div>
             </div>
         </div>
@@ -139,9 +138,9 @@
                         data.forEach(user => {
                             const listItem = document.createElement('li');
                             listItem.className = 'list-group-item list-group-item-action';
-                            listItem.textContent = `${user.name} (${user.email})`;
+                            listItem.textContent = `${user.mt5LoginID}-${user.name}-(${user.email})`;
                             listItem.addEventListener('click', function () {
-                                loginIdInput.value = user.name;
+                                loginIdInput.value = user.mt5LoginID;
                                 suggestionsList.style.display = 'none';
                             });
                             suggestionsList.appendChild(listItem);
@@ -158,6 +157,60 @@
             if (!loginIdInput.contains(event.target) && !suggestionsList.contains(event.target)) {
                 suggestionsList.style.display = 'none';
             }
+        });
+
+        //submitTransaction
+        document.getElementById('submitTransaction').addEventListener('click', function () {
+            // Handle submit transaction logic here
+            const form = document.querySelector('#transactionForm');
+            const formData = new FormData(form);
+            form.append('actionType', 'submit');
+
+            fetch(form.action, {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => {
+                    const data = response.json();
+                    if (response.ok) {
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Success!',
+                            text: data.message || "Transaction completed successfully.",
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true
+                        });
+                    } else {
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'error',
+                            title: 'Error!',
+                            text: data.message || "Transaction failed.",
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true
+                        });
+                    }
+                }).catch(() => {
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'Error!',
+                        text: 'An unexpected error occurred.',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true
+                    });
+                });
+        });
+
+        document.getElementById('submitAndApproveTransaction').addEventListener('click', function () {
+            // Handle submit and approve transaction logic here
         });
     });
 </script>
