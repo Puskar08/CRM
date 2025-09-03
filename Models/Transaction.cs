@@ -12,12 +12,10 @@ public class Transaction
     public string TransactionType { get; set; } // type of transaction Deposit/Withdrawal
     public decimal Amount { get; set; }
     public DateTime TransactionDate { get; set; }
-    public string Status { get; set; } // Status of the transaction
+    public int Status { get; set; } // Status of the transaction
     public decimal Fee { get; set; } // if any fee applied
     public string Description { get; set; } // Description of the transaction
-    public string UserId { get; set; } // who did the transaction
-    public StringValues TransactionNote { get; internal set; }
-    public int ApprovalStatus { get; set; } // 0 = Pending, 1 = Approved, 2 = Rejected
-
+    public string? UserId { get; set; } // who did the transaction
+    // public StringValues TransactionNote { get; internal set; }
     // Additional properties can be added here if needed
 }

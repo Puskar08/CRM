@@ -51,27 +51,29 @@ public class TransactionController : Controller
     [HttpPost]
     public IActionResult AddTransaction(IFormCollection form)
     {
-        // You can now use these variables to create a new transaction
-        // For example:
-        var transaction = new Transaction
+        try
         {
-            Mt5LoginID = int.Parse(form["mt5LoginId"]),
-            TransactionType = form["transactionType"],
-            Amount = decimal.Parse(form["amount"]),
-            Fee = decimal.Parse(form["fee"]),
-            Description = form["transactionNote"],
-            ApprovalStatus = form["submit"] == "submitAndApprove" ? 1 : 0
-        };
-        var actionType = form["actionType"];
-        if (actionType == "submit")
+            var transaction = new Transaction
+            {
+                Mt5LoginID = int.Parse(form["loginId"]),
+                TransactionType = form["transactionType"],
+                Amount = decimal.Parse(form["amount"]),
+                Fee = decimal.Parse(form["fee"]),
+                Description = form["transactionNote"],
+                Status = form["actionType"] == "submitAndApprove" ? 1 : 0
+            };
+            transaction.UserId = "superAdmin";
+            _context.Transactions.Add(transaction);
+            _context.SaveChanges();
+            return Ok(new { message = "Transaction added successfully." });
+        }
+        catch (Exception ex)
         {
-
+            // Handle exception (e.g., log the error, return an error response)
+            return BadRequest(new { message = "An error occurred while processing the transaction.", error = ex.Message });
         }
 
-        _context.Transactions.Add(transaction);
-        _context.SaveChanges();
 
-        return RedirectToAction("Index");
     }
     //add approval type in transaction
 }

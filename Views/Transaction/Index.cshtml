@@ -13,11 +13,11 @@
 <div class="page">
 
     <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="TransactionModal" tabindex="-1" aria-labelledby="TransactionModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add Transaction</h1>
+                    <h1 class="modal-title fs-5" id="TransactionModalLabel">Add Transaction</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -43,11 +43,11 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="amount" class="form-label">Amount</label>
-                                <input type="number" class="form-control" id="amount" name="amount" required />
+                                <input type="number" class="form-control" id="amount" name="amount" min="0.00" step="0.01" required />
                             </div>
                             <div class="col-md-6">
                                 <label for="fee" class="form-label">Fee</label>
-                                <input type="number" class="form-control" id="fee" name="fee" required />
+                                <input type="number" class="form-control" id="fee" name="fee" min="0.00" value="0.00" step="0.01" required />
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -72,15 +72,9 @@
         class="page-header d-flex justify-content-between align-items-center mb-3 p-3 border-bottom bg-white shadow-sm rounded">
         <h5 class="mb-0">Transactions</h5>
         <div class="page-actions d-flex gap-2">
-            <a asp-controller="Transaction" asp-action="Deposit" class="btn btn-success">
-                <i class="bi bi-person-plus"></i>Deposit
-            </a>
-            <a asp-controller="Transaction" asp-action="Withdraw" class="btn btn-primary">
-                <i class="bi bi-person-plus"></i>Withdraw
-            </a>
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                Launch demo modal
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#TransactionModal">
+                Create Transaction
             </button>
         </div>
     </div>
@@ -162,9 +156,10 @@
         //submitTransaction
         document.getElementById('submitTransaction').addEventListener('click', function () {
             // Handle submit transaction logic here
+            debugger;
             const form = document.querySelector('#transactionForm');
             const formData = new FormData(form);
-            form.append('actionType', 'submit');
+            formData.append('actionType', 'submit');
 
             fetch(form.action, {
                 method: 'POST',
@@ -183,6 +178,8 @@
                             timer: 3000,
                             timerProgressBar: true
                         });
+                        // Optionally, you can reset the form or close the modal here
+                        $('#TransactionModal').modal('hide');
                     } else {
                         Swal.fire({
                             toast: true,
