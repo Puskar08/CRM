@@ -1,3 +1,5 @@
+@model IEnumerable<CRM.Models.TransactionViewModel>
+
 @{
     ViewData["Title"] = "Clients";
 }
@@ -8,12 +10,49 @@
         @* width: 100%; *@
     }
 </style>
+<style>
+    .status-tag {
+        display: inline-block;
+        padding: 0 10px;
+        font-size: 12px;
+        line-height: 20px;
+        border-radius: 25px;
+        font-family: "Roboto", sans-serif;
+        margin: 0 4px;
+        border: 1px solid transparent;
+    }
+
+    /* Different colors for different statuses */
+    .status-approved {
+        border-color: #a1e6a1;
+        background-color: #e6ffe6;
+        color: #0f730c;
+    }
+
+    .status-rejected {
+        border-color: #ffb3b3;
+        background-color: #ffe6e6;
+        color: #d9534f;
+    }
+
+    .status-pending {
+        border-color: #ffe6a1;
+        background-color: #fff8e6;
+        color: #c27c00;
+    }
+    .status-review {
+        border-color: #b3d1ff;
+        background-color: #e6f0ff;
+        color: #004085;
+    }
+</style>
 
 
 <div class="page">
 
     <!-- Modal -->
-    <div class="modal fade" id="TransactionModal" tabindex="-1" aria-labelledby="TransactionModalLabel" aria-hidden="true">
+    <div class="modal fade" id="TransactionModal" tabindex="-1" aria-labelledby="TransactionModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -43,11 +82,13 @@
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="amount" class="form-label">Amount</label>
-                                <input type="number" class="form-control" id="amount" name="amount" min="0.00" step="0.01" required />
+                                <input type="number" class="form-control roundable" id="amount" name="amount" min="0.00"
+                                    value="0.00" step="0.01" required />
                             </div>
                             <div class="col-md-6">
                                 <label for="fee" class="form-label">Fee</label>
-                                <input type="number" class="form-control" id="fee" name="fee" min="0.00" value="0.00" step="0.01" required />
+                                <input type="number" class="form-control roundable" id="fee" name="fee" min="0.00"
+                                    value="0.00" step="0.01" required />
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -82,31 +123,50 @@
         <table>
             <thead>
                 <tr>
-                    <th>Order Number</th>
-                    <th>LoginID</th>
+                    <th>Transaction ID</th>
+                    <th>Login</th>
+                    <th>Client</th>
                     <th>Method</th>
+                    <th>Amount</th>
                     <th>Fee</th>
                     <th>Status</th>
                     <th>Date</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1001</td>
-                    <td>ACC-5001</td>
-                    <td>John Smith</td>
-                    <td>john.smith@example.com</td>
-                    <td>+1-202-555-0145</td>
-                    <td>Admin</td>
-                </tr>
-                <tr>
-                    <td>1002</td>
-                    <td>ACC-5002</td>
-                    <td>Emily Johnson</td>
-                    <td>emily.j@example.com</td>
-                    <td>+1-202-555-0188</td>
-                    <td>User</td>
-                </tr>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.TransactionId</td>
+                        <td>@item.Login</td>
+                        <td>@item.UserName</td>
+                        <td>@item.TransactionType / Card Debit</td>
+                        <td>@item.Amount</td>
+                        <td>@item.Fee</td>
+                        <td>
+                            @if (item.ApprovalStatus == 1)
+                            {
+                                <span class="status-tag status-approved">Approved</span>
+                            }
+                            else if (item.ApprovalStatus == 2)
+                            {
+                                <span class="status-tag status-rejected">Rejected</span>
+                            }
+                            else
+                            {
+                                <span class="status-tag status-pending">Pending</span>
+                            }
+                        </td>
+                        <td>@item.TransactionDate.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                        <td>
+                            @if(item.ApprovalStatus == 0)
+                            {
+                                <button class="status-tag status-review">Review</button>
+                            }
+                        </td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>
@@ -153,27 +213,36 @@
             }
         });
 
-        //submitTransaction
-        document.getElementById('submitTransaction').addEventListener('click', function () {
-            // Handle submit transaction logic here
+        const roundableInputs = document.querySelectorAll('.roundable');
+        roundableInputs.forEach(input => {
+            input.addEventListener('change', () => {
+                let value = parseFloat(input.value);
+                if (!isNaN(value)) {
+                    input.value = value.toFixed(2);
+                }
+            });
+        });
+
+        function addTransaction(actionType) {
             debugger;
             const form = document.querySelector('#transactionForm');
             const formData = new FormData(form);
-            formData.append('actionType', 'submit');
+            formData.append('actionType', actionType);
 
             fetch(form.action, {
                 method: 'POST',
                 body: formData
             })
                 .then(response => {
-                    const data = response.json();
+                    const responseData = response.json();
+                    debugger;
                     if (response.ok) {
                         Swal.fire({
                             toast: true,
                             position: 'top-end',
                             icon: 'success',
                             title: 'Success!',
-                            text: data.message || "Transaction completed successfully.",
+                            text: responseData.message || "Transaction completed successfully.",
                             showConfirmButton: false,
                             timer: 3000,
                             timerProgressBar: true
@@ -186,13 +255,14 @@
                             position: 'top-end',
                             icon: 'error',
                             title: 'Error!',
-                            text: data.message || "Transaction failed.",
+                            text: responseData.message || "Transaction failed.",
                             showConfirmButton: false,
                             timer: 3000,
                             timerProgressBar: true
                         });
                     }
-                }).catch(() => {
+                })
+                .catch(error => {
                     Swal.fire({
                         toast: true,
                         position: 'top-end',
@@ -204,10 +274,14 @@
                         timerProgressBar: true
                     });
                 });
+        }
+        //submitTransaction
+        document.getElementById('submitTransaction').addEventListener('click', function () {
+            addTransaction('submit');
         });
-
+        //submitAndApproveTransaction
         document.getElementById('submitAndApproveTransaction').addEventListener('click', function () {
-            // Handle submit and approve transaction logic here
+            addTransaction('submitAndApprove');
         });
     });
 </script>

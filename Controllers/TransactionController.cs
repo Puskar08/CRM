@@ -14,7 +14,22 @@ public class TransactionController : Controller
 
     public IActionResult Index()
     {
-        return View();
+        var trans = (from tr in _context.Transactions
+                    join acc in _context.ClientsAccounts on tr.Mt5LoginID equals acc.Mt5LoginID
+                    join user in _context.Users on acc.UserId equals user.Id
+                    select new TransactionViewModel
+                     {
+                         TransactionId = tr.TransactionId,
+                         Login = acc.Mt5LoginID,
+                         UserName = user.Name,
+                         TransactionType = tr.TransactionType,
+                         Amount = tr.Amount,
+                         Fee = tr.Fee,
+                         Status = tr.Status == 1 ? "Approved" : tr.Status == 2 ? "Rejected" : "Pending",
+                         ApprovalStatus = tr.Status,
+                         TransactionDate = tr.TransactionDate
+                     }).ToList();
+        return View(trans);
     }
 
     [HttpGet]
@@ -60,7 +75,8 @@ public class TransactionController : Controller
                 Amount = decimal.Parse(form["amount"]),
                 Fee = decimal.Parse(form["fee"]),
                 Description = form["transactionNote"],
-                Status = form["actionType"] == "submitAndApprove" ? 1 : 0
+                Status = form["actionType"] == "submitAndApprove" ? 1 : 0,
+                TransactionDate = DateTime.UtcNow
             };
             transaction.UserId = "superAdmin";
             _context.Transactions.Add(transaction);
