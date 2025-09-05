@@ -11,3 +11,9 @@ public class TransactionViewModel
     public int ApprovalStatus { get; set; }
     public DateTime TransactionDate { get; set; }
 }
+
+public class TransactionStatusUpdateModel
+{
+    public int TransactionId { get; set; }
+    public int ApprovalStatus { get; set; }
+}

@@ -40,6 +40,7 @@
         background-color: #fff8e6;
         color: #c27c00;
     }
+
     .status-review {
         border-color: #b3d1ff;
         background-color: #e6f0ff;
@@ -160,9 +161,9 @@
                         </td>
                         <td>@item.TransactionDate.ToString("yyyy-MM-dd HH:mm:ss")</td>
                         <td>
-                            @if(item.ApprovalStatus == 0)
+                            @if (item.ApprovalStatus == 0)
                             {
-                                <button class="status-tag status-review">Review</button>
+                                <button class="review status-tag status-review">Review</button>
                             }
                         </td>
                     </tr>
@@ -283,5 +284,77 @@
         document.getElementById('submitAndApproveTransaction').addEventListener('click', function () {
             addTransaction('submitAndApprove');
         });
+
+        document.querySelectorAll('.review').forEach(button => {
+            button.addEventListener('click', function () {
+                debugger;
+                const row = this.closest('tr');
+                const transactionId = row.cells[0].textContent;
+
+                Swal.fire({
+                    title: 'Review Transaction',
+                    text: `Do you want to approve or reject transaction ID ${transactionId}?`,
+                    showDenyButton: true,
+                    showCancelButton: true,
+                    confirmButtonText: 'Approve',
+                    denyButtonText: 'Reject',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        debugger;
+                        updateTransactionStatus(parseInt(transactionId), 1); // Approve
+                    } else if (result.isDenied) {
+                        updateTransactionStatus(parseInt(transactionId), 2); // Reject
+                    }
+                });
+            });
+        });
+
+        function updateTransactionStatus(transactionId, action) {
+            fetch(`/Transaction/UpdateTransactionStatus`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ transactionId: transactionId, approvalStatus: action })
+            })
+                .then(response => {
+                    const responseData = response.json();
+                    if (response.ok) {
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Success!',
+                            text: responseData.message || "Transaction status updated successfully.",
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true
+                        }).then(() => {
+                            location.reload(); // Reload the page to reflect changes
+                        });
+                    } else {
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'error',
+                            title: 'Error!',
+                            text: responseData.message || "Failed to update transaction status.",
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true
+                        });
+                    }
+                })
+                .catch(error => {
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'Error!',
+                        text: 'An unexpected error occurred.',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true
+                    });
+                });
+        }
     });
 </script>

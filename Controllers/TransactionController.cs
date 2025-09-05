@@ -15,9 +15,9 @@ public class TransactionController : Controller
     public IActionResult Index()
     {
         var trans = (from tr in _context.Transactions
-                    join acc in _context.ClientsAccounts on tr.Mt5LoginID equals acc.Mt5LoginID
-                    join user in _context.Users on acc.UserId equals user.Id
-                    select new TransactionViewModel
+                     join acc in _context.ClientsAccounts on tr.Mt5LoginID equals acc.Mt5LoginID
+                     join user in _context.Users on acc.UserId equals user.Id
+                     select new TransactionViewModel
                      {
                          TransactionId = tr.TransactionId,
                          Login = acc.Mt5LoginID,
@@ -91,5 +91,30 @@ public class TransactionController : Controller
 
 
     }
-    //add approval type in transaction
+
+    [HttpPost]
+    public IActionResult UpdateTransactionStatus([FromBody] TransactionStatusUpdateModel data)
+    {
+
+        if (data.TransactionId <= 0 || data.ApprovalStatus < 0 || data.ApprovalStatus > 2) // Assuming 0: Pending, 1: Approved, 2: Rejected
+        {
+            return BadRequest(new { message = "Invalid input data." });
+        }
+        var transaction = _context.Transactions.FirstOrDefault(t => t.TransactionId == data.TransactionId && t.Status == 0); // Only pending transactions
+        if (transaction == null)
+        {
+            return NotFound(new { message = "Transaction not found." });
+        }
+
+        if (data.ApprovalStatus == 1 || data.ApprovalStatus == 2)
+        {
+            transaction.Status = data.ApprovalStatus; // Update status based on input (1: Approved, 2: Rejected)
+        }
+        else
+        {
+            return BadRequest(new { message = "Invalid action type." });
+        }
+        _context.SaveChanges();
+        return Ok(new { message = "Transaction status updated successfully." });
+    }
 }
