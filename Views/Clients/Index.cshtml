@@ -2,11 +2,12 @@
     ViewData["Title"] = "Clients";
 }
 <style>
-    
+
 </style>
 <div class="page">
-    
-    <div class="page-header d-flex justify-content-between align-items-center mb-3 p-3 border-bottom bg-white shadow-sm rounded">
+
+    @* <div
+        class="page-header d-flex justify-content-between align-items-center mb-3 p-3 border-bottom bg-white shadow-sm rounded">
         <h5 class="mb-0">Clients</h5>
         <div class="page-actions d-flex gap-2">
             <a asp-controller="Clients" asp-action="Create" class="btn btn-success">
@@ -18,6 +19,21 @@
             </button>
             <button class="btn btn-outline-secondary">
                 <i class="bi bi-filter"></i> Filter
+            </button>
+        </div>
+    </div> *@
+    <div class="page-header">
+        <div class="page-title">
+            <h2>Clients</h2>
+            <p>Manage and review all clients</p>
+        </div>
+        <div class="page-actions d-flex gap-2">
+            <!-- Button trigger modal -->
+            <button type="button" class="add-button" data-bs-toggle="modal" data-bs-target="#TransactionModal">
+                <i class="fas fa-plus"></i> Add Client
+            </button>
+            <button type="button" class="add-button" data-bs-toggle="modal" data-bs-target="#TransactionModal">
+                <i class="fas fa-plus"></i> Add Client
             </button>
         </div>
     </div>
@@ -170,7 +186,7 @@
                     <td>Manager</td>
                     <td>Active</td>
                 </tr>
-                
+
             </tbody>
         </table>
     </div>

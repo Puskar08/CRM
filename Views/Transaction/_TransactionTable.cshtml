@@ -1,0 +1,35 @@
+@model IEnumerable<CRM.Models.TransactionViewModel>
+
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>@item.TransactionId</td>
+        <td>@item.Login</td>
+        <td>@item.UserName</td>
+        <td>@item.TransactionType / Google pay</td>
+        <td>@item.Amount</td>
+        <td>@item.Fee</td>
+        <td>
+            @if (item.ApprovalStatus == 1)
+            {
+                <span class="status-tag status-approved">Approved</span>
+            }
+            else if (item.ApprovalStatus == 2)
+            {
+                <span class="status-tag status-rejected">Rejected</span>
+            }
+            else
+            {
+                <span class="status-tag status-pending">Pending</span>
+            }
+        </td>
+        <td>@item.TransactionDate.ToString("yyyy-MM-dd HH:mm:ss")</td>
+        <td>
+            @if (item.ApprovalStatus == 0)
+            {
+                <button class="review status-tag status-review">Review</button>
+            }
+        </td>
+    </tr>
+}

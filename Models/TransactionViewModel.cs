@@ -1,4 +1,5 @@
 namespace CRM.Models;
+
 public class TransactionViewModel
 {
     public int TransactionId { get; set; }
@@ -16,4 +17,12 @@ public class TransactionStatusUpdateModel
 {
     public int TransactionId { get; set; }
     public int ApprovalStatus { get; set; }
+}
+
+public class TransactionFilterModel
+{
+    public string? TransactionType { get; set; }
+    public string? Status { get; set; }
+    public string? StartDate { get; set; }
+    public string? EndDate { get; set; }
 }

@@ -7,47 +7,20 @@
     #loginIdSuggestions {
         max-height: 200px;
         overflow-y: auto;
-        @* width: 100%; *@
+    }
+
+    .no-data {
+        text-align: center;
+        padding: 40px;
+        color: #7f8c8d;
+    }
+
+    .no-data i {
+        font-size: 48px;
+        margin-bottom: 15px;
+        color: #e1e4e8;
     }
 </style>
-<style>
-    .status-tag {
-        display: inline-block;
-        padding: 0 10px;
-        font-size: 12px;
-        line-height: 20px;
-        border-radius: 25px;
-        font-family: "Roboto", sans-serif;
-        margin: 0 4px;
-        border: 1px solid transparent;
-    }
-
-    /* Different colors for different statuses */
-    .status-approved {
-        border-color: #a1e6a1;
-        background-color: #e6ffe6;
-        color: #0f730c;
-    }
-
-    .status-rejected {
-        border-color: #ffb3b3;
-        background-color: #ffe6e6;
-        color: #d9534f;
-    }
-
-    .status-pending {
-        border-color: #ffe6a1;
-        background-color: #fff8e6;
-        color: #c27c00;
-    }
-
-    .status-review {
-        border-color: #b3d1ff;
-        background-color: #e6f0ff;
-        color: #004085;
-    }
-</style>
-
 
 <div class="page">
 
@@ -62,7 +35,7 @@
                 </div>
                 <div class="modal-body">
                     <form class="form-horizontal" id="transactionForm"
-                        action="@Url.Action("AddTransaction", "Transaction")" method="post">
+                        action="@Url.Action("CreateTransaction", "Transaction")" method="post">
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="loginId" class="form-label">Login ID</label>
@@ -110,70 +83,153 @@
         </div>
     </div>
 
-    <div
-        class="page-header d-flex justify-content-between align-items-center mb-3 p-3 border-bottom bg-white shadow-sm rounded">
-        <h5 class="mb-0">Transactions</h5>
+    <div class="page-header">
+        @* <h5 class="mb-0">Transactions</h5> *@
+        <div class="page-title">
+            <h2>Transactions</h2>
+            <p>Manage and review all transactions</p>
+        </div>
         <div class="page-actions d-flex gap-2">
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#TransactionModal">
-                Create Transaction
+            <button type="button" class="add-button" data-bs-toggle="modal" data-bs-target="#TransactionModal">
+                <i class="fas fa-plus"></i> Add Transaction
             </button>
         </div>
     </div>
+
+
     <div class="page-body">
-        <table>
-            <thead>
-                <tr>
-                    <th>Transaction ID</th>
-                    <th>Login</th>
-                    <th>Client</th>
-                    <th>Method</th>
-                    <th>Amount</th>
-                    <th>Fee</th>
-                    <th>Status</th>
-                    <th>Date</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
+        <div class="body-filter d-flex justify-content-between align-items-center gap-2">
+            <select class="form-select" name="transactionType" id="filterTransactionType">
+                <option value="All">All Transactions</option>
+                <option value="Deposit">Deposits</option>
+                <option value="Withdraw">Withdrawals</option>
+            </select>
+            <select class="form-select" id="filterStatus" name="filterStatus">
+                <option value="All">All Status</option>
+                <option value="Pending">Pending</option>
+                <option value="Approved">Approved</option>
+                <option value="Rejected">Rejected</option>
+            </select>
+
+            <div class="input-group date-range-box">
+                <input type="text" class="form-control dateInput" id="filterFromDate" name="filterFromDate"
+                    placeholder="From Date" readonly />
+                <input type="text" class="form-control dateInput" id="filterToDate" name="filterToDate"
+                    placeholder="To Date"
+                    style="border-top-right-radius:0.375rem !important; border-bottom-right-radius: 0.375rem !important;"
+                    readonly />
+                <button type="button" class="clear-button" style="display: none; padding-bottom: 5px;">x</button>
+            </div>
+
+            <input type=" text" class="form-control" id="filterLoginId" name="filterLoginId"
+                placeholder="Filter by Login ID" value="" />
+            <button type="button" class="apply-btn" id="applyFilters">Apply</button>
+        </div>
+        <div class="body-content">
+            <table>
+                <thead>
                     <tr>
-                        <td>@item.TransactionId</td>
-                        <td>@item.Login</td>
-                        <td>@item.UserName</td>
-                        <td>@item.TransactionType / Card Debit</td>
-                        <td>@item.Amount</td>
-                        <td>@item.Fee</td>
-                        <td>
-                            @if (item.ApprovalStatus == 1)
-                            {
-                                <span class="status-tag status-approved">Approved</span>
-                            }
-                            else if (item.ApprovalStatus == 2)
-                            {
-                                <span class="status-tag status-rejected">Rejected</span>
-                            }
-                            else
-                            {
-                                <span class="status-tag status-pending">Pending</span>
-                            }
-                        </td>
-                        <td>@item.TransactionDate.ToString("yyyy-MM-dd HH:mm:ss")</td>
-                        <td>
-                            @if (item.ApprovalStatus == 0)
-                            {
-                                <button class="review status-tag status-review">Review</button>
-                            }
-                        </td>
+                        <th>Transaction ID</th>
+                        <th>Login</th>
+                        <th>Client</th>
+                        <th>Method</th>
+                        <th>Amount</th>
+                        <th>Fee</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                        <th></th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <partial name="_TransactionTable" model="Model" />
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+
+        // Initialize Flatpickr for From Date
+        const fpFromDate = flatpickr("#filterFromDate", {
+            dateFormat: "Y-m-d", // Custom format, e.g., "2025-09-07"
+            placeholder: "From Date",
+            allowInput: false,
+            onChange: function (selectedDates, dateStr, instance) {
+                if (selectedDates.length > 0) {
+                    // Set minDate for To Date based on From Date
+                    fpToDate.set("minDate", selectedDates[0]);
+                    // Open To Date picker if not already selected
+                    if (!fpToDate.selectedDates.length) {
+                        fpToDate.open();
+                    }
+                    // Set maxDate for From Date based on To Date if To Date is already selected
+                    if (fpToDate.selectedDates.length > 0) {
+                        fpFromDate.set("maxDate", fpToDate.selectedDates[0]);
+                    }
+                } else {
+                    // Clear minDate and maxDate constraints when cleared
+                    fpToDate.set("minDate", null);
+                    fpFromDate.set("maxDate", null);
+                }
+            }
+        });
+
+        // Initialize Flatpickr for To Date
+        const fpToDate = flatpickr("#filterToDate", {
+            dateFormat: "Y-m-d", // Custom format
+            placeholder: "To Date",
+            allowInput: false,
+            // Removed minDate: "today" to allow past dates
+            onChange: function (selectedDates, dateStr, instance) {
+                if (selectedDates.length > 0) {
+                    // Set maxDate for From Date based on To Date
+                    fpFromDate.set("maxDate", selectedDates[0]);
+                    // Open From Date picker if not already selected
+                    if (!fpFromDate.selectedDates.length) {
+                        fpFromDate.open();
+                    }
+                    // Set minDate for To Date based on From Date if From Date is already selected
+                    if (fpFromDate.selectedDates.length > 0) {
+                        fpToDate.set("minDate", fpFromDate.selectedDates[0]);
+                    }
+                } else {
+                    // Clear maxDate and minDate constraints when cleared
+                    fpFromDate.set("maxDate", null);
+                    fpToDate.set("minDate", null);
+                }
+            }
+        });
+
+        // Get the pre-defined clear button
+        const dateRangeBox = document.querySelector('.date-range-box');
+        const clearButton = dateRangeBox.querySelector('.clear-button');
+
+        function updateClearButtonVisibility() {
+            const hasFromDate = fpFromDate.selectedDates.length > 0;
+            const hasToDate = fpToDate.selectedDates.length > 0;
+            dateRangeBox.classList.toggle('has-date', hasFromDate || hasToDate);
+            clearButton.style.display = (hasFromDate || hasToDate) ? 'block' : 'none';
+        }
+
+        clearButton.addEventListener('click', function () {
+            fpFromDate.clear();
+            fpToDate.clear();
+            fpFromDate.set("minDate", null);
+            fpFromDate.set("maxDate", null);
+            fpToDate.set("minDate", null);
+            fpToDate.set("maxDate", null);
+            updateClearButtonVisibility();
+        });
+
+        // Update visibility on date changes
+        fpFromDate.config.onChange.push(updateClearButtonVisibility);
+        fpToDate.config.onChange.push(updateClearButtonVisibility);
+
+        // Initial visibility check
+        updateClearButtonVisibility();
+
         const loginIdInput = document.getElementById('loginId');
         const suggestionsList = document.getElementById('loginIdSuggestions');
 
@@ -234,10 +290,10 @@
                 method: 'POST',
                 body: formData
             })
-                .then(response => {
-                    const responseData = response.json();
+                .then(response => response.json())
+                .then(responseData => {
                     debugger;
-                    if (response.ok) {
+                    if (responseData.success) {
                         Swal.fire({
                             toast: true,
                             position: 'top-end',
@@ -248,6 +304,50 @@
                             timer: 3000,
                             timerProgressBar: true
                         });
+                        // Update the table with the new transaction
+                        const tbody = document.querySelector('table tbody');
+                        const newRow = document.createElement('tr');
+
+                        // Use responseData.transaction
+                        const newTransaction = responseData.transaction || {};
+
+                        // Format the date (assuming TransactionDate is in ISO format)
+                        const transactionDate = new Date(newTransaction.transactionDate || new Date()).toLocaleString('en-US', {
+                            year: 'numeric',
+                            month: 'numeric',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            second: '2-digit',
+                            hour12: false
+                        });
+
+                        // Determine status for display
+                        const statusText = newTransaction.approvalStatus === 1 ? 'Approved' :
+                            newTransaction.approvalStatus === 2 ? 'Rejected' : 'Pending';
+                        const statusClass = newTransaction.approvalStatus === 1 ? 'status-approved' :
+                            newTransaction.approvalStatus === 2 ? 'status-rejected' : 'status-pending';
+
+                        // Create review button if status is Pending
+                        const reviewButton = newTransaction.approvalStatus === 0 ?
+                            `<button class="review status-tag status-review">Review</button>` : '';
+
+                        // Populate the row with transaction data
+                        newRow.innerHTML = `
+                            <td>${newTransaction.transactionId || ''}</td>
+                            <td>${newTransaction.login || ''}</td>
+                            <td>${newTransaction.userName || ''}</td>
+                            <td>${newTransaction.transactionType || ''} / Card Debit</td>
+                            <td>${newTransaction.amount || ''}</td>
+                            <td>${newTransaction.fee || ''}</td>
+                            <td><span class="status-tag ${statusClass}">${statusText}</span></td>
+                            <td>${transactionDate}</td>
+                            <td>${reviewButton}</td>
+                        `;
+
+                        // Append the new row to the table
+                        tbody.prepend(newRow);
+                        form.reset();
                         // Optionally, you can reset the form or close the modal here
                         $('#TransactionModal').modal('hide');
                     } else {
@@ -285,12 +385,11 @@
             addTransaction('submitAndApprove');
         });
 
-        document.querySelectorAll('.review').forEach(button => {
-            button.addEventListener('click', function () {
-                debugger;
-                const row = this.closest('tr');
+        // Review buttons
+        document.querySelector('table').addEventListener('click', function (event) {
+            if (event.target.classList.contains('review')) {
+                const row = event.target.closest('tr');
                 const transactionId = row.cells[0].textContent;
-
                 Swal.fire({
                     title: 'Review Transaction',
                     text: `Do you want to approve or reject transaction ID ${transactionId}?`,
@@ -300,13 +399,12 @@
                     denyButtonText: 'Reject',
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        debugger;
                         updateTransactionStatus(parseInt(transactionId), 1); // Approve
                     } else if (result.isDenied) {
                         updateTransactionStatus(parseInt(transactionId), 2); // Reject
                     }
                 });
-            });
+            }
         });
 
         function updateTransactionStatus(transactionId, action) {
@@ -315,9 +413,9 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ transactionId: transactionId, approvalStatus: action })
             })
-                .then(response => {
-                    const responseData = response.json();
-                    if (response.ok) {
+                .then(response => response.json())
+                .then(responseData => {
+                    if (responseData.success) {
                         Swal.fire({
                             toast: true,
                             position: 'top-end',
@@ -327,9 +425,29 @@
                             showConfirmButton: false,
                             timer: 3000,
                             timerProgressBar: true
-                        }).then(() => {
-                            location.reload(); // Reload the page to reflect changes
-                        });
+                        })
+                        const row = Array.from(document.querySelectorAll('table tbody tr')).find(tr => tr.cells[0].textContent == transactionId);
+                        if (row) {
+                            debugger;
+                            const statusCell = row.cells[6];
+                            const statusText = responseData.transaction.status === 1 ? 'Approved' :
+                                responseData.transaction.status === 2 ? 'Rejected' : 'Pending';
+                            const statusClass = responseData.transaction.status === 1 ? 'status-approved' :
+                                responseData.transaction.status === 2 ? 'status-rejected' : 'status-pending';
+
+                            statusCell.innerHTML = `<span class="status-tag ${statusClass}">${statusText}</span>`;
+                            debugger;
+                            const reviewCell = row.cells[8];
+                            if (responseData.transaction.status === 1 || responseData.transaction.status === 2) {
+                                // Remove the Review button for Approved or Rejected
+                                reviewCell.innerHTML = '';
+                            } else {
+                                debugger;
+                                // Ensure Review button exists for Pending
+                                reviewCell.innerHTML = `<button class="review status-tag status-review">Review</button>`;
+                            }
+                        }
+
                     } else {
                         Swal.fire({
                             toast: true,
@@ -356,5 +474,46 @@
                     });
                 });
         }
+
+        // AJAX filter application
+        document.getElementById('applyFilters').addEventListener('click', function () {
+            debugger;
+            const filterTransactionType = document.querySelector('#filterTransactionType').value;
+            const filterStatus = document.querySelector('#filterStatus').value;
+            const filterFromDate = document.querySelector('#filterFromDate').value;//fpFromDate.selectedDates.length > 0 ? fpFromDate.selectedDates[0].toISOString().split('T')[0] : null;
+            const filterToDate = document.querySelector('#filterToDate').value;//fpToDate.selectedDates.length > 0 ? fpToDate.selectedDates[0].toISOString().split('T')[0] : null;
+            const filterLoginId = document.querySelector('#filterLoginId').value;
+
+            fetch('/Transaction/GetFilteredTransactions', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    TransactionType: filterTransactionType,
+                    Status: filterStatus,
+                    StartDate: filterFromDate,
+                    EndDate: filterToDate
+                    @*Login: filterLoginId *@
+                })
+        })
+            .then(response => response.json())
+            .then(responseData => {
+                if (responseData.success) {
+                    document.querySelector('table tbody').innerHTML = responseData.html;
+                    return;
+                }
+                document.querySelector('table tbody').innerHTML = '<tr><td colspan="9"><div class="no-data"><i class="fa fa-inbox"></i><p>No transactions found</p></div></td></tr>';
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Error!',
+                    text: responseData.message || "Failed to apply filters.",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true
+                });
+            })
+            .catch(error => console.log('Error:', error));
+    });
     });
 </script>
