@@ -13,22 +13,22 @@
         <td>
             @if (item.ApprovalStatus == 1)
             {
-                <span class="status-tag status-approved">Approved</span>
+                <span class="status-badge status-approved">Approved</span>
             }
             else if (item.ApprovalStatus == 2)
             {
-                <span class="status-tag status-rejected">Rejected</span>
+                <span class="status-badge status-rejected">Rejected</span>
             }
             else
             {
-                <span class="status-tag status-pending">Pending</span>
+                <span class="status-badge status-pending">Pending</span>
             }
         </td>
-        <td>@item.TransactionDate.ToString("yyyy-MM-dd HH:mm:ss")</td>
+        <td>@item.TransactionDate.ToString("yyyy-MM-dd")</td>
         <td>
             @if (item.ApprovalStatus == 0)
             {
-                <button class="review status-tag status-review">Review</button>
+                <button class="review status-badge status-review">Review</button>
             }
         </td>
     </tr>

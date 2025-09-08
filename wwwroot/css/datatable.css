@@ -1,0 +1,65 @@
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+}
+
+.data-table th {
+  background-color: #f8f9fa;
+  padding: 6px;
+  text-align: left;
+  font-weight: 500;
+  color: #2c3e50;
+  border-bottom: 2px solid #e1e4e8;
+  position: relative;
+}
+
+.table-filter {
+  display: flex;
+  margin-top: 8px;
+}
+
+.table-filter input,
+.table-filter select {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #dce1e6;
+  border-radius: 4px;
+  font-size: 14px;
+  background: white;
+}
+
+.data-table td {
+  font-size: 14px;
+  padding: 7px;
+  border-bottom: 1px solid #e1e4e8;
+}
+
+.status-badge {
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  display: inline-block;
+}
+
+.status-pending {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status-approved {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-rejected {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+.status-review {
+  /* border-color: #b3d1ff; */
+  background-color: #e6f0ff;
+  color: #004085;
+  border: none;
+}
