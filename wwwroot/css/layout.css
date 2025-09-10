@@ -53,6 +53,13 @@ nav {
 .nav ul {
     padding-left: 0 !important;
 }
+.nav-menu li a {
+    text-decoration: none;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 .nav-menu li {
   padding: 12px 20px;
   transition: all 0.3s;
