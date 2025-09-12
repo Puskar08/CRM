@@ -134,87 +134,84 @@
             <table class="data-table">
                 <thead>
                     <tr>
-                        <th>
+                        <th data-sort="TransactionId">
                             Transaction ID
                             <div class="table-filter">
-                                <input type="text" placeholder="Filter ID" />
+                                <input type="text" id="filterTransactionId" placeholder="Filter ID" />
                             </div>
                         </th>
-                        <th>
-                            Login<div class="table-filter">
-                                <input type="text" placeholder="Filter Login" />
+                        <th data-sort="Login">
+                            Login
+                            <div class="table-filter">
+                                <input type="text" id="filterLogin" placeholder="Filter Login" />
                             </div>
                         </th>
-                        <th>
+                        <th data-sort="Client">
                             Client
                             <div class="table-filter">
-                                <input type="text" placeholder="Filter Client" />
+                                <input type="text" id="filterClient" placeholder="Filter Client" />
                             </div>
                         </th>
-                        <th>
+                        <th data-sort="TransactionType">
                             Method
                             <div class="table-filter">
-                                <select>
-                                    <option value="">All Methods</option>
-                                    <option>Credit Card</option>
-                                    <option>PayPal</option>
-                                    <option>Bank Transfer</option>
-                                    <option>Google Pay</option>
+                                <select itemid="filterMethod" id="filterTransactionType">
+                                    <option value="All">All Methods</option>
+                                    <option value="Deposit">Credit Card</option>
+                                    <option value="Withdrawal">PayPal</option>
                                 </select>
                             </div>
                         </th>
-                        <th>
+                        <th data-sort="Amount">
                             Amount
                             <div class="table-filter">
-                                <select>
-                                    <option value="">All Amounts</option>
-                                    <option>0 - 100</option>
-                                    <option>100 - 500</option>
-                                    <option>500 - 1000</option>
-                                    <option>1000+</option>
+                                <select itemid="filterAmount" id="filterAmount">
+                                    <option value="All">All Amounts</option>
+                                    <option value="1">0 - 100</option>
+                                    <option value="2">100 - 500</option>
+                                    <option value="3">500 - 1000</option>
+                                    <option value="4">1000+</option>
                                 </select>
                             </div>
                         </th>
-                        <th>
+                        <th data-sort="Fee">
                             Fee
                             <div class="table-filter">
-                                <input type="text" placeholder="Filter Fee" />
+                                <input type="text" itemid="filterFee" id="filterFee" placeholder="Filter Fee" />
                             </div>
                         </th>
-                        <th>
+                        <th data-sort="Status">
                             Status
                             <div class="table-filter">
-                                <select>
-                                    <option value="">All Statuses</option>
-                                    <option>Pending</option>
-                                    <option>Approved</option>
-                                    <option>Rejected</option>
-                                    <option>Failed</option>
+                                <select itemid="filterStatus" id="filterStatus">
+                                    <option value="All">All Statuses</option>
+                                    <option value="0">Pending</option>
+                                    <option value="1">Approved</option>
+                                    <option value="2">Rejected</option>
+                                    <option value="3">Failed</option>
                                 </select>
                             </div>
                         </th>
-                        <th>
+                        <th data-sort="TransactionDate">
                             Date
                             <div class="table-filter">
-                                <input type="date" />
+                                <input id="filterStartDate" type="date" />
+                                <input id="filterEndDate" type="date" />
                             </div>
                         </th>
                         <th></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="transactionTableBody">
                     <partial name="_TransactionTable" model="Model" />
                 </tbody>
             </table>
             <div class="pagination">
-                <div class="pagination-info">Showing 1 to 7 of 127 entries</div>
-                <div class="pagination-controls">
-                    <button>Previous</button>
-                    <button class="active">1</button>
-                    <button>2</button>
-                    <button>3</button>
-                    <button>4</button>
-                    <button>Next</button>
+                <div class="pagination-info" id="paginationInfo">Showing 0 to 0 of 0 entries</div>
+                <div class="pagination-controls" id="paginationControls">
+                    <button id="prevPage">Previous</button>
+                    <span id="pageButtons"></span>
+                    <button id="nextPage">Next</button>
                 </div>
             </div>
         </div>
@@ -223,84 +220,19 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
 
-        @* // Initialize Flatpickr for From Date
-        const fpFromDate = flatpickr("#filterFromDate", {
-            dateFormat: "Y-m-d", // Custom format, e.g., "2025-09-07"
-            placeholder: "From Date",
-            allowInput: false,
-            onChange: function (selectedDates, dateStr, instance) {
-                if (selectedDates.length > 0) {
-                    // Set minDate for To Date based on From Date
-                    fpToDate.set("minDate", selectedDates[0]);
-                    // Open To Date picker if not already selected
-                    if (!fpToDate.selectedDates.length) {
-                        fpToDate.open();
-                    }
-                    // Set maxDate for From Date based on To Date if To Date is already selected
-                    if (fpToDate.selectedDates.length > 0) {
-                        fpFromDate.set("maxDate", fpToDate.selectedDates[0]);
-                    }
-                } else {
-                    // Clear minDate and maxDate constraints when cleared
-                    fpToDate.set("minDate", null);
-                    fpFromDate.set("maxDate", null);
-                }
-            }
-        });
-
-        // Initialize Flatpickr for To Date
-        const fpToDate = flatpickr("#filterToDate", {
-            dateFormat: "Y-m-d", // Custom format
-            placeholder: "To Date",
-            allowInput: false,
-            // Removed minDate: "today" to allow past dates
-            onChange: function (selectedDates, dateStr, instance) {
-                if (selectedDates.length > 0) {
-                    // Set maxDate for From Date based on To Date
-                    fpFromDate.set("maxDate", selectedDates[0]);
-                    // Open From Date picker if not already selected
-                    if (!fpFromDate.selectedDates.length) {
-                        fpFromDate.open();
-                    }
-                    // Set minDate for To Date based on From Date if From Date is already selected
-                    if (fpFromDate.selectedDates.length > 0) {
-                        fpToDate.set("minDate", fpFromDate.selectedDates[0]);
-                    }
-                } else {
-                    // Clear maxDate and minDate constraints when cleared
-                    fpFromDate.set("maxDate", null);
-                    fpToDate.set("minDate", null);
-                }
-            }
-        });
-
-        // Get the pre-defined clear button
-        const dateRangeBox = document.querySelector('.date-range-box');
-        const clearButton = dateRangeBox.querySelector('.clear-button');
-
-        function updateClearButtonVisibility() {
-            const hasFromDate = fpFromDate.selectedDates.length > 0;
-            const hasToDate = fpToDate.selectedDates.length > 0;
-            dateRangeBox.classList.toggle('has-date', hasFromDate || hasToDate);
-            clearButton.style.display = (hasFromDate || hasToDate) ? 'block' : 'none';
-        }
-
-        clearButton.addEventListener('click', function () {
-            fpFromDate.clear();
-            fpToDate.clear();
-            fpFromDate.set("minDate", null);
-            fpFromDate.set("maxDate", null);
-            fpToDate.set("minDate", null);
-            fpToDate.set("maxDate", null);
-            updateClearButtonVisibility();
-        });
-
-        // Update visibility on date changes
-        fpFromDate.config.onChange.push(updateClearButtonVisibility);
-        fpToDate.config.onChange.push(updateClearButtonVisibility);
-
-        // Initial visibility check
-        updateClearButtonVisibility(); *@
+        const tableBody = document.querySelector('#transactionTableBody');
+        const filterInputs = document.querySelectorAll('.table-filter input');
+        const filterSelects = document.querySelectorAll('.table-filter select');
+        const paginationInfo = document.querySelector('#paginationInfo');
+        const paginationControls = document.querySelector('#paginationControls');
+        const prevPageBtn = document.querySelector('#prevPage');
+        const nextPageBtn = document.querySelector('#nextPage');
+        const pageButtons = document.querySelector('#pageButtons');
+@* const filters = {}; *@
+        let currentPage = 1;
+        let pageSize = 15;
+        let sortColumn = 'TransactionDate';
+        let sortDirection = 'desc';
 
         const loginIdInput = document.getElementById('loginId');
         const suggestionsList = document.getElementById('loginIdSuggestions');
@@ -351,7 +283,7 @@
                 }
             });
         });
-
+        //add transaction
         function addTransaction(actionType) {
             debugger;
             const form = document.querySelector('#transactionForm');
@@ -478,7 +410,7 @@
                 });
             }
         });
-
+        //Update transaction status
         function updateTransactionStatus(transactionId, action) {
             fetch(`/Transaction/UpdateTransactionStatus`, {
                 method: 'POST',
@@ -546,45 +478,173 @@
                     });
                 });
         }
+        
+        // Render table rows
+        const renderTable = (data) => {
+            tableBody.innerHTML = '';
+            if (data.data.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="9"><div class="no-data"><i class="fa fa-inbox"></i><p>No transactions found</p></div></td></tr>';
+                return;
+            }
+            data.data.forEach(row => {
+                const tr = document.createElement('tr');
+                // Format the date
+                const transactionDate = new Date(row.transactionDate || new Date()).toLocaleString('en-US', {
+                    year: 'numeric',
+                    month: 'numeric',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: false
+                });
 
-        // AJAX filter application
-        @* document.getElementById('applyFilters').addEventListener('click', function () {
+                // Determine status
+                const statusText = row.approvalStatus === 1 ? 'Approved' :
+                    row.approvalStatus === 2 ? 'Rejected' : 'Pending';
+                const statusClass = row.approvalStatus === 1 ? 'status-approved' :
+                    row.approvalStatus === 2 ? 'status-rejected' : 'status-pending';
+
+                // Create review button if status is Pending
+                const reviewButton = row.approvalStatus === 0 ?
+                    `<button class="review status-tag status-review">Review</button>` : '';
+
+                // Populate row
+                tr.innerHTML = `
+                <td>${row.transactionId || ''}</td>
+                <td>${row.login || ''}</td>
+                <td>${row.userName || ''}</td>
+                <td>${row.transactionType || ''}</td>
+                <td>${(row.amount || 0).toFixed(2)}</td>
+                <td>${(row.fee || 0).toFixed(2)}</td>
+                <td><span class="status-tag ${statusClass}">${statusText}</span></td>
+                <td>${transactionDate}</td>
+                <td>${reviewButton}</td>
+            `;
+                tableBody.appendChild(tr);
+            });
+        };
+
+        // Update pagination controls
+        const updatePagination = (data) => {
             debugger;
-            const filterTransactionType = document.querySelector('#filterTransactionType').value;
-            const filterStatus = document.querySelector('#filterStatus').value;
-            const filterFromDate = document.querySelector('#filterFromDate').value;//fpFromDate.selectedDates.length > 0 ? fpFromDate.selectedDates[0].toISOString().split('T')[0] : null;
-            const filterToDate = document.querySelector('#filterToDate').value;//fpToDate.selectedDates.length > 0 ? fpToDate.selectedDates[0].toISOString().split('T')[0] : null;
-            const filterLoginId = document.querySelector('#filterLoginId').value;
+            const { filteredRecords, currentPage, pageSize } = data;
+            const totalPages = Math.ceil(filteredRecords / pageSize);
+            paginationInfo.textContent = `Showing ${(currentPage - 1) * pageSize + 1} to ${Math.min(currentPage * pageSize, filteredRecords)} of ${filteredRecords} entries`;
 
-            fetch('/Transaction/GetFilteredTransactions', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    TransactionType: filterTransactionType,
-                    Status: filterStatus,
-                    StartDate: filterFromDate,
-                    EndDate: filterToDate
-                })
-        })
-            .then(response => response.json())
-            .then(responseData => {
-                if (responseData.success) {
-                    document.querySelector('table tbody').innerHTML = responseData.html;
-                    return;
-                }
-                document.querySelector('table tbody').innerHTML = '<tr><td colspan="9"><div class="no-data"><i class="fa fa-inbox"></i><p>No transactions found</p></div></td></tr>';
+            pageButtons.innerHTML = '';
+            const maxButtons = 5;
+            let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
+            let endPage = Math.min(totalPages, startPage + maxButtons - 1);
+            startPage = Math.max(1, endPage - maxButtons + 1);
+
+            for (let i = startPage; i <= endPage; i++) {
+                const btn = document.createElement('button');
+                btn.textContent = i;
+                if (i === currentPage) btn.classList.add('active');
+                btn.addEventListener('click', () => {
+                    currentPage = i;
+                    fetchData();
+                });
+                pageButtons.appendChild(btn);
+            }
+
+            prevPageBtn.disabled = currentPage === 1;
+            nextPageBtn.disabled = currentPage === totalPages;
+        };
+
+        // Fetch data from API
+        const fetchData = async () => {
+            debugger;
+            const filters = {
+                filterTransactionId: document.querySelector('#filterTransactionId').value,
+                filterLogin: document.querySelector('#filterLogin').value,
+                filterClient: document.querySelector('#filterClient').value,
+                filterTransactionType: document.querySelector('#filterTransactionType').value,
+                filterAmount: document.querySelector('#filterAmount').value,
+                filterFee: document.querySelector('#filterFee').value,
+                filterStatus: document.querySelector('#filterStatus').value,
+                filterStartDate: document.querySelector('#filterStartDate').value,
+                filterEndDate: document.querySelector('#filterEndDate').value,
+                page: currentPage,
+                pageSize: pageSize,
+                sortColumn: sortColumn,
+                sortDirection: sortDirection
+            };
+
+            try {
+                const response = await fetch('/Transaction/GetFilteredTransactions', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(filters)
+                });
+                if (!response.ok) throw new Error('Network error');
+                const responseData = await response.json();
+                renderTable(responseData);
+                updatePagination(responseData);
+            } catch (error) {
+                console.error('Error:', error);
+                tableBody.innerHTML = '<tr><td colspan="9"><div class="no-data"><i class="fa fa-inbox"></i><p>No transactions found</p></div></td></tr>';
                 Swal.fire({
                     toast: true,
                     position: 'top-end',
                     icon: 'error',
                     title: 'Error!',
-                    text: responseData.message || "Failed to apply filters.",
+                    text: 'Failed to load transactions.',
                     showConfirmButton: false,
                     timer: 3000,
                     timerProgressBar: true
                 });
-            })
-            .catch(error => console.log('Error:', error));
+            }
+        };
+
+        // Apply filters
+        const applyFilters = () => {
+            debugger;
+            currentPage = 1; // Reset to first page on filter change
+            fetchData();
+        };
+        
+        filterInputs.forEach(input => {
+            input.addEventListener('keydown', (event) => {
+                debugger;
+                if (event.key === 'Enter') {
+                    applyFilters();
+                }
+            });
+        });
+        filterSelects.forEach(select => {
+            select.addEventListener('change', applyFilters);
+        })
+
+        
+        // Handle sorting
+        @* const headers = document.querySelectorAll('th[data-sort]');
+        headers.forEach(header => {
+            header.addEventListener('click', () => {
+                const column = header.dataset.sort;
+                if (sortColumn === column) {
+                    sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+                } else {
+                    sortColumn = column;
+                    sortDirection = 'asc';
+                }
+                currentPage = 1;
+                fetchData();
+            });
         }); *@
+
+        // Pagination button listeners
+        prevPageBtn.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                fetchData();
+            }
+        });
+        nextPageBtn.addEventListener('click', () => {
+            currentPage++;
+            fetchData();
+        });
+
     });
 </script>

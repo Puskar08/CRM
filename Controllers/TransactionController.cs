@@ -47,43 +47,152 @@ public class TransactionController : Controller
         DateTime? endDateUtc = null;
 
         // Parse and convert to UTC, handling null or empty strings
-        if (!string.IsNullOrEmpty(filterModel.StartDate) && DateTime.TryParse(filterModel.StartDate, out DateTime startDate))
+        if (!string.IsNullOrEmpty(filterModel.FilterStartDate) && DateTime.TryParse(filterModel.FilterStartDate, out DateTime startDate))
         {
             startDateUtc = DateTime.SpecifyKind(startDate, DateTimeKind.Utc);
         }
-        if (!string.IsNullOrEmpty(filterModel.EndDate) && DateTime.TryParse(filterModel.EndDate, out DateTime endDate))
+        if (!string.IsNullOrEmpty(filterModel.FilterEndDate) && DateTime.TryParse(filterModel.FilterEndDate, out DateTime endDate))
         {
             endDateUtc = DateTime.SpecifyKind(endDate, DateTimeKind.Utc);
         }
-        var trans = await (from tr in _context.Transactions
-                           join acc in _context.ClientsAccounts on tr.Mt5LoginID equals acc.Mt5LoginID
-                           join user in _context.Users on acc.UserId equals user.Id
-                           where
-                               ((string.IsNullOrEmpty(filterModel.TransactionType) || filterModel.TransactionType == "All") ? 1 == 1 : tr.TransactionType == filterModel.TransactionType)
-                               && ((string.IsNullOrEmpty(filterModel.Status) || filterModel.Status == "All") ? 1 == 1 : tr.Status == (filterModel.Status == "Approved" ? 1 : filterModel.Status == "Rejected" ? 2 : 0))
-                               && (!startDateUtc.HasValue ? 1 == 1 : tr.TransactionDate >= startDateUtc.Value)
-                                && (!endDateUtc.HasValue ? 1 == 1 : tr.TransactionDate <= endDateUtc.Value)
-                           //    && (string.IsNullOrEmpty(filterModel.Login.ToString()) ? 1 == 1 : acc.Mt5LoginID.ToString() == filterModel.Login.ToString())
-                           orderby tr.TransactionDate descending
-                           select new TransactionViewModel
-                           {
-                               TransactionId = tr.TransactionId,
-                               Login = acc.Mt5LoginID,
-                               UserName = user.Name,
-                               TransactionType = tr.TransactionType,
-                               Amount = tr.Amount,
-                               Fee = tr.Fee,
-                               Status = tr.Status == 1 ? "Approved" : tr.Status == 2 ? "Rejected" : "Pending",
-                               ApprovalStatus = tr.Status,
-                               TransactionDate = tr.TransactionDate
-                           }).ToListAsync();
+        //base query
+        var query = from tr in _context.Transactions
+                    join acc in _context.ClientsAccounts on tr.Mt5LoginID equals acc.Mt5LoginID
+                    join user in _context.Users on acc.UserId equals user.Id
+                    //    where
+                    //        ((string.IsNullOrEmpty(filterModel.FilterTransactionType) || filterModel.FilterTransactionType == "All") ? 1 == 1 : tr.TransactionType == filterModel.FilterTransactionType)
+                    //        && ((string.IsNullOrEmpty(filterModel.FilterStatus) || filterModel.FilterStatus == "All") ? 1 == 1 : tr.Status == (filterModel.FilterStatus == "Approved" ? 1 : filterModel.FilterStatus == "Rejected" ? 2 : 0))
+                    //        && (!startDateUtc.HasValue ? 1 == 1 : tr.TransactionDate >= startDateUtc.Value)
+                    //         && (!endDateUtc.HasValue ? 1 == 1 : tr.TransactionDate <= endDateUtc.Value)
+                    //    && (string.IsNullOrEmpty(filterModel.Login.ToString()) ? 1 == 1 : acc.Mt5LoginID.ToString() == filterModel.Login.ToString())
+                    orderby tr.TransactionDate descending
+                    select new TransactionViewModel
+                    {
+                        TransactionId = tr.TransactionId,
+                        Login = acc.Mt5LoginID,
+                        UserName = user.Name,
+                        TransactionType = tr.TransactionType,
+                        Amount = tr.Amount,
+                        Fee = tr.Fee,
+                        Status = tr.Status == 1 ? "Approved" : tr.Status == 2 ? "Rejected" : "Pending",
+                        ApprovalStatus = tr.Status,
+                        TransactionDate = tr.TransactionDate
+                    };
 
-        var html = "<tr><td colspan='9'><div class='no-data'><i class='fas fa-inbox'></i><p>No transactions found</p></div></td></tr>";
-        if (trans.Count > 0)
+        // Apply filters
+        //filter transactionId
+        if (!string.IsNullOrEmpty(filterModel.FilterTransactionId))
         {
-            html = await RenderViewAsync("_TransactionTable", trans);
+            if (int.TryParse(filterModel.FilterTransactionId, out int transId))
+            {
+                query = query.Where(t => t.TransactionId == transId);
+            }
         }
-        return Ok(new { success = "true", html = html });
+        //filter login
+        if (!string.IsNullOrEmpty(filterModel.FilterLogin))
+        {
+            if (int.TryParse(filterModel.FilterLogin, out int loginId))
+            {
+                query = query.Where(t => t.Login == loginId);
+            }
+        }
+        //filter client username
+        if (!string.IsNullOrEmpty(filterModel.FilterClient))
+        {
+            query = query.Where(t => t.UserName != null && t.UserName.Contains(filterModel.FilterClient));
+        }
+        //filter transaction type
+        if (!string.IsNullOrEmpty(filterModel.FilterTransactionType) && filterModel.FilterTransactionType != "All")
+        {
+            query = query.Where(t => t.TransactionType == filterModel.FilterTransactionType);
+        }
+        //filter status
+        if (!string.IsNullOrEmpty(filterModel.FilterStatus) && filterModel.FilterStatus != "All" && filterModel.FilterStatus != "-1")
+        {
+            if (int.TryParse(filterModel.FilterStatus, out int status))
+            {
+                query = query.Where(t => t.ApprovalStatus == status);
+            }
+        }
+        //filter date range
+        if (startDateUtc.HasValue)
+        {
+            query = query.Where(t => t.TransactionDate >= startDateUtc.Value);
+        }
+        if (endDateUtc.HasValue)
+        {
+            query = query.Where(t => t.TransactionDate <= endDateUtc.Value);
+        }
+        //filter amount
+        if (!string.IsNullOrEmpty(filterModel.FilterAmount) && filterModel.FilterAmount != "All")
+        {
+            if (int.TryParse(filterModel.FilterAmount, out int amount))
+            {
+                switch (amount)
+                {
+                    case 1:
+                        query = query.Where(t => t.Amount >= 0 && t.Amount <= 100);
+                        break;
+                    case 2:
+                        query = query.Where(t => t.Amount > 100 && t.Amount <= 500);
+                        break;
+                    case 3:
+                        query = query.Where(t => t.Amount >= 500 && t.Amount <= 1000);
+                        break;
+                    case 4:
+                        query = query.Where(t => t.Amount >= 1000);
+                        break;
+                }
+            }
+        }
+        //filter fee
+        if (!string.IsNullOrEmpty(filterModel.FilterFee))
+        {
+            if (decimal.TryParse(filterModel.FilterFee, out decimal fee))
+            {
+                query = query.Where(t => t.Fee == fee);
+            }
+        }
+        // Get total records count before pagination
+        int totalRecords = await _context.Transactions.CountAsync();
+        // Get filtered records count before pagination
+        int filteredRecords = await query.CountAsync();
+        // Apply sorting
+        if (!string.IsNullOrEmpty(filterModel.SortColumn) && !string.IsNullOrEmpty(filterModel.SortDirection))
+        {
+            bool ascending = filterModel.SortDirection.Equals("asc", StringComparison.OrdinalIgnoreCase);
+            query = filterModel.SortColumn switch
+            {
+                "TransactionId" => ascending ? query.OrderBy(t => t.TransactionId) : query.OrderByDescending(t => t.TransactionId),
+                "Login" => ascending ? query.OrderBy(t => t.Login) : query.OrderByDescending(t => t.Login),
+                "UserName" => ascending ? query.OrderBy(t => t.UserName) : query.OrderByDescending(t => t.UserName),
+                "TransactionType" => ascending ? query.OrderBy(t => t.TransactionType) : query.OrderByDescending(t => t.TransactionType),
+                "Amount" => ascending ? query.OrderBy(t => t.Amount) : query.OrderByDescending(t => t.Amount),
+                "Fee" => ascending ? query.OrderBy(t => t.Fee) : query.OrderByDescending(t => t.Fee),
+                "Status" => ascending ? query.OrderBy(t => t.Status) : query.OrderByDescending(t => t.Status),
+                "TransactionDate" => ascending ? query.OrderBy(t => t.TransactionDate) : query.OrderByDescending(t => t.TransactionDate),
+                _ => query.OrderByDescending(t => t.TransactionDate), // Default sorting
+            };
+        }
+        else
+        {
+            // Default sorting
+            query = query.OrderByDescending(t => t.TransactionDate);
+        }
+        // Apply pagination
+        int page = filterModel.Page <= 0 ? 1 : filterModel.Page;
+        int pageSize = filterModel.PageSize <= 0 ? 10 : filterModel.PageSize;
+        query = query.Skip((page - 1) * pageSize).Take(pageSize);
+        var transactions = await query.ToListAsync();
+        var response = new FilterResponseModel
+        {
+            Data = transactions,
+            TotalRecords = totalRecords,
+            FilteredRecords = filteredRecords,
+            PageSize = pageSize,
+            CurrentPage = page
+        };
+        return Ok(response);
     }
     public async Task<string> RenderViewAsync<TModel>(string viewName, TModel model)
     {
