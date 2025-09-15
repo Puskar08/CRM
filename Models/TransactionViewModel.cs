@@ -21,6 +21,7 @@ public class TransactionStatusUpdateModel
 
 public class TransactionFilterModel
 {
+    public string? GlobalSearch { get; set; }
     public string? FilterTransactionType { get; set; }
     public string? FilterStatus { get; set; }
     public string? FilterStartDate { get; set; }

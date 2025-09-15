@@ -96,46 +96,19 @@
 
     <!-- Page Body -->
     <div class="page-body">
-        @* <div class="body-filter d-flex justify-content-between align-items-center gap-2">
-            <select class="form-select" name="transactionType" id="filterTransactionType">
-                <option value="All">All Transactions</option>
-                <option value="Deposit">Deposits</option>
-                <option value="Withdraw">Withdrawals</option>
-            </select>
-            <select class="form-select" id="filterStatus" name="filterStatus">
-                <option value="All">All Status</option>
-                <option value="Pending">Pending</option>
-                <option value="Approved">Approved</option>
-                <option value="Rejected">Rejected</option>
-            </select>
-
-            <div class="input-group date-range-box">
-                <input type="text" class="form-control dateInput" id="filterFromDate" name="filterFromDate"
-                    placeholder="From Date" readonly />
-                <input type="text" class="form-control dateInput" id="filterToDate" name="filterToDate"
-                    placeholder="To Date"
-                    style="border-top-right-radius:0.375rem !important; border-bottom-right-radius: 0.375rem !important;"
-                    readonly />
-                <button type="button" class="clear-button" style="display: none; padding-bottom: 5px;">x</button>
-            </div>
-
-            <input type=" text" class="form-control" id="filterLoginId" name="filterLoginId"
-                placeholder="Filter by Login ID" value="" />
-            <button type="button" class="apply-btn" id="applyFilters">Apply</button>
-        </div> *@
         <div class="body-content">
             <div class="content-header">
                 <h3>Transaction Records</h3>
                 <div class="global-search">
-                    <input type="text" placeholder="Global search..." />
-                    <button class="add-btn"><i class="fas fa-search"></i> Search</button>
+                    <input type="text" id="globalSearch" placeholder="Global search..." />
+                    <button class="add-btn search-btn"><i class="fas fa-search"></i> Search</button>
                 </div>
             </div>
             <table class="data-table">
                 <thead>
                     <tr>
                         <th data-sort="TransactionId">
-                            Transaction ID
+                            Tran ID
                             <div class="table-filter">
                                 <input type="text" id="filterTransactionId" placeholder="Filter ID" />
                             </div>
@@ -195,15 +168,16 @@
                         <th data-sort="TransactionDate">
                             Date
                             <div class="table-filter">
-                                <input id="filterStartDate" type="date" />
-                                <input id="filterEndDate" type="date" />
+                                <input id="filterStartDate" class="dateSelect" type="date" />
+                                @* <input id="filterEndDate" class="dateSelect" type="date" /> *@
                             </div>
                         </th>
-                        <th></th>
+                        <th>
+                        </th>
                     </tr>
                 </thead>
                 <tbody id="transactionTableBody">
-                    <partial name="_TransactionTable" model="Model" />
+                    @* <partial name="_TransactionTable" model="Model" /> *@
                 </tbody>
             </table>
             <div class="pagination">
@@ -219,16 +193,16 @@
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-
+        const globalSearchInput = document.querySelector('#globalSearch');
+        const globalSearchButton = document.querySelector('.global-search .search-btn');
         const tableBody = document.querySelector('#transactionTableBody');
         const filterInputs = document.querySelectorAll('.table-filter input');
-        const filterSelects = document.querySelectorAll('.table-filter select');
+        const filterSelects = document.querySelectorAll('.table-filter select, .table-filter .dateSelect');
         const paginationInfo = document.querySelector('#paginationInfo');
         const paginationControls = document.querySelector('#paginationControls');
         const prevPageBtn = document.querySelector('#prevPage');
         const nextPageBtn = document.querySelector('#nextPage');
         const pageButtons = document.querySelector('#pageButtons');
-@* const filters = {}; *@
         let currentPage = 1;
         let pageSize = 15;
         let sortColumn = 'TransactionDate';
@@ -285,7 +259,6 @@
         });
         //add transaction
         function addTransaction(actionType) {
-            debugger;
             const form = document.querySelector('#transactionForm');
             const formData = new FormData(form);
             formData.append('actionType', actionType);
@@ -296,7 +269,6 @@
             })
                 .then(response => response.json())
                 .then(responseData => {
-                    debugger;
                     if (responseData.success) {
                         Swal.fire({
                             toast: true,
@@ -334,7 +306,7 @@
 
                         // Create review button if status is Pending
                         const reviewButton = newTransaction.approvalStatus === 0 ?
-                            `<button class="review status-tag status-review">Review</button>` : '';
+                            `<button class="review status-badge status-review">Review</button>` : '';
 
                         // Populate the row with transaction data
                         newRow.innerHTML = `
@@ -342,9 +314,9 @@
                             <td>${newTransaction.login || ''}</td>
                             <td>${newTransaction.userName || ''}</td>
                             <td>${newTransaction.transactionType || ''} / Card Debit</td>
-                            <td>${newTransaction.amount || ''}</td>
-                            <td>${newTransaction.fee || ''}</td>
-                            <td><span class="status-tag ${statusClass}">${statusText}</span></td>
+                            <td>${(newTransaction.amount || 0).toFixed(2)}</td>
+                            <td>${(newTransaction.fee || 0).toFixed(2)}</td>
+                            <td><span class="status-badge ${statusClass}">${statusText}</span></td>
                             <td>${transactionDate}</td>
                             <td>${reviewButton}</td>
                         `;
@@ -432,23 +404,20 @@
                         })
                         const row = Array.from(document.querySelectorAll('table tbody tr')).find(tr => tr.cells[0].textContent == transactionId);
                         if (row) {
-                            debugger;
                             const statusCell = row.cells[6];
                             const statusText = responseData.transaction.status === 1 ? 'Approved' :
                                 responseData.transaction.status === 2 ? 'Rejected' : 'Pending';
                             const statusClass = responseData.transaction.status === 1 ? 'status-approved' :
                                 responseData.transaction.status === 2 ? 'status-rejected' : 'status-pending';
 
-                            statusCell.innerHTML = `<span class="status-tag ${statusClass}">${statusText}</span>`;
-                            debugger;
+                            statusCell.innerHTML = `<span class="status-badge ${statusClass}">${statusText}</span>`;
                             const reviewCell = row.cells[8];
                             if (responseData.transaction.status === 1 || responseData.transaction.status === 2) {
                                 // Remove the Review button for Approved or Rejected
                                 reviewCell.innerHTML = '';
                             } else {
-                                debugger;
                                 // Ensure Review button exists for Pending
-                                reviewCell.innerHTML = `<button class="review status-tag status-review">Review</button>`;
+                                reviewCell.innerHTML = `<button class="review status-badge status-review">Review</button>`;
                             }
                         }
 
@@ -478,7 +447,7 @@
                     });
                 });
         }
-        
+
         // Render table rows
         const renderTable = (data) => {
             tableBody.innerHTML = '';
@@ -507,7 +476,7 @@
 
                 // Create review button if status is Pending
                 const reviewButton = row.approvalStatus === 0 ?
-                    `<button class="review status-tag status-review">Review</button>` : '';
+                    `<button class="review status-badge status-review">Review</button>` : '';
 
                 // Populate row
                 tr.innerHTML = `
@@ -517,7 +486,7 @@
                 <td>${row.transactionType || ''}</td>
                 <td>${(row.amount || 0).toFixed(2)}</td>
                 <td>${(row.fee || 0).toFixed(2)}</td>
-                <td><span class="status-tag ${statusClass}">${statusText}</span></td>
+                <td><span class="status-badge ${statusClass}">${statusText}</span></td>
                 <td>${transactionDate}</td>
                 <td>${reviewButton}</td>
             `;
@@ -527,7 +496,6 @@
 
         // Update pagination controls
         const updatePagination = (data) => {
-            debugger;
             const { filteredRecords, currentPage, pageSize } = data;
             const totalPages = Math.ceil(filteredRecords / pageSize);
             paginationInfo.textContent = `Showing ${(currentPage - 1) * pageSize + 1} to ${Math.min(currentPage * pageSize, filteredRecords)} of ${filteredRecords} entries`;
@@ -557,6 +525,7 @@
         const fetchData = async () => {
             debugger;
             const filters = {
+                globalSearch: globalSearchInput.value.trim(),
                 filterTransactionId: document.querySelector('#filterTransactionId').value,
                 filterLogin: document.querySelector('#filterLogin').value,
                 filterClient: document.querySelector('#filterClient').value,
@@ -565,86 +534,141 @@
                 filterFee: document.querySelector('#filterFee').value,
                 filterStatus: document.querySelector('#filterStatus').value,
                 filterStartDate: document.querySelector('#filterStartDate').value,
-                filterEndDate: document.querySelector('#filterEndDate').value,
+                @* filterEndDate: document.querySelector('#filterEndDate').value, *@
                 page: currentPage,
-                pageSize: pageSize,
-                sortColumn: sortColumn,
-                sortDirection: sortDirection
-            };
-
-            try {
-                const response = await fetch('/Transaction/GetFilteredTransactions', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(filters)
-                });
-                if (!response.ok) throw new Error('Network error');
-                const responseData = await response.json();
-                renderTable(responseData);
-                updatePagination(responseData);
-            } catch (error) {
-                console.error('Error:', error);
-                tableBody.innerHTML = '<tr><td colspan="9"><div class="no-data"><i class="fa fa-inbox"></i><p>No transactions found</p></div></td></tr>';
-                Swal.fire({
-                    toast: true,
-                    position: 'top-end',
-                    icon: 'error',
-                    title: 'Error!',
-                    text: 'Failed to load transactions.',
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true
-                });
-            }
+                    pageSize: pageSize,
+                        sortColumn: sortColumn,
+                            sortDirection: sortDirection
         };
-
-        // Apply filters
-        const applyFilters = () => {
-            debugger;
-            currentPage = 1; // Reset to first page on filter change
-            fetchData();
-        };
-        
-        filterInputs.forEach(input => {
-            input.addEventListener('keydown', (event) => {
-                debugger;
-                if (event.key === 'Enter') {
-                    applyFilters();
-                }
+        try {
+            const response = await fetch('/Transaction/GetFilteredTransactions', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(filters)
             });
-        });
-        filterSelects.forEach(select => {
-            select.addEventListener('change', applyFilters);
-        })
+            if (!response.ok) throw new Error('Network error');
+            const responseData = await response.json();
+            renderTable(responseData);
+            updatePagination(responseData);
+            updateSortArrows();
+        } catch (error) {
+            tableBody.innerHTML = '<tr><td colspan="9"><div class="no-data"><i class="fa fa-inbox"></i><p>No transactions found</p></div></td></tr>';
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'error',
+                title: 'Error!',
+                text: 'Failed to load transactions.',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true
+            });
+        }
+    };
 
-        
-        // Handle sorting
-        @* const headers = document.querySelectorAll('th[data-sort]');
+    // Apply filters
+    const applyFilters = () => {
+        currentPage = 1; // Reset to first page on filter change
+        fetchData();
+    };
+
+    filterInputs.forEach(input => {
+        input.addEventListener('click', (event) => event.stopPropagation());
+        input.addEventListener('mousedown', (event) => event.stopPropagation());
+        input.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') applyFilters();
+        });
+    });
+
+    filterSelects.forEach(select => {
+        select.addEventListener('click', (event) => event.stopPropagation());
+        select.addEventListener('mousedown', (event) => event.stopPropagation());
+        select.addEventListener('change', applyFilters);
+    });
+
+    const sortIcons = {
+        asc: 'm280-400 200-200 200 200H280Z',
+        desc: 'M480-360 280-560h400L480-360Z'
+    };
+
+    const updateSortArrows = () => {
+
+        const headers = document.querySelectorAll('th[data-sort]');
         headers.forEach(header => {
-            header.addEventListener('click', () => {
-                const column = header.dataset.sort;
-                if (sortColumn === column) {
-                    sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
-                } else {
-                    sortColumn = column;
-                    sortDirection = 'asc';
-                }
-                currentPage = 1;
-                fetchData();
-            });
-        }); *@
+            const column = header.dataset.sort;
+            // Remove any existing sort-arrow
+            const existingArrow = header.querySelector('.sort-arrow');
+            if (existingArrow) existingArrow.remove();
+            header.classList.remove('sorted-asc', 'sorted-desc');
 
-        // Pagination button listeners
-        prevPageBtn.addEventListener('click', () => {
-            if (currentPage > 1) {
-                currentPage--;
-                fetchData();
+            if (column === sortColumn) {
+                // Add arrow for sorted column
+                const span = document.createElement('span');
+                span.className = `sort-arrow ${sortDirection}`;
+                span.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" height="15px" viewBox="0 -960 960 960" width="24px" fill="#000000">
+                        <path d="${sortDirection === 'asc' ? sortIcons.asc : sortIcons.desc}"/>
+                    </svg>`;
+                // Insert before filter div or at the end of header content
+                const filterDiv = header.querySelector('.table-filter');
+                if (filterDiv) {
+                    header.insertBefore(span, filterDiv);
+                } else {
+                    header.appendChild(span);
+                }
+                header.classList.add(`sorted-${sortDirection}`);
             }
         });
-        nextPageBtn.addEventListener('click', () => {
-            currentPage++;
-            fetchData();
-        });
+    };
 
+    // Handle sorting
+    const handleSort = (event) => {
+        if (event.target.closest('.table-filter')) return;
+
+        const header = event.currentTarget;
+        const column = header.dataset.sort;
+        if (sortColumn === column) {
+            sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            sortColumn = column;
+            sortDirection = 'asc';
+        }
+        currentPage = 1;
+        fetchData();
+    };
+
+    const headers = document.querySelectorAll('th[data-sort]');
+    headers.forEach(header => {
+        header.addEventListener('click', handleSort);
+    });
+
+
+    // Pagination button listeners
+    prevPageBtn.addEventListener('click', () => {
+        if (currentPage > 1) {
+            currentPage--;
+            fetchData();
+        }
+    });
+    nextPageBtn.addEventListener('click', () => {
+        currentPage++;
+        fetchData();
+    });
+
+    // Global search listeners
+    globalSearchInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+            currentPage = 1;
+            fetchData();
+        }
+    });
+
+    globalSearchButton.addEventListener('click', () => {
+        currentPage = 1;
+        fetchData();
+    });
+
+    // Initial load
+    fetchData();
     });
 </script>

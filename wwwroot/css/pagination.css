@@ -35,3 +35,12 @@
   color: white;
   border-color: #3498db;
 }
+.pagination-controls button:disabled {
+    background-color: #fdfdfd;
+    cursor: not-allowed;
+}
+
+#pageButtons {
+  display: flex;
+  gap: 5px;
+}

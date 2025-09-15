@@ -78,6 +78,19 @@ public class TransactionController : Controller
                         ApprovalStatus = tr.Status,
                         TransactionDate = tr.TransactionDate
                     };
+        if (!string.IsNullOrEmpty(filterModel.GlobalSearch))
+    {
+        var search = filterModel.GlobalSearch.ToLower();
+        query = query.Where(t =>
+            t.TransactionId.ToString().Contains(search) ||
+            t.Login.ToString().ToLower().Contains(search) ||
+            (t.UserName != null && t.UserName.ToLower().Contains(search)) ||
+            (t.TransactionType != null && t.TransactionType.ToLower().Contains(search)) ||
+            t.Amount.ToString().Contains(search) ||
+            t.Fee.ToString().Contains(search) ||
+            t.ApprovalStatus.ToString().Contains(search) ||
+            t.TransactionDate.ToString().Contains(search));
+    }
 
         // Apply filters
         //filter transactionId
