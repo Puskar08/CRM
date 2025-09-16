@@ -8,18 +8,6 @@
         max-height: 200px;
         overflow-y: auto;
     }
-
-    .no-data {
-        text-align: center;
-        padding: 40px;
-        color: #7f8c8d;
-    }
-
-    .no-data i {
-        font-size: 48px;
-        margin-bottom: 15px;
-        color: #e1e4e8;
-    }
 </style>
 
 <!-- Modal -->
@@ -173,6 +161,10 @@
                             </div>
                         </th>
                         <th>
+                            @* Review
+                            <div class="table-filter">
+                                <input type="text" itemid="filterReview" id="filterReview" placeholder="Filter Review" />
+                            </div> *@
                         </th>
                     </tr>
                 </thead>
@@ -204,7 +196,7 @@
         const nextPageBtn = document.querySelector('#nextPage');
         const pageButtons = document.querySelector('#pageButtons');
         let currentPage = 1;
-        let pageSize = 15;
+        let pageSize = 10;
         let sortColumn = 'TransactionDate';
         let sortDirection = 'desc';
 

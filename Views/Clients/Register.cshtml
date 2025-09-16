@@ -1,0 +1,711 @@
+<style>
+    .container {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        width: 100%;
+        max-width: 600px;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .save-indicator {
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        background: #2ecc71;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .save-indicator.visible {
+        opacity: 1;
+    }
+
+    .header {
+        background: #2c3e50;
+        color: white;
+        padding: 25px 30px;
+        text-align: center;
+    }
+
+    .header h1 {
+        font-weight: 600;
+        font-size: 24px;
+    }
+
+    .progress-container {
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+        margin: 30px 40px 20px;
+        counter-reset: step;
+    }
+
+    .progress-container::before {
+        content: '';
+        position: absolute;
+        height: 4px;
+        background: #e0e0e0;
+        top: 50%;
+        transform: translateY(-50%);
+        left: 0;
+        right: 0;
+        z-index: 1;
+    }
+
+    .progress-bar {
+        position: absolute;
+        height: 4px;
+        background: #3498db;
+        top: 50%;
+        transform: translateY(-50%);
+        left: 0;
+        width: 0%;
+        z-index: 2;
+        transition: width 0.5s ease;
+    }
+
+    .progress-step {
+        position: relative;
+        z-index: 3;
+        width: 36px;
+        height: 36px;
+        background: #e0e0e0;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #777;
+        font-weight: 600;
+    }
+
+    .progress-step.active {
+        background: #3498db;
+        color: white;
+    }
+
+    .progress-step.completed {
+        background: #2ecc71;
+        color: white;
+    }
+
+    .progress-step::before {
+        counter-increment: step;
+        content: counter(step);
+    }
+
+    .progress-step::after {
+        content: attr(data-title);
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-top: 10px;
+        color: #777;
+        font-size: 12px;
+        font-weight: 500;
+        white-space: nowrap;
+    }
+
+    .progress-step.active::after {
+        color: #3498db;
+        font-weight: 600;
+    }
+
+    .form-container {
+        padding: 30px 40px 40px;
+    }
+
+    .form-step {
+        display: none;
+        animation: fadeIn 0.5s ease;
+    }
+
+    .form-step.active {
+        display: block;
+    }
+
+
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: #2c3e50;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 12px 16px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 16px;
+        transition: border 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: #3498db;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+    }
+
+    .form-row {
+        display: flex;
+        gap: 20px;
+    }
+
+    .form-row .form-group {
+        flex: 1;
+    }
+
+    .btn-group {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+    }
+
+    .btn {
+        padding: 12px 28px;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .btn-prev {
+        background: #e0e0e0;
+        color: #444;
+    }
+
+    .btn-prev:hover {
+        background: #d0d0d0;
+    }
+
+    .btn-next,
+    .btn-submit {
+        background: #3498db;
+        color: white;
+    }
+
+    .btn-next:hover,
+    .btn-submit:hover {
+        background: #2980b9;
+    }
+
+    .file-upload {
+        border: 2px dashed #ddd;
+        border-radius: 8px;
+        padding: 30px;
+        text-align: center;
+        margin-bottom: 20px;
+        transition: border 0.3s ease;
+    }
+
+    .file-upload:hover {
+        border-color: #3498db;
+    }
+
+    .file-upload i {
+        font-size: 48px;
+        color: #3498db;
+        margin-bottom: 15px;
+    }
+
+    .file-upload p {
+        color: #777;
+        margin-bottom: 15px;
+    }
+
+    .file-input {
+        display: none;
+    }
+
+    .file-label {
+        display: inline-block;
+        padding: 10px 20px;
+        background: #f0f0f0;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    .file-label:hover {
+        background: #e0e0e0;
+    }
+
+    .file-list {
+        margin-top: 20px;
+        text-align: left;
+    }
+
+    .file-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        background: #f9f9f9;
+        border-radius: 4px;
+        margin-bottom: 8px;
+    }
+
+    .file-item button {
+        background: none;
+        border: none;
+        color: #e74c3c;
+        cursor: pointer;
+    }
+
+    .clear-storage {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 14px;
+    }
+
+    .clear-storage button {
+        background: none;
+        border: none;
+        color: #e74c3c;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+</style>
+
+<div class="page">
+    @* <div class="page-header">
+        <div class="header">
+            <h1><i class="fas fa-user-plus"></i> Client Registration</h1>
+            <p>Your progress is automatically saved</p>
+        </div>
+    </div> *@
+    <div >
+        <div class="page-body">
+            <div>
+            <div class="container" style="padding: 0;">
+                <div class="save-indicator" id="saveIndicator">
+                    <i class="fas fa-check-circle"></i> Progress saved
+                </div>
+
+                <div class="header">
+                    <h1><i class="fas fa-user-plus"></i> Client Registration</h1>
+                    <p>Your progress is automatically saved</p>
+                </div>
+
+                <div class="progress-container">
+                    <div class="progress-bar" id="progress"></div>
+                    <div class="progress-step active" data-title="Personal"></div>
+                    <div class="progress-step" data-title="Trading"></div>
+                    <div class="progress-step" data-title="Documents"></div>
+                </div>
+
+                <form id="client-form">
+                    <div class="form-container">
+                        <!-- Step 1: Personal Information -->
+                        <div class="form-step active" id="step-1">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="firstName">First Name</label>
+                                    <input type="text" id="firstName" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="lastName">Last Name</label>
+                                    <input type="text" id="lastName" class="form-control" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="gender">Gender</label>
+                                <select id="gender" class="form-control" required>
+                                    <option value="">Select Gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="nationality">Nationality</label>
+                                <input type="text" id="nationality" class="form-control" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" class="form-control" required>
+                            </div>
+
+                            <div class="btn-group">
+                                <div></div> <!-- Empty div for spacing -->
+                                <button type="button" class="btn btn-next" onclick="nextStep(1)">Next <i
+                                        class="fas fa-arrow-right"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Trading Information -->
+                        <div class="form-step" id="step-2">
+                            <div class="form-group">
+                                <label for="experience">Years of Trading Experience</label>
+                                <select id="experience" class="form-control" required>
+                                    <option value="">Select Experience</option>
+                                    <option value="less1">Less than 1 year</option>
+                                    <option value="1-3">1-3 years</option>
+                                    <option value="3-5">3-5 years</option>
+                                    <option value="5+">5+ years</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="investment">Expected Capital Investment</label>
+                                <select id="investment" class="form-control" required>
+                                    <option value="">Select Investment Range</option>
+                                    <option value="0-10k">$0 - $10,000</option>
+                                    <option value="10k-50k">$10,000 - $50,000</option>
+                                    <option value="50k-100k">$50,000 - $100,000</option>
+                                    <option value="100k+">$100,000+</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="preferredMarket">Preferred Trading Market</label>
+                                <select id="preferredMarket" class="form-control" required>
+                                    <option value="">Select Market</option>
+                                    <option value="stocks">Stocks</option>
+                                    <option value="forex">Forex</option>
+                                    <option value="crypto">Cryptocurrency</option>
+                                    <option value="commodities">Commodities</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="riskTolerance">Risk Tolerance</label>
+                                <select id="riskTolerance" class="form-control" required>
+                                    <option value="">Select Risk Level</option>
+                                    <option value="low">Low</option>
+                                    <option value="moderate">Moderate</option>
+                                    <option value="high">High</option>
+                                </select>
+                            </div>
+
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-prev" onclick="prevStep(2)"><i
+                                        class="fas fa-arrow-left"></i>
+                                    Previous</button>
+                                <button type="button" class="btn btn-next" onclick="nextStep(2)">Next <i
+                                        class="fas fa-arrow-right"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Document Upload -->
+                        <div class="form-step" id="step-3">
+                            <div class="file-upload">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Upload identification documents</p>
+                                <input type="file" id="fileInput" class="file-input" multiple>
+                                <label for="fileInput" class="file-label">Choose Files</label>
+                            </div>
+
+                            <div class="file-list" id="fileList">
+                                <p>No files selected</p>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="notes">Additional Notes</label>
+                                <textarea id="notes" class="form-control" rows="3"
+                                    placeholder="Any additional information..."></textarea>
+                            </div>
+
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-prev" onclick="prevStep(3)"><i
+                                        class="fas fa-arrow-left"></i>
+                                    Previous</button>
+                                <button type="submit" class="btn btn-submit">Submit <i
+                                        class="fas fa-check"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="clear-storage">
+                    <button type="button" onclick="clearStorage()"><i class="fas fa-trash-alt"></i> Clear saved
+                        data</button>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    // Current step tracker
+    let currentStep = 1;
+    const totalSteps = 3;
+    const STORAGE_KEY = 'crm_client_form_data';
+    let autoSaveTimeout = null;
+
+    // Initialize the form
+    document.addEventListener('DOMContentLoaded', function () {
+        // Load saved data if available
+        loadFormData();
+
+        // Set up auto-save on form changes
+        setupAutoSave();
+
+        // Update progress bar
+        updateProgress();
+    });
+
+    // Set up auto-save on form changes
+    function setupAutoSave() {
+        const formElements = document.querySelectorAll('#client-form input, #client-form select, #client-form textarea');
+
+        formElements.forEach(element => {
+            element.addEventListener('input', function () {
+                // Use debouncing to avoid saving on every keystroke
+                clearTimeout(autoSaveTimeout);
+                autoSaveTimeout = setTimeout(saveFormData, 1000);
+            });
+
+            element.addEventListener('change', saveFormData);
+        });
+    }
+
+    // Save form data to localStorage
+    function saveFormData() {
+        const formData = {
+            currentStep: currentStep,
+            firstName: document.getElementById('firstName').value,
+            lastName: document.getElementById('lastName').value,
+            gender: document.getElementById('gender').value,
+            nationality: document.getElementById('nationality').value,
+            phone: document.getElementById('phone').value,
+            experience: document.getElementById('experience').value,
+            investment: document.getElementById('investment').value,
+            preferredMarket: document.getElementById('preferredMarket').value,
+            riskTolerance: document.getElementById('riskTolerance').value,
+            notes: document.getElementById('notes').value,
+            // Note: File inputs can't be saved to localStorage due to security restrictions
+        };
+
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
+
+        // Show save indicator
+        const indicator = document.getElementById('saveIndicator');
+        indicator.classList.add('visible');
+
+        // Hide after 2 seconds
+        setTimeout(() => {
+            indicator.classList.remove('visible');
+        }, 2000);
+    }
+
+    // Load form data from localStorage
+    function loadFormData() {
+        const savedData = localStorage.getItem(STORAGE_KEY);
+
+        if (savedData) {
+            const formData = JSON.parse(savedData);
+
+            // Restore current step
+            if (formData.currentStep) {
+                document.querySelectorAll('.form-step').forEach(step => {
+                    step.classList.remove('active');
+                });
+
+                currentStep = formData.currentStep;
+                document.getElementById(`step-${currentStep}`).classList.add('active');
+            }
+
+            // Restore field values
+            document.getElementById('firstName').value = formData.firstName || '';
+            document.getElementById('lastName').value = formData.lastName || '';
+            document.getElementById('gender').value = formData.gender || '';
+            document.getElementById('nationality').value = formData.nationality || '';
+            document.getElementById('phone').value = formData.phone || '';
+            document.getElementById('experience').value = formData.experience || '';
+            document.getElementById('investment').value = formData.investment || '';
+            document.getElementById('preferredMarket').value = formData.preferredMarket || '';
+            document.getElementById('riskTolerance').value = formData.riskTolerance || '';
+            document.getElementById('notes').value = formData.notes || '';
+
+            updateProgress();
+        }
+    }
+
+    // Clear saved form data
+    function clearStorage() {
+        if (confirm('Are you sure you want to clear all saved form data?')) {
+            localStorage.removeItem(STORAGE_KEY);
+            document.getElementById('client-form').reset();
+
+            // Reset to first step
+            document.querySelectorAll('.form-step').forEach(step => {
+                step.classList.remove('active');
+            });
+
+            currentStep = 1;
+            document.getElementById('step-1').classList.add('active');
+            updateProgress();
+
+            alert('All saved data has been cleared.');
+        }
+    }
+
+    // Update progress bar
+    function updateProgress() {
+        const progressBar = document.getElementById('progress');
+        const progressPercentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
+        progressBar.style.width = progressPercentage + '%';
+
+        // Update step indicators
+        document.querySelectorAll('.progress-step').forEach((step, index) => {
+            if (index + 1 < currentStep) {
+                step.classList.remove('active');
+                step.classList.add('completed');
+            } else if (index + 1 === currentStep) {
+                step.classList.add('active');
+                step.classList.remove('completed');
+            } else {
+                step.classList.remove('active', 'completed');
+            }
+        });
+    }
+
+    // Navigate to next step
+    function nextStep(step) {
+        // Validate current step before proceeding
+        if (validateStep(step)) {
+            document.getElementById(`step-${step}`).classList.remove('active');
+            currentStep = step + 1;
+            document.getElementById(`step-${currentStep}`).classList.add('active');
+
+            // Save the current step
+            saveFormData();
+            updateProgress();
+        }
+    }
+
+    // Navigate to previous step
+    function prevStep(step) {
+        document.getElementById(`step-${step}`).classList.remove('active');
+        currentStep = step - 1;
+        document.getElementById(`step-${currentStep}`).classList.add('active');
+
+        // Save the current step
+        saveFormData();
+        updateProgress();
+    }
+
+    // Validate step before proceeding
+    function validateStep(step) {
+        // Simple validation example - extend based on your needs
+        if (step === 1) {
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            const gender = document.getElementById('gender').value;
+            const nationality = document.getElementById('nationality').value;
+            const phone = document.getElementById('phone').value;
+
+            if (!firstName || !lastName || !gender || !nationality || !phone) {
+                alert('Please fill in all required fields');
+                return false;
+            }
+        }
+
+        if (step === 2) {
+            const experience = document.getElementById('experience').value;
+            const investment = document.getElementById('investment').value;
+
+            if (!experience || !investment) {
+                alert('Please fill in all required fields');
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // Handle file uploads
+    document.getElementById('fileInput').addEventListener('change', function (e) {
+        const fileList = document.getElementById('fileList');
+        fileList.innerHTML = '';
+
+        if (this.files.length === 0) {
+            fileList.innerHTML = '<p>No files selected</p>';
+            return;
+        }
+
+        for (let i = 0; i < this.files.length; i++) {
+            const file = this.files[i];
+            const fileItem = document.createElement('div');
+            fileItem.className = 'file-item';
+            fileItem.innerHTML = `
+                    <span>${file.name}</span>
+                    <button type="button" onclick="removeFile(this)"><i class="fas fa-times"></i></button>
+                `;
+            fileList.appendChild(fileItem);
+        }
+
+        // Save form data after file selection
+        saveFormData();
+    });
+
+    // Remove file from list
+    function removeFile(button) {
+        const fileItem = button.parentElement;
+        fileItem.parentElement.removeChild(fileItem);
+
+        // If no files left, show message
+        if (document.getElementById('fileList').children.length === 0) {
+            document.getElementById('fileList').innerHTML = '<p>No files selected</p>';
+        }
+
+        // Save form data after file removal
+        saveFormData();
+    }
+
+    // Form submission
+    document.getElementById('client-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        // Validate final step
+        if (validateStep(3)) {
+            // Here you would collect all form data and send to server
+            alert('Form submitted successfully!');
+
+            // Clear saved data after successful submission
+            localStorage.removeItem(STORAGE_KEY);
+
+            // In a real application, you would send the data to your backend
+            // const formData = new FormData();
+            // formData.append('firstName', document.getElementById('firstName').value);
+            // ... append all other fields
+
+            // Example: Send data to server using fetch
+            // fetch('/Client/Create', {
+            //     method: 'POST',
+            //     body: formData
+            // })
+            // .then(response => response.json())
+            // .then(data => {
+            //     console.log('Success:', data);
+            // })
+            // .catch(error => {
+            //     console.error('Error:', error);
+            // });
+        }
+    });
+</script>

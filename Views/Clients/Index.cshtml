@@ -5,268 +5,125 @@
 
 </style>
 <div class="page">
-
-    @* <div
-        class="page-header d-flex justify-content-between align-items-center mb-3 p-3 border-bottom bg-white shadow-sm rounded">
-        <h5 class="mb-0">Clients</h5>
-        <div class="page-actions d-flex gap-2">
-            <a asp-controller="Clients" asp-action="Create" class="btn btn-success">
-                <i class="bi bi-person-plus"></i> Add Client
-            </a>
-            <!-- Example of future buttons -->
-            <button class="btn btn-outline-primary">
-                <i class="bi bi-download"></i> Export
-            </button>
-            <button class="btn btn-outline-secondary">
-                <i class="bi bi-filter"></i> Filter
-            </button>
-        </div>
-    </div> *@
     <div class="page-header">
         <div class="page-title">
             <h2>Clients</h2>
             <p>Manage and review all clients</p>
         </div>
         <div class="page-actions d-flex gap-2">
-            <!-- Button trigger modal -->
             <button type="button" class="add-button" data-bs-toggle="modal" data-bs-target="#TransactionModal">
                 <i class="fas fa-plus"></i> Add Client
             </button>
-            <button type="button" class="add-button" data-bs-toggle="modal" data-bs-target="#TransactionModal">
+            <a asp-controller="Clients" asp-action="Register" class="add-button" style="text-decoration: none; color: white;">
                 <i class="fas fa-plus"></i> Add Client
-            </button>
+            </a>
+            <a asp-controller="Clients" asp-action="RegisterClient" class="add-button" style="text-decoration: none; color: white;">
+                <i class="fas fa-plus"></i> Register Client
+            </a>
         </div>
     </div>
     <div class="page-body">
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th>LoginID</th>
-                    <th>AccountID</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Group</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1001</td>
-                    <td>ACC-5001</td>
-                    <td>John Smith</td>
-                    <td>john.smith@example.com</td>
-                    <td>+1-202-555-0145</td>
-                    <td>Admin</td>
-                    <td>Active</td>
-                </tr>
-                <tr>
-                    <td>1002</td>
-                    <td>ACC-5002</td>
-                    <td>Emily Johnson</td>
-                    <td>emily.j@example.com</td>
-                    <td>+1-202-555-0188</td>
-                    <td>User</td>
-                    <td>Inactive</td>
-                </tr>
-                <tr>
-                    <td>1003</td>
-                    <td>ACC-5003</td>
-                    <td>Michael Brown</td>
-                    <td>m.brown@example.com</td>
-                    <td>+44-20-7946-0958</td>
-                    <td>Manager</td>
-                    <td>Active</td>
-                </tr>
-                <tr>
-                    <td>1004</td>
-                    <td>ACC-5004</td>
-                    <td>Sarah Davis</td>
-                    <td>sarah.d@example.com</td>
-                    <td>+1-202-555-0173</td>
-                    <td>User</td>
-                    <td>Pending</td>
-                </tr>
-                <tr>
-                    <td>1005</td>
-                    <td>ACC-5005</td>
-                    <td>David Wilson</td>
-                    <td>david.w@example.com</td>
-                    <td>+1-305-555-0102</td>
-                    <td>Admin</td>
-                    <td>Active</td>
-                </tr>
-                <tr>
-                    <td>1006</td>
-                    <td>ACC-5006</td>
-                    <td>Olivia Martinez</td>
-                    <td>olivia.m@example.com</td>
-                    <td>+1-646-555-0136</td>
-                    <td>User</td>
-                    <td>Inactive</td>
-                </tr>
-                <tr>
-                    <td>1007</td>
-                    <td>ACC-5007</td>
-                    <td>James Anderson</td>
-                    <td>james.a@example.com</td>
-                    <td>+1-202-555-0152</td>
-                    <td>Manager</td>
-                    <td>Active</td>
-                </tr>
-                <tr>
-                    <td>1008</td>
-                    <td>ACC-5008</td>
-                    <td>Linda Thomas</td>
-                    <td>linda.t@example.com</td>
-                    <td>+1-202-555-0191</td>
-                    <td>User</td>
-                    <td>Pending</td>
-                </tr>
-                <tr>
-                    <td>1009</td>
-                    <td>ACC-5009</td>
-                    <td>Robert Taylor</td>
-                    <td>robert.t@example.com</td>
-                    <td>+44-161-555-0110</td>
-                    <td>Admin</td>
-                    <td>Active</td>
-                </tr>
-                <tr>
-                    <td>1010</td>
-                    <td>ACC-5010</td>
-                    <td>Jessica Lee</td>
-                    <td>jessica.l@example.com</td>
-                    <td>+1-202-555-0139</td>
-                    <td>User</td>
-                    <td>Inactive</td>
-                </tr>
-                <tr>
-                    <td>1011</td>
-                    <td>ACC-5011</td>
-                    <td>Daniel Harris</td>
-                    <td>daniel.h@example.com</td>
-                    <td>+61-2-5550-1123</td>
-                    <td>Manager</td>
-                    <td>Active</td>
-                </tr>
-                <tr>
-                    <td>1012</td>
-                    <td>ACC-5012</td>
-                    <td>Ashley White</td>
-                    <td>ashley.w@example.com</td>
-                    <td>+1-202-555-0165</td>
-                    <td>User</td>
-                    <td>Pending</td>
-                </tr>
-                <tr>
-                    <td>1013</td>
-                    <td>ACC-5013</td>
-                    <td>Matthew Clark</td>
-                    <td>matthew.c@example.com</td>
-                    <td>+1-415-555-0140</td>
-                    <td>Admin</td>
-                    <td>Active</td>
-                </tr>
-                <tr>
-                    <td>1014</td>
-                    <td>ACC-5014</td>
-                    <td>Sophia Hall</td>
-                    <td>sophia.h@example.com</td>
-                    <td>+1-202-555-0199</td>
-                    <td>User</td>
-                    <td>Inactive</td>
-                </tr>
-                <tr>
-                    <td>1015</td>
-                    <td>ACC-5015</td>
-                    <td>Christopher Young</td>
-                    <td>chris.y@example.com</td>
-                    <td>+1-202-555-0182</td>
-                    <td>Manager</td>
-                    <td>Active</td>
-                </tr>
+        <div class="body-content">
+            <div class="content-header">
+                <h3>Client List</h3>
+                <div class="global-search">
+                    <input type="text" id="globalSearch" placeholder="Global search..." />
+                    <button class="add-btn search-btn"><i class="fas fa-search"></i> Search</button>
+                </div>
+            </div>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th data-sort="LoginID">
+                            LoginID
+                            <div class="table-filter">
+                                <input type="text" id="filterLoginId" placeholder="Filter ID" />
+                            </div>
+                            </th>
+                        <th data-sort="AccountID">
+                            AccountID
+                            <div class="table-filter">
+                                <input type="text" id="filterAccountId" placeholder="Filter Account ID" />
+                            </div>
+                        </th>
+                        <th data-sort="Name">
+                            Name
+                            <div class="table-filter">
+                                <input type="text" id="filterName" placeholder="Filter Name" />
+                            </div>
+                        </th>
+                        <th data-sort="Email">
+                            Email
+                            <div class="table-filter">
+                                <input type="text" id="filterEmail" placeholder="Filter Email" />
+                            </div>
+                        </th>
+                        <th data-sort="Phone">
+                            Phone
+                            <div class="table-filter">
+                                <input type="text" id="filterPhone" placeholder="Filter Phone" />
+                            </div>
+                        </th>
+                        <th data-sort="Group">
+                            Group
+                            <div class="table-filter">
+                                <input type="text" id="filterGroup" placeholder="Filter Group" />
+                            </div>
+                        </th>
+                        <th data-sort="Status">
+                            Status
+                            <div class="table-filter">
+                                <select id="filterStatus">
+                                    <option value="All">All Statuses</option>
+                                    <option value="Active">Active</option>
+                                    <option value="Inactive">Inactive</option>
+                                </select>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1013</td>
+                        <td>ACC-5013</td>
+                        <td>Matthew Clark</td>
+                        <td>matthew.c@example.com</td>
+                        <td>+1-415-555-0140</td>
+                        <td>Admin</td>
+                        <td>Active</td>
+                    </tr>
+                    <tr>
+                        <td>1014</td>
+                        <td>ACC-5014</td>
+                        <td>Sophia Hall</td>
+                        <td>sophia.h@example.com</td>
+                        <td>+1-202-555-0199</td>
+                        <td>User</td>
+                        <td>Inactive</td>
+                    </tr>
+                    <tr>
+                        <td>1015</td>
+                        <td>ACC-5015</td>
+                        <td>Christopher Young</td>
+                        <td>chris.y@example.com</td>
+                        <td>+1-202-555-0182</td>
+                        <td>Manager</td>
+                        <td>Active</td>
+                    </tr>
 
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+            <div class="pagination">
+                <div class="pagination-info" id="paginationInfo">Showing 0 to 0 of 0 entries</div>
+                <div class="pagination-controls" id="paginationControls">
+                    <button id="prevPage">Previous</button>
+                    <span id="pageButtons"></span>
+                    <button id="nextPage">Next</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <script>
-    // Function to get the anti-forgery token from the page
-    function getAntiForgeryToken() {
-        const tokenElement = document.querySelector('input[name="__RequestVerificationToken"]');
-        return tokenElement ? tokenElement.value : '';
-    }
-    const deleteButtons = document.getElementsByClassName('deleteStudent');
 
-    if (deleteButtons.length > 0) {
-        Array.from(deleteButtons).forEach(button => {
-            button.addEventListener('click', function () {
-                debugger;
-                const studentId = this.getAttribute('data-id');
-                const studentName = this.getAttribute('data-name');
-                swal.fire({
-                    title: `Are you sure want to delete ${studentName}?`,
-                    text: "You won't be able to revert this!",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Yes, delete it!"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Perform the delete operation
-                        $.ajax({
-                            url: `/Students/Delete/${studentId}`,
-                            type: 'POST',
-                            headers: {
-                                'RequestVerificationToken': getAntiForgeryToken(), // for ASP.NET Core CSRF protection
-                                'Content-Type': 'application/json'
-                            },
-                            success: function (response) {
-                                if (response.success) {
-                                    debugger;
-                                    Swal.fire({
-                                        toast: true,
-                                        position: 'top-end',
-                                        icon: 'success',
-                                        title: `${studentName} has been deleted.`,
-                                        showConfirmButton: false,
-                                        timer: 1000,
-                                        timerProgressBar: true
-                                    }).then(() => {
-                                        location.reload();
-                                    });
-                                } else {
-                                    Swal.fire({
-                                        toast: true,
-                                        position: 'top-end',
-                                        icon: 'error',
-                                        title: `Failed to delete ${studentName}.`,
-                                        showConfirmButton: false,
-                                        timer: 2000,
-                                        timerProgressBar: true
-                                    }).then(() => {
-                                        location.reload();
-                                    });
-                                }
-                            },
-                            error: function () {
-                                Swal.fire({
-                                    toast: true,
-                                    position: 'top-end',
-                                    showConfirmButton: false,
-                                    timer: 2000,
-                                    timerProgressBar: true,
-                                    icon: 'error',
-                                    title: 'Error!',
-                                    text: 'Failed to delete student.',
-                                });
-                            }
-                        });
-                    }
-                })
-            })
-        })
-    };
 </script>
