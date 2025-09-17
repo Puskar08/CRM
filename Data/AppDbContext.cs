@@ -10,5 +10,5 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
     }
     public DbSet<ClientsAccount> ClientsAccounts { get; set; }
     public DbSet<Transaction> Transactions { get; set; }
-    public DbSet<ClientsUserInfo> ClientsUserInfos { get; set; }
+    public DbSet<ClientProfile> ClientProfiles { get; set; }
 }

@@ -1,0 +1,81 @@
+@* @model EmploymentInfoModel *@
+
+<div class="page">
+    <div>
+        <div class="page-body">
+            <div>
+                <div class="container" style="padding: 0;">
+                    <div class="header">
+                        <h1> Employment and Income</h1>
+                    </div>
+
+                    <form id="client-form">
+                        <div class="form-container">
+                            <div class="form-group">
+                                <label for="employmentStatus">What is your employment status?</label>
+                                <select id="employmentStatus" class="form-control" required>
+                                    <option value="" selected>Please Select</option>
+                                    <option value="Employed">Employed</option>
+                                    <option value="Unemployed">Unemployed</option>
+                                    <option value="Self-Employed">Self-Employed</option>
+                                    <option value="Student">Student</option>
+                                    <option value="Retired">Retired</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="annualIncome">What is your annual income (US Dollars)?</label>
+                                <select id="annualIncome" class="form-control" required>
+                                    <option value="" selected>Please Select</option>
+                                    <option value="1000-2000">$1000-$5000</option>
+                                    <option value="2000-3000">$5000-$10000</option>
+                                    <option value="3000-4000">$10000-$20000</option>
+                                    <option value="Above 4000">$Above-$20000</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="primarySourceOfTradingFund">What is the primary source of your trading
+                                    funds?</label>
+                                <select id="primarySourceOfTradingFund" class="form-control" required>
+                                    <option value="" selected>Please Select</option>
+                                    <option value="income">Income</option>
+                                    <option value="unemployment">Unemployment Benefits</option>
+                                    <option value="business">Business Income</option>
+                                    <option value="studentLoan">Student Loans</option>
+                                    <option value="pension">Pension</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="tradingObjective">What is your trading objective?</label>
+                                <select id="tradingObjective" class="form-control" required>
+                                    <option value="" selected>Please Select</option>
+                                    <option value="income">Generate Income</option>
+                                    <option value="speculation">Speculation</option>
+                                    <option value="hedging">Hedging</option>
+                                    <option value="algo">Algo Trading</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="degreeOfRisk">Please select the degree of risk you are willing to take with
+                                    the assets in this account</label>
+                                <select id="degreeOfRisk" class="form-control" required>
+                                    <option value="" selected>Please Select</option>
+                                    <option value="low">Low</option>
+                                    <option value="medium">Moderate</option>
+                                    <option value="high">High</option>
+                                </select>
+                            </div>
+                            
+                            <button type="submit" id="btnContinue" class="btn-submit">Continue <i
+                                    class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

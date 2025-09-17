@@ -8,7 +8,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Session timeout
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 // Configure DbContext with PostgreSQL (Supabase)
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -26,6 +31,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 // })
 // .AddEntityFrameworkStores<AppDbContext>()
 // .AddDefaultTokenProviders();
+
 // Configure authentication cookie
 builder.Services.ConfigureApplicationCookie(options =>
 {
@@ -54,7 +60,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
-
+app.UseSession();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Clients}/{action=Index}/{id?}")
