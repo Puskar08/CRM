@@ -6,9 +6,9 @@ public class ClientAccount
 {
     [Key]
     public int Id { get; set; }
-    public string UserId { get; set; }
+    public string? UserId { get; set; }
     public int Mt5LoginID { get; set; }
-    public string AccountType { get; set; }
+    public string? AccountType { get; set; }
     public DateTime CreatedDate { get; set; }
     public string Currency { get; set; } = "USD";
     public decimal Balance { get; set; }

@@ -22,7 +22,7 @@ public class TransactionController : Controller
     public async Task<IActionResult> Index()
     {
         var trans = await (from tr in _context.Transactions
-                           join acc in _context.ClientsAccounts on tr.Mt5LoginID equals acc.Mt5LoginID
+                           join acc in _context.ClientAccounts on tr.Mt5LoginID equals acc.Mt5LoginID
                            join user in _context.Users on acc.UserId equals user.Id
                            select new TransactionViewModel
                            {
@@ -57,7 +57,7 @@ public class TransactionController : Controller
         }
         //base query
         var query = from tr in _context.Transactions
-                    join acc in _context.ClientsAccounts on tr.Mt5LoginID equals acc.Mt5LoginID
+                    join acc in _context.ClientAccounts on tr.Mt5LoginID equals acc.Mt5LoginID
                     join user in _context.Users on acc.UserId equals user.Id
                     //    where
                     //        ((string.IsNullOrEmpty(filterModel.FilterTransactionType) || filterModel.FilterTransactionType == "All") ? 1 == 1 : tr.TransactionType == filterModel.FilterTransactionType)
@@ -241,7 +241,7 @@ public class TransactionController : Controller
         }
 
         var users = await (from user in _context.Users
-                           join account in _context.ClientsAccounts
+                           join account in _context.ClientAccounts
                            on user.Id equals account.UserId
                            where (user.Name != null && user.Name.Contains(query))
                               || (user.Email != null && user.Email.Contains(query))
@@ -260,7 +260,7 @@ public class TransactionController : Controller
     public async Task<object?> GetTransaction(int transactionId)
     {
         return await (from tr in _context.Transactions
-                      join acc in _context.ClientsAccounts on tr.Mt5LoginID equals acc.Mt5LoginID into accJoin
+                      join acc in _context.ClientAccounts on tr.Mt5LoginID equals acc.Mt5LoginID into accJoin
                       from acc in accJoin.DefaultIfEmpty()
                       join user in _context.Users on acc.UserId equals user.Id into userJoin
                       from user in userJoin.DefaultIfEmpty()
