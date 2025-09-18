@@ -10,6 +10,7 @@ public class ClientProfile
     public string? CountryOfResidence { get; set; }
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
+    public string? Gender { get; set; }
     public bool MarketingConsent { get; set; }//
     public string? EmploymentStatus { get; set; }
     public string? AnnualIncome { get; set; }
@@ -26,4 +27,5 @@ public class ClientProfile
     public string? PlaceOfBirth { get; set; }
     public string? PassportUrl { get; set; }
     public string? ProofofAddressUrl { get; set; }
+    public bool IsProfileComplete { get; set; }
 }

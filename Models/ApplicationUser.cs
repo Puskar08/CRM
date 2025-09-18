@@ -6,12 +6,9 @@ public class ApplicationUser : IdentityUser
 {
     [Required]
     public string Name { get; set; }
-    [Required]
     public char? Gender { get; set; }
-    [Required]
-    public DateTime DateOfBirth { get; set; }
-    [Required]
-    public string Nationality { get; set; } = string.Empty;
+    public DateTime? DateOfBirth { get; set; }
+    public string? Nationality { get; set; }
 
     // Additional properties can be added here if needed
 }
