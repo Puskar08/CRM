@@ -8,6 +8,7 @@ public class ClientProfile
     public string? UserId { get; set; }
     // Additional properties can be added here if needed
     public string? CountryOfResidence { get; set; }
+    public string? AccountType { get; set; }
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
     public string? Gender { get; set; }
@@ -17,7 +18,7 @@ public class ClientProfile
     public string? PrimarySourceOfTradingFund { get; set; }
     public string? TradingObjective { get; set; }
     public string? DegreeOfRisk { get; set; }
-    public int YearsOfTradingExperience { get; set; }
+    public string? YearsOfTradingExperience { get; set; }
     public bool ConfirmTradingKnowledge { get; set; }
     public string? BuildingNumber { get; set; }
     public string? Street { get; set; }
@@ -28,4 +29,5 @@ public class ClientProfile
     public string? PassportUrl { get; set; }
     public string? ProofofAddressUrl { get; set; }
     public bool IsProfileComplete { get; set; }
+    public DateTime CreatedOn { get; set; }
 }

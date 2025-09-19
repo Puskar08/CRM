@@ -12,6 +12,7 @@ builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30); // Session timeout
     options.Cookie.HttpOnly = true;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Use Secure cookie
     options.Cookie.IsEssential = true;
 });
 // Configure DbContext with PostgreSQL (Supabase)

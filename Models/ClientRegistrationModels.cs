@@ -81,7 +81,7 @@ public class EmploymentInfoModel
 
 public class TradingExperienceModel
 {
-    public int YearsOfExperience { get; set; }
+    public string? YearsOfExperience { get; set; }
     public bool ConfirmTradingKnowledge { get; set; }
 }
 

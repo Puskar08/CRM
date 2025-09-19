@@ -349,7 +349,7 @@ public class TransactionController : Controller
                 message = "Invalid data format in form submission."
             });
         }
-        catch (DbUpdateException ex)
+        catch (DbUpdateException)
         {
             return StatusCode(500, new
             {

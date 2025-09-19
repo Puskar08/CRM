@@ -1,0 +1,126 @@
+@model AdditionalDetailsModel
+
+<div class="page">
+    <div>
+        <div class="page-body">
+            <div>
+                <div class="container" style="padding: 0;">
+                    <div class="header">
+                        <h1> Additional Details</h1>
+                    </div>
+
+                    <form id="additional-details-form">
+                        <div class="form-container">
+                            <div class="form-group">
+                                <label for="buildingNumber">Building Number</label>
+                                <input type="text" id="buildingNumber" class="form-control"
+                                    value="@Model.BuildingNumber" />
+                            </div>
+                            <div class="form-group">
+                                <label for="street">Street</label>
+                                <input type="text" id="street" class="form-control" value="@Model.Street" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="city">City</label>
+                                <input type="text" id="city" class="form-control" value="@Model.City" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="postalCode">Postal Code</label>
+                                <input type="text" id="postalCode" class="form-control" value="@Model.PostalCode" />
+                            </div>
+                            <div class="form-group">
+                                <label for="nationality">Nationality</label>
+                                <input type="text" id="nationality" class="form-control" value="@Model.Nationality"
+                                    required />
+                            </div>
+                            <div class="form-group">
+                                <label for="placeOfBirth">Place of Birth</label>
+                                <input type="text" id="placeOfBirth" class="form-control" value="@Model.PlaceOfBirth"
+                                    required />
+                            </div>
+                            <button type="submit" id="btnContinue" class="btn-submit">Continue <i
+                                    class="fas fa-arrow-right"></i>
+                            </button>
+                            <button type="submit" id="btnBack" class="btn-submit">Back <i class="fas fa-arrow-left"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("additional-details-form").addEventListener("submit", function (event) {
+            event.preventDefault();
+            // Handle form submission
+            var street = document.getElementById("street").value;
+            var city = document.getElementById("city").value;
+            var buildingNumber = document.getElementById("buildingNumber").value;
+            var postalCode = document.getElementById("postalCode").value;
+            var nationality = document.getElementById("nationality").value;
+            var placeOfBirth = document.getElementById("placeOfBirth").value;
+            if (!street || !city || !nationality || !placeOfBirth) {
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Please fill out all required fields.',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true
+                });
+                return; // Prevent form submission if validation fails
+            }
+            const formData = {
+                buildingNumber: document.getElementById("buildingNumber").value,
+                street: document.getElementById("street").value,
+                city: document.getElementById("city").value,
+                postalCode: document.getElementById("postalCode").value,
+                nationality: document.getElementById("nationality").value,
+                placeOfBirth: document.getElementById("placeOfBirth").value
+            }
+            fetch(event.target.action, {
+                method: event.target.method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                },
+                body: JSON.stringify(formData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Redirect or show success message
+                        window.location.href = data.redirectUrl;
+                    } else {
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'error',
+                            title: 'Error!',
+                            text: 'An error occurred. Please try again.',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'Error!',
+                        text: 'An error occurred. Please try again.',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true
+                    });
+                });
+        });
+    });
+</script>
