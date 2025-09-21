@@ -10,33 +10,42 @@
                     </div>
 
                     <form id="trading-form">
-                    @Html.AntiForgeryToken()
+                        @Html.AntiForgeryToken()
                         <div class="form-container">
                             <div class="form-group">
                                 <label for="yearsOfExperience">How long have you been trading CFDs or FX?</label>
                                 <select id="yearsOfExperience" class="form-control" required>
                                     <option value="" selected>Please Select</option>
-                                    <option value="Less than 2 year" selected="@(Model.YearsOfExperience == "Less than 2 year" ? "selected" : null)">Less than 2 year</option>
-                                    <option value="More than 2 year" selected="@(Model.YearsOfExperience == "More than 2 year" ? "selected" : null)">More than 2 year</option>
-                                    <option value="None" selected="@(Model.YearsOfExperience == "None" ? "selected" : null)">None</option>
-                                </select>
-                            </div>  
-
-                            <div class="form-group">
-                                <label for="confirmTradingKnowledge">Based on your trading experience, do you feel you have a good understanding of the risks involved?</label>
-                                <select id="confirmTradingKnowledge" class="form-control" required>
-                                    <option value="" selected>Please Select</option>
-                                    <option value="Yes" selected="@(Model.ConfirmTradingKnowledge ? "selected" : null)">Yes</option>
-                                    <option value="No" selected="@(Model.ConfirmTradingKnowledge == false ? "selected" : null)">No</option>
+                                    <option value="Less than 2 year"
+                                        selected="@(Model.YearsOfExperience == "Less than 2 year" ? "selected" : null)">
+                                        Less than 2 year
+                                    </option>
+                                    <option value="More than 2 year"
+                                        selected="@(Model.YearsOfExperience == "More than 2 year" ? "selected" : null)">
+                                        More than 2 year
+                                    </option>
+                                    <option value="None"
+                                        selected="@(Model.YearsOfExperience == "None" ? "selected" : null)">None
+                                    </option>
                                 </select>
                             </div>
-                            
-                            <button type="submit" id="btnContinue" class="btn-submit">Continue <i
-                                    class="fas fa-arrow-right"></i>
-                            </button>
-                            <button type="submit" id="btnBack" class="btn-submit">Back <i
-                                    class="fas fa-arrow-left"></i>
-                            </button>
+
+                            <div class="form-group">
+                                <label for="confirmTradingKnowledge">Based on your trading experience, do you feel you
+                                    have a good understanding of the risks involved?</label>
+                                <select id="confirmTradingKnowledge" class="form-control" required>
+                                    <option value="" selected>Please Select</option>
+                                    <option value="Yes" selected="@(Model.ConfirmTradingKnowledge ? "selected" : null)">
+                                        Yes
+                                    </option>
+                                    <option value="No"
+                                        selected="@(Model.ConfirmTradingKnowledge == false ? "selected" : null)">No
+                                    </option>
+                                </select>
+                            </div>
+
+                            <button type="submit" id="btnContinue" class="btn-submit">Continue</button>
+                            <button type="button" id="btnBack" class="btn-back">Back</button>
                         </div>
                     </form>
                 </div>
@@ -45,9 +54,10 @@
     </div>
 </div>
 <script>
-    document.addEventListener("DOMContentLoaded", function(){
+    document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("trading-form").addEventListener("submit", function (event) {
             event.preventDefault();
+            this.disabled = true;
             // Handle form submission
             var tradingExperience = document.getElementById("yearsOfExperience").value;
             var confirmTradingKnowledge = document.getElementById("confirmTradingKnowledge").value;
@@ -69,8 +79,9 @@
                 yearsOfExperience: document.getElementById("yearsOfExperience").value,
                 confirmTradingKnowledge: document.getElementById("confirmTradingKnowledge").value === "Yes"
             }
-            fetch(event.target.action, {
-                method: event.target.method,
+
+            fetch('/Clients/SaveTradingInfo', {
+                method: 'POST',
                 body: JSON.stringify(formData),
                 headers: {
                     'Content-Type': 'application/json',
@@ -82,6 +93,7 @@
                         // Redirect or show success message
                         window.location.href = data.redirectUrl;
                     } else {
+                        this.disabled = false;
                         swal.fire({
                             toast: true,
                             position: 'top-end',
@@ -95,7 +107,7 @@
                     }
                 })
                 .catch(error => {
-                    console.error("Error:", error);
+                    this.disabled = false;
                     swal.fire({
                         toast: true,
                         position: 'top-end',
@@ -107,6 +119,10 @@
                         timerProgressBar: true
                     });
                 });
+        });
+
+        document.getElementById("btnBack").addEventListener("click", function () {
+            window.location.href = '/Clients/IncomeInfo';
         });
     })
 </script>

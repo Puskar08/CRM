@@ -98,13 +98,13 @@
 
 .btn-submit {
   width: 100%;
-  padding: 16px;
+  padding: 12px;
   background: #3498db;
   color: white;
   border: none;
   border-radius: 8px;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   transition: background 0.3s ease;
   margin-bottom: 20px;
@@ -167,4 +167,18 @@
 input::placeholder {
   font-size: 0.8rem; /* Smaller font size (adjust as needed) */
   color: #999; /* Optional: lighter color for placeholder */
+}
+
+.btn-back {
+  width: 100%;
+  background-color: #f6f6f6;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  transition: background 0.3s ease;
+}
+.btn-back:hover {
+  background-color: #e0e0e0;
 }

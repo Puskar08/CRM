@@ -1,0 +1,193 @@
+@model EmploymentInfoModel
+
+<div class="page">
+    <div>
+        <div class="page-body">
+            <div>
+                <div class="container" style="padding: 0;">
+                    <div class="header">
+                        <h1> Employment and Income</h1>
+                    </div>
+
+                    <form id="trading-form">
+                        @Html.AntiForgeryToken()
+                        <div class="form-container">
+                            <div class="form-group">
+                                <label for="employmentStatus">What is your employment status?</label>
+                                <select id="employmentStatus" name="employmentStatus" class="form-control" required>
+                                    <option value="" selected>Please Select</option>
+                                    <option value="Employed"
+                                        selected="@(Model.EmploymentStatus == "Employed" ? "selected" : null)">Employed
+                                    </option>
+                                    <option value="Unemployed"
+                                        selected="@(Model.EmploymentStatus == "Unemployed" ? "selected" : null)">
+                                        Unemployed
+                                    </option>
+                                    <option value="Self-Employed"
+                                        selected="@(Model.EmploymentStatus == "Self-Employed" ? "selected" : null)">
+                                        Self-Employed
+                                    </option>
+                                    <option value="Student"
+                                        selected="@(Model.EmploymentStatus == "Student" ? "selected" : null)">Student
+                                    </option>
+                                    <option value="Retired"
+                                        selected="@(Model.EmploymentStatus == "Retired" ? "selected" : null)">Retired
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="annualIncome">What is your annual income (US Dollars)?</label>
+                                <select id="annualIncome" name="annualIncome" class="form-control" required>
+                                    <option value="" selected>Please Select</option>
+                                    <option value="1000-5000"
+                                        selected="@(Model.AnnualIncome == "1000-5000" ? "selected" : null)">
+                                        $1000-$5000
+                                    </option>
+                                    <option value="5000-10000"
+                                        selected="@(Model.AnnualIncome == "5000-10000" ? "selected" : null)">
+                                        $5000-$10000
+                                    </option>
+                                    <option value="10000-20000"
+                                        selected="@(Model.AnnualIncome == "10000-20000" ? "selected" : null)">
+                                        $10000-$20000
+                                    </option>
+                                    <option value="Above 20000"
+                                        selected="@(Model.AnnualIncome == "Above 20000" ? "selected" : null)">
+                                        $Above-$20000
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="primarySourceOfTradingFund">What is the primary source of your trading
+                                    funds?</label>
+                                <select id="primarySourceOfTradingFund" name="primarySourceOfTradingFund"
+                                    class="form-control" required>
+                                    <option value="" selected>Please Select</option>
+                                    <option value="income"
+                                        selected="@(Model.PrimarySourceOfTradingFund == "income" ? "selected" : null)">
+                                        Income
+                                    </option>
+                                    <option value="unemployment"
+                                        selected="@(Model.PrimarySourceOfTradingFund == "unemployment" ? "selected" : null)">
+                                        Unemployment Benefits
+                                    </option>
+                                    <option value="business"
+                                        selected="@(Model.PrimarySourceOfTradingFund == "business" ? "selected" : null)">
+                                        Business Income
+                                    </option>
+                                    <option value="studentLoan"
+                                        selected="@(Model.PrimarySourceOfTradingFund == "studentLoan" ? "selected" : null)">
+                                        Student Loans
+                                    </option>
+                                    <option value="pension"
+                                        selected="@(Model.PrimarySourceOfTradingFund == "pension" ? "selected" : null)">
+                                        Pension
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="tradingObjective">What is your trading objective?</label>
+                                <select id="tradingObjective" name="tradingObjective" class="form-control" required>
+                                    <option value="" selected>Please Select</option>
+                                    <option value="income"
+                                        selected="@(Model.TradingObjective == "income" ? "selected" : null)">
+                                        Generate Income
+                                    </option>
+                                    <option value="speculation"
+                                        selected="@(Model.TradingObjective == "speculation" ? "selected" : null)">
+                                        Speculation
+                                    </option>
+                                    <option value="hedging"
+                                        selected="@(Model.TradingObjective == "hedging" ? "selected" : null)">
+                                        Hedging
+                                    </option>
+                                    <option value="algo"
+                                        selected="@(Model.TradingObjective == "algo" ? "selected" : null)">
+                                        Algo Trading
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="degreeOfRisk">Please select the degree of risk you are willing to take with
+                                    the assets in this account</label>
+                                <select id="degreeOfRisk" name="degreeOfRisk" class="form-control" required>
+                                    <option value="" selected>Please Select</option>
+                                    <option value="low" selected="@(Model.DegreeOfRisk == "low" ? "selected" : null)">
+                                        Low
+                                    </option>
+                                    <option value="medium"
+                                        selected="@(Model.DegreeOfRisk == "medium" ? "selected" : null)">
+                                        Moderate
+                                    </option>
+                                    <option value="high" selected="@(Model.DegreeOfRisk == "high" ? "selected" : null)">
+                                        High
+                                    </option>
+                                </select>
+                            </div>
+
+                            <button type="submit" id="btnContinue" class="btn-submit">Continue</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("trading-form").addEventListener("submit", function (event) {
+            event.preventDefault();
+            this.disabled = true;
+            const formData = {
+                employmentStatus: document.getElementById("employmentStatus").value,
+                annualIncome: document.getElementById("annualIncome").value,
+                primarySourceOfTradingFund: document.getElementById("primarySourceOfTradingFund").value,
+                tradingObjective: document.getElementById("tradingObjective").value,
+                degreeOfRisk: document.getElementById("degreeOfRisk").value,
+            }
+            fetch('/Clients/SaveIncomeInfo', {
+                method: 'POST',
+                body: JSON.stringify(formData),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                }
+            }).then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Redirect or show success message
+                        window.location.href = data.redirectUrl;
+                    } else {
+                        this.disabled = false;
+                        swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'error',
+                            title: 'Error!',
+                            text: 'An error occurred. Please try again.',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true
+                        });
+                    }
+                })
+                .catch(error => {
+                    this.disabled = false;
+                    swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'Error!',
+                        text: 'An error occurred. Please try again.',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true
+                    });
+                });
+        });
+    })
+</script>

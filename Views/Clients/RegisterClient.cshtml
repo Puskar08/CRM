@@ -159,6 +159,7 @@
         // Form validation and submission
         document.getElementById('client-form').addEventListener('submit', function (e) {
             e.preventDefault(); // Prevent default form submission
+            this.disabled = true;
             debugger;
 
             // Basic validation
@@ -227,6 +228,7 @@
                         })
                         window.location.href = responseData.redirectUrl || '/Register/EmploymentInfo';
                     } else {
+                        this.disabled = false;
                         Swal.fire({
                             toast: true,
                             position: 'top-end',
@@ -240,6 +242,7 @@
                     }
                 })
                 .catch(error => {
+                    this.disabled = false;
                     Swal.fire({
                         toast: true,
                         position: 'top-end',

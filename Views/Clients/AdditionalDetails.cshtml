@@ -10,6 +10,7 @@
                     </div>
 
                     <form id="additional-details-form">
+                        @Html.AntiForgeryToken()
                         <div class="form-container">
                             <div class="form-group">
                                 <label for="buildingNumber">Building Number</label>
@@ -38,11 +39,8 @@
                                 <input type="text" id="placeOfBirth" class="form-control" value="@Model.PlaceOfBirth"
                                     required />
                             </div>
-                            <button type="submit" id="btnContinue" class="btn-submit">Continue <i
-                                    class="fas fa-arrow-right"></i>
-                            </button>
-                            <button type="submit" id="btnBack" class="btn-submit">Back <i class="fas fa-arrow-left"></i>
-                            </button>
+                            <button type="submit" id="btnContinue" class="btn-submit">Continue</button>
+                            <button type="button" id="btnBack" class="btn-back">Back</button>
                         </div>
                     </form>
                 </div>
@@ -54,6 +52,7 @@
     document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("additional-details-form").addEventListener("submit", function (event) {
             event.preventDefault();
+            this.disabled = true;
             // Handle form submission
             var street = document.getElementById("street").value;
             var city = document.getElementById("city").value;
@@ -82,8 +81,8 @@
                 nationality: document.getElementById("nationality").value,
                 placeOfBirth: document.getElementById("placeOfBirth").value
             }
-            fetch(event.target.action, {
-                method: event.target.method,
+            fetch('/Clients/SaveAdditionalDetails', {
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
@@ -96,6 +95,7 @@
                         // Redirect or show success message
                         window.location.href = data.redirectUrl;
                     } else {
+                        this.disabled = false;
                         Swal.fire({
                             toast: true,
                             position: 'top-end',
@@ -109,7 +109,7 @@
                     }
                 })
                 .catch(error => {
-                    console.error("Error:", error);
+                    this.disabled = false;
                     Swal.fire({
                         toast: true,
                         position: 'top-end',
@@ -121,6 +121,10 @@
                         timerProgressBar: true
                     });
                 });
+        });
+
+        document.getElementById("btnBack").addEventListener("click", function () {
+            window.location.href = '/Clients/TradingInfo';
         });
     });
 </script>
