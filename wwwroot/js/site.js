@@ -60,3 +60,14 @@ sidebarItems.forEach((item) => {
     // No need for e.preventDefault() or manual navigation
   });
 });
+
+function changeContinueButtonState(isSubmitting) {
+  const submitBtn = document.getElementById("btnContinue");
+  if (isSubmitting) {
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = "Submitting...";
+  } else {
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = "Continue";
+  }
+}

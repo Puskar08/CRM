@@ -113,6 +113,10 @@
 .btn-submit:hover {
   background: #2980b9;
 }
+.btn-submit:disabled {
+    cursor: not-allowed;
+    opacity: 0.6; /* Optional: Dim the button for visual feedback */
+}
 
 .login-link {
   text-align: center;

@@ -53,11 +53,12 @@
         </div>
     </div>
 </div>
+<script src="~/js/clientregistration.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("trading-form").addEventListener("submit", function (event) {
             event.preventDefault();
-            this.disabled = true;
+            changeContinueButtonState(true);
             // Handle form submission
             var tradingExperience = document.getElementById("yearsOfExperience").value;
             var confirmTradingKnowledge = document.getElementById("confirmTradingKnowledge").value;
@@ -93,7 +94,7 @@
                         // Redirect or show success message
                         window.location.href = data.redirectUrl;
                     } else {
-                        this.disabled = false;
+                        changeContinueButtonState(false);
                         swal.fire({
                             toast: true,
                             position: 'top-end',
@@ -107,7 +108,7 @@
                     }
                 })
                 .catch(error => {
-                    this.disabled = false;
+                    changeContinueButtonState(false);
                     swal.fire({
                         toast: true,
                         position: 'top-end',

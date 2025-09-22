@@ -48,11 +48,12 @@
         </div>
     </div>
 </div>
+<script src="~/js/clientregistration.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("additional-details-form").addEventListener("submit", function (event) {
             event.preventDefault();
-            this.disabled = true;
+            changeContinueButtonState(true);
             // Handle form submission
             var street = document.getElementById("street").value;
             var city = document.getElementById("city").value;
@@ -95,7 +96,7 @@
                         // Redirect or show success message
                         window.location.href = data.redirectUrl;
                     } else {
-                        this.disabled = false;
+                        changeContinueButtonState(false);
                         Swal.fire({
                             toast: true,
                             position: 'top-end',
@@ -109,7 +110,7 @@
                     }
                 })
                 .catch(error => {
-                    this.disabled = false;
+                    changeContinueButtonState(false);
                     Swal.fire({
                         toast: true,
                         position: 'top-end',

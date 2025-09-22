@@ -124,8 +124,7 @@
                                     are relevant to you</label>
                             </div>
 
-                            <button type="submit" id="btnContinue" class="btn-submit">Continue <i
-                                    class="fas fa-arrow-right"></i></button>
+                            <button type="submit" id="btnContinue" class="btn-submit">Continue</button>
 
                             <div class="login-link">
                                 Already a client? <a href="#">Login here</a>.
@@ -137,7 +136,7 @@
         </div>
     </div>
 </div>
-
+<script src="~/js/clientregistration.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         // Password visibility toggle
@@ -155,12 +154,12 @@
                 this.innerHTML = '<i class="fas fa-eye"></i>';
             }
         });
-
+        
         // Form validation and submission
         document.getElementById('client-form').addEventListener('submit', function (e) {
             e.preventDefault(); // Prevent default form submission
-            this.disabled = true;
-            debugger;
+
+            changeContinueButtonState(true);
 
             // Basic validation
             const firstName = document.getElementById('firstName').value;
@@ -228,7 +227,7 @@
                         })
                         window.location.href = responseData.redirectUrl || '/Register/EmploymentInfo';
                     } else {
-                        this.disabled = false;
+                        changeContinueButtonState(false);
                         Swal.fire({
                             toast: true,
                             position: 'top-end',
@@ -242,7 +241,7 @@
                     }
                 })
                 .catch(error => {
-                    this.disabled = false;
+                    changeContinueButtonState(false);
                     Swal.fire({
                         toast: true,
                         position: 'top-end',

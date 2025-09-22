@@ -137,11 +137,12 @@
         </div>
     </div>
 </div>
+<script src="~/js/clientregistration.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("trading-form").addEventListener("submit", function (event) {
             event.preventDefault();
-            this.disabled = true;
+            changeContinueButtonState(true);
             const formData = {
                 employmentStatus: document.getElementById("employmentStatus").value,
                 annualIncome: document.getElementById("annualIncome").value,
@@ -162,7 +163,7 @@
                         // Redirect or show success message
                         window.location.href = data.redirectUrl;
                     } else {
-                        this.disabled = false;
+                        changeContinueButtonState(false);
                         swal.fire({
                             toast: true,
                             position: 'top-end',
@@ -176,7 +177,7 @@
                     }
                 })
                 .catch(error => {
-                    this.disabled = false;
+                    changeContinueButtonState(false);
                     swal.fire({
                         toast: true,
                         position: 'top-end',

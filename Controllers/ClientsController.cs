@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CRM.Controllers;
 
@@ -14,11 +15,13 @@ public class ClientsController : Controller
     private readonly AppDbContext _context;
     private const string PendingUserSessionKey = "PendingUserId";
     private readonly UserManager<ApplicationUser> _userManager;
-    public ClientsController(ILogger<ClientsController> logger, AppDbContext context, UserManager<ApplicationUser> userManager)
+    private readonly SignInManager<ApplicationUser> _signInManager;
+    public ClientsController(ILogger<ClientsController> logger, AppDbContext context, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
     {
         _logger = logger;
         _context = context;
         _userManager = userManager;
+        _signInManager = signInManager;
     }
 
     public IActionResult Index()
@@ -139,168 +142,6 @@ public class ClientsController : Controller
 
     }
 
-
-    // [HttpGet]
-    // [Route("Clients/EmploymentInfo")]
-    // public async Task<IActionResult> EmploymentInfo()
-    // {
-    //     var PendingUserId = HttpContext.Session.GetString(PendingUserSessionKey);
-    //     if (string.IsNullOrEmpty(PendingUserId))
-    //     {
-    //         return RedirectToAction("RegisterClient");
-    //     }
-    //     var user = await _userManager.FindByIdAsync(PendingUserId);
-    //     if (user == null)
-    //     {
-    //         return RedirectToAction("RegisterClient");
-    //     }
-    //     var profile = await _context.ClientProfiles.FindAsync(PendingUserId);
-    //     if (profile == null)
-    //     {
-    //         return RedirectToAction("RegisterClient");
-    //     }
-    //     var model = new EmploymentInfoModel
-    //     {
-    //         EmploymentStatus = profile.EmploymentStatus,
-    //         AnnualIncome = profile.AnnualIncome,
-    //         PrimarySourceOfTradingFund = profile.PrimarySourceOfTradingFund,
-    //         TradingObjective = profile.TradingObjective,
-    //         DegreeOfRisk = profile.DegreeOfRisk
-    //     };
-    //     return View(model);
-    // }
-
-    // [HttpPost]
-    // [ValidateAntiForgeryToken]
-    // [Route("Clients/SaveEmploymentInfo")]
-    // public async Task<IActionResult> SaveEmploymentInfo([FromBody] EmploymentInfoModel model)
-    // {
-    //     if (!ModelState.IsValid)
-    //     {
-    //         return BadRequest(new { success = false, message = "Invalid data submitted." });
-    //     }
-
-    //     var PendingUserId = HttpContext.Session.GetString(PendingUserSessionKey);
-    //     if (string.IsNullOrEmpty(PendingUserId))
-    //     {
-    //         return BadRequest(new { success = false, message = "Session expired. Please restart registration." });
-    //     }
-
-    //     var user = await _userManager.FindByIdAsync(PendingUserId);
-    //     var profile = await _context.ClientProfiles.FindAsync(PendingUserId);
-
-    //     if (user == null || profile == null)
-    //     {
-    //         return BadRequest(new { success = false, message = "Profile not found. Please restart registration." });
-    //     }
-
-    //     // Update profile with employment info
-    //     profile.EmploymentStatus = model.EmploymentStatus;
-    //     profile.AnnualIncome = model.AnnualIncome;
-    //     profile.PrimarySourceOfTradingFund = model.PrimarySourceOfTradingFund;
-    //     profile.TradingObjective = model.TradingObjective;
-    //     profile.DegreeOfRisk = model.DegreeOfRisk;
-
-    //     _context.ClientProfiles.Update(profile);
-    //     var result = await _context.SaveChangesAsync();
-
-    //     return Ok(new
-    //     {
-    //         success = true,
-    //         message = "Basic information saved. Proceed to Employment Info.",
-    //         redirectUrl = Url.Action("TradingInfo", "Clients")
-    //     });
-    // }
-
-    // [HttpPost]
-    // [ValidateAntiForgeryToken]
-    // [Route("Clients/SaveEmploymentInfo1")]
-    // public async Task<IActionResult> SaveEmploymentInfo1([FromBody] EmploymentInfoModel model)
-    // {
-    //     if (!ModelState.IsValid)
-    //     {
-    //         return BadRequest(new
-    //         {
-    //             success = false,
-    //             message = "Invalid data submitted.",
-    //             errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage)
-    //         });
-    //     }
-
-    //     var pendingUserId = HttpContext.Session.GetString(PendingUserSessionKey);
-    //     if (string.IsNullOrEmpty(pendingUserId))
-    //     {
-    //         return BadRequest(new
-    //         {
-    //             success = false,
-    //             message = "Session expired. Please restart registration.",
-    //             redirectUrl = Url.Action("RegisterClient", "Clients")
-    //         });
-    //     }
-
-    //     var user = await _userManager.FindByIdAsync(pendingUserId);
-    //     if (user == null)
-    //     {
-    //         HttpContext.Session.Remove(PendingUserSessionKey);
-    //         return BadRequest(new
-    //         {
-    //             success = false,
-    //             message = "User not found or registration already completed.",
-    //             redirectUrl = Url.Action("RegisterClient", "Clients")
-    //         });
-    //     }
-
-    //     // Query ClientProfile by UserId, not primary key
-    //     var profile = await _context.ClientProfiles.FirstOrDefaultAsync(cp => cp.UserId == pendingUserId);
-    //     if (profile == null || profile.IsProfileComplete)
-    //     {
-    //         HttpContext.Session.Remove(PendingUserSessionKey);
-    //         return BadRequest(new
-    //         {
-    //             success = false,
-    //             message = "Profile not found. Please restart registration.",
-    //             redirectUrl = Url.Action("RegisterClient", "Clients")
-    //         });
-    //     }
-
-    //     using var transaction = await _context.Database.BeginTransactionAsync();
-    //     try
-    //     {
-    //         // Update profile
-    //         profile.EmploymentStatus = model.EmploymentStatus;
-    //         profile.AnnualIncome = model.AnnualIncome;
-    //         profile.PrimarySourceOfTradingFund = model.PrimarySourceOfTradingFund;
-    //         profile.TradingObjective = model.TradingObjective;
-    //         profile.DegreeOfRisk = model.DegreeOfRisk;
-
-    //         _context.ClientProfiles.Update(profile);
-    //         var result = await _context.SaveChangesAsync();
-    //         if (result == 0)
-    //         {
-    //             throw new Exception("No changes were saved to the database.");
-    //         }
-
-    //         await transaction.CommitAsync();
-
-    //         return Ok(new
-    //         {
-    //             success = true,
-    //             message = "Employment information saved successfully.",
-    //             redirectUrl = Url.Action("TradingInfo", "Clients")
-    //         });
-    //     }
-    //     catch (Exception ex)
-    //     {
-    //         await transaction.RollbackAsync();
-    //         _logger.LogError(ex, "Error saving employment info for user {UserId}", pendingUserId);
-    //         return StatusCode(500, new
-    //         {
-    //             success = false,
-    //             message = "An error occurred while saving employment information. Please try again."
-    //         });
-    //     }
-    // }
-
     [HttpGet]
     [Route("Clients/IncomeInfo")]
     public async Task<IActionResult> IncomeInfo()
@@ -386,29 +227,6 @@ public class ClientsController : Controller
             _logger.LogError(ex, "Error saving income info for user {UserId}", pendingUserId);
             return StatusCode(500, new { success = false, message = "An error occurred while saving income information. Please try again." });
         }
-
-        // // Update profile with trading experience info
-        // profile.EmploymentStatus = model.EmploymentStatus;
-        // profile.AnnualIncome = model.AnnualIncome;
-        // profile.PrimarySourceOfTradingFund = model.PrimarySourceOfTradingFund;
-        // profile.TradingObjective = model.TradingObjective;
-        // profile.DegreeOfRisk = model.DegreeOfRisk;
-
-        // _context.ClientProfiles.Update(profile);
-        // var result = await _context.SaveChangesAsync();
-
-        // if (result > 0)
-        // {
-
-        //     return Ok(new
-        //     {
-        //         success = true,
-        //         message = "Trading experience information saved. Registration complete.",
-        //         redirectUrl = Url.Action("TradingInfo", "Clients") // Redirect to home or dashboard
-        //     });
-        // }
-
-        // return BadRequest(new { success = false, message = "Failed to save trading experience information." });
     }
 
     [HttpGet]
@@ -489,24 +307,6 @@ public class ClientsController : Controller
             _logger.LogError(ex, "Error saving trading info for user {UserId}", pendingUserId);
             return StatusCode(500, new { success = false, message = "An error occurred while saving trading information. Please try again." });
         }
-        // Update profile with trading experience info
-        // profile.YearsOfTradingExperience = model.YearsOfExperience;
-        // profile.ConfirmTradingKnowledge = model.ConfirmTradingKnowledge;
-        // _context.ClientProfiles.Update(profile);
-        // var result = await _context.SaveChangesAsync();
-
-        // if (result > 0)
-        // {
-
-        //     return Ok(new
-        //     {
-        //         success = true,
-        //         message = "Trading experience information saved. Registration complete.",
-        //         redirectUrl = Url.Action("AdditionalDetails", "Clients") // Redirect to home or dashboard
-        //     });
-        // }
-
-        // return BadRequest(new { success = false, message = "Failed to save trading experience information." });
     }
 
     [HttpGet]
@@ -555,7 +355,7 @@ public class ClientsController : Controller
         }
 
         var user = await _userManager.FindByIdAsync(pendingUserId);
-        var profile = await _context.ClientProfiles.FindAsync(pendingUserId);
+        var profile = await _context.ClientProfiles.FirstOrDefaultAsync(p => p.UserId == pendingUserId);
 
         if (user == null || profile == null)
         {
@@ -580,6 +380,8 @@ public class ClientsController : Controller
             }
             await additionalDetailsTransaction.CommitAsync();
 
+            // Sign in the user
+            await _signInManager.SignInAsync(user, isPersistent: false); // Non-persistent session
             // Clear session after successful registration
             HttpContext.Session.Remove(PendingUserSessionKey);
 
@@ -597,5 +399,41 @@ public class ClientsController : Controller
             _logger.LogError(ex, "Error saving additional details for user {UserId}", pendingUserId);
             return StatusCode(500, new { success = false, message = "An error occurred while saving additional details. Please try again." });
         }
+    }
+
+    [HttpGet]
+    [Authorize]
+    [Route("Home/CompleteProfile")]
+    public async Task<IActionResult> CompleteProfile()
+    {
+        var user = await _userManager.GetUserAsync(User);
+        if(user == null)
+        {
+            return RedirectToAction("Login", "Account");
+        }
+        var profile = await _context.ClientProfiles.FirstOrDefaultAsync(p => p.UserId == user.Id);
+        if(profile == null)
+        {
+            return RedirectToAction("RegisterClient", "Clients");
+        }
+        var model = new ClientRegistrationModel
+        {
+            Email = user.Email,
+            PhoneNumber = user.PhoneNumber,
+            MarketingConsent = profile.MarketingConsent,
+            EmploymentStatus = profile.EmploymentStatus,
+            AnnualIncome = profile.AnnualIncome,
+            PrimarySourceOfTradingFund = profile.PrimarySourceOfTradingFund,
+            TradingObjective = profile.TradingObjective,
+            DegreeOfRisk = profile.DegreeOfRisk,
+            ConfirmTradingKnowledge = profile.ConfirmTradingKnowledge,
+            BuildingNumber = profile.BuildingNumber,
+            Street = profile.Street,
+            City = profile.City,
+            PostalCode = profile.PostalCode,
+            Nationality = profile.Nationality,
+            PlaceOfBirth = profile.PlaceOfBirth
+        };
+        return View();
     }
 }
