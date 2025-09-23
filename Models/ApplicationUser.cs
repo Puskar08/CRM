@@ -9,6 +9,7 @@ public class ApplicationUser : IdentityUser
     public char? Gender { get; set; }
     public DateTime? DateOfBirth { get; set; }
     public string? Nationality { get; set; }
+    public string? CountryCode { get; set; }
 
     // Additional properties can be added here if needed
 }

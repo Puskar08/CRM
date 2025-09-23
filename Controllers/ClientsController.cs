@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration.UserSecrets;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using System.Threading.Tasks;
 
 namespace CRM.Controllers;
 
@@ -93,7 +94,8 @@ public class ClientsController : Controller
                 UserName = model.Email,
                 Email = model.Email,
                 Name = model.FirstName + " " + model.LastName,
-                PhoneNumber = $"{model.PhoneCode}{model.PhoneNumber}",
+                CountryCode = model.PhoneCode,
+                PhoneNumber = model.PhoneNumber,
                 DateOfBirth = new DateTime(model.DobYear, model.DobMonth, model.DobDay).ToUniversalTime(),
                 // MarketingConsent = model.MarketingConsent,
             };
@@ -412,6 +414,38 @@ public class ClientsController : Controller
     [Route("Clients/CompleteProfile")]
     public async Task<IActionResult> CompleteProfile()
     {
+        var user = await _userManager.FindByIdAsync("67070c44-88c3-4a7e-8e1b-4fbc3e078b56");
+        var profile = _context.ClientProfiles.FirstOrDefault(p => p.UserId == "67070c44-88c3-4a7e-8e1b-4fbc3e078b56");
+        var model = new ProfileViewModel
+        {
+            UserId = profile.UserId,
+            CountryOfResidence = profile.CountryOfResidence,
+            AccountType = profile.AccountType,
+            FirstName = profile.FirstName,
+            LastName = profile.LastName,
+            Email = user.Email,
+            DateOfBirth = user.DateOfBirth,
+            PhoneCode = user.CountryCode,
+            PhoneNumber = user.PhoneNumber,
+            Gender = profile.Gender,
+            MarketingConsent = profile.MarketingConsent,
+            EmploymentStatus = profile.EmploymentStatus,
+            AnnualIncome = profile.AnnualIncome,
+            PrimarySourceOfTradingFund = profile.PrimarySourceOfTradingFund,
+            TradingObjective = profile.TradingObjective,
+            DegreeOfRisk = profile.DegreeOfRisk,
+            YearsOfTradingExperience = profile.YearsOfTradingExperience,
+            ConfirmTradingKnowledge = profile.ConfirmTradingKnowledge,
+            BuildingNumber = profile.BuildingNumber,
+            Street = profile.Street,
+            City = profile.City,
+            PostalCode = profile.PostalCode,
+            Nationality = profile.Nationality,
+            PlaceOfBirth = profile.PlaceOfBirth,
+            PassportUrl = profile.PassportUrl,
+            ProofofAddressUrl = profile.ProofofAddressUrl,
+            IsProfileComplete = profile.IsProfileComplete
+        };
         // var user = await _userManager.GetUserAsync(User);
         // if(user == null)
         // {
@@ -422,24 +456,6 @@ public class ClientsController : Controller
         // {
         //     return RedirectToAction("RegisterClient", "Clients");
         // }
-        // var model = new ClientRegistrationModel
-        // {
-        //     Email = user.Email,
-        //     PhoneNumber = user.PhoneNumber,
-        //     MarketingConsent = profile.MarketingConsent,
-        //     EmploymentStatus = profile.EmploymentStatus,
-        //     AnnualIncome = profile.AnnualIncome,
-        //     PrimarySourceOfTradingFund = profile.PrimarySourceOfTradingFund,
-        //     TradingObjective = profile.TradingObjective,
-        //     DegreeOfRisk = profile.DegreeOfRisk,
-        //     ConfirmTradingKnowledge = profile.ConfirmTradingKnowledge,
-        //     BuildingNumber = profile.BuildingNumber,
-        //     Street = profile.Street,
-        //     City = profile.City,
-        //     PostalCode = profile.PostalCode,
-        //     Nationality = profile.Nationality,
-        //     PlaceOfBirth = profile.PlaceOfBirth
-        // };
-        return View();
+        return View("ProfileComplete", model);
     }
 }

@@ -1,7 +1,9 @@
 .form-container-horizontal {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 20px;
+  /* grid-template-columns: 1fr 1fr 1fr; */
+  grid-template-columns: auto auto;
+  gap: 15px 20px;
+  align-items: start;
 }
 .form-group {
   margin: 0px;
@@ -9,13 +11,13 @@
 
 .form-footer {
   display: flex;
-  justify-content: flex-end; /* Align buttons to the right */
-  gap: 10px; /* Space between buttons */
-  margin-top: 20px;
+  justify-content: flex-end; 
+  gap: 10px; 
+  margin-top: 10px;
   padding: 10px 0;
-  width: 100%; /* Take full width of container */
+  width: 100%; 
 }
-.btn-submitt {
+.btn-update {
   background-color: #3498db;
   color: white;
   border: none;

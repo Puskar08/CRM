@@ -1,6 +1,4 @@
-@{
-    ViewData["Title"] = "Complete Profile";
-}
+@model CRM.Models.ProfileViewModel
 <style>
     .content-header-collapsed {
         border-bottom: none;
@@ -20,6 +18,7 @@
         </div>
     </div>
     <div class="page-body">
+        @Html.AntiForgeryToken()
         <div class="body-content">
             <div class="content-header content-header-collapsed">
                 <h3>Personal Details</h3>
@@ -30,6 +29,99 @@
                 </div>
             </div>
             <div class="content-body content-body-collapsed">
+                <form id="personal-info-form">
+                    <div class="form-container-horizontal">
+
+
+                        <div class="form-group">
+                            <label for="firstName">First name</label>
+                            <input type="text" id="firstName" class="form-control" value="@Model.FirstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last name</label>
+                            <input type="text" id="lastName" class="form-control" value="@Model.LastName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email address</label>
+                            <input type="email" id="email" class="form-control" disabled value="@Model.Email" />
+                        </div>
+                        <div class="form-group">
+                            <label for="phoneCode">Mobile phone</label>
+                            <div class="form-row">
+                                <select id="phoneCode" class="form-control" required style="width: 25%;">
+                                    <option value="+971" selected="@(Model.PhoneCode == "+971" ? "selected" : null)">
+                                        +971</option>
+                                    <option value="+966" selected="@(Model.PhoneCode == "+966" ? "selected" : null)">
+                                        +966</option>
+                                    <option value="+974" selected="@(Model.PhoneCode == "+974" ? "selected" : null)">
+                                        +974</option>
+                                    <option value="+965" selected="@(Model.PhoneCode == "+965" ? "selected" : null)">
+                                        +965</option>
+                                    <option value="+973" selected="@(Model.PhoneCode == "+973" ? "selected" : null)">
+                                        +973</option>
+                                    <option value="+968" selected="@(Model.PhoneCode == "+968" ? "selected" : null)">
+                                        +968</option>
+                                </select>
+                                <input type="tel" id="phoneNumber" class="form-control" value="@Model.PhoneNumber"
+                                    required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="countryOfResidence">Country of residence</label>
+                            <select id="countryOfResidence" class="form-control" required>
+                                <option value="" selected>Select Country</option>
+                                <option value="AE" selected="@(Model.CountryOfResidence == "AE" ? "selected" : null)">
+                                    United Arab Emirates
+                                </option>
+                                <option value="SA" selected="@(Model.CountryOfResidence == "SA" ? "selected" : null)">
+                                    Saudi Arabia
+                                </option>
+                                <option value="QA"
+                                    selected="@(Model.CountryOfResidence == "Qatar" ? "selected" : null)">
+                                    Qatar
+                                </option>
+                                <option value="KW"
+                                    selected="@(Model.CountryOfResidence == "Kuwait" ? "selected" : null)">
+                                    Kuwait
+                                </option>
+                                <option value="BH"
+                                    selected="@(Model.CountryOfResidence == "Bahrain" ? "selected" : null)">
+                                    Bahrain
+                                </option>
+                                <option value="OM" selected="@(Model.CountryOfResidence == "Oman" ? "selected" : null)">
+                                    Oman
+                                </option>
+                            </select>
+                        </div>
+
+                        @* <div class="form-group">
+                            <label for="accountType">Account type</label>
+                            <select id="accountType" class="form-control" disabled>
+                                <option value="">Please Select</option>
+                                <option value="individual"
+                                    selected="@(Model.AccountType == "individual" ? "selected" : null)">
+                                    Individual
+                                </option>
+                                <option value="corporate"
+                                    selected="@(Model.AccountType == "individual" ? "selected" : null)">
+                                    Corporate
+                                </option>
+                            </select>
+                        </div> *@
+
+                        <div class="form-group">
+                            <label for="dateOfBirth">Date of birth</label>
+                            <input id="dateOfBirth" class="dateSelect form-control" name="dateOfBirth" type="date"
+                                value="@(Model.DateOfBirth.HasValue? Model.DateOfBirth.Value.ToString(format: "yyyy-MM-dd") : "")" />
+                            <div class="form-note">As shown on ID documents</div>
+                        </div>
+                    </div>
+                    <div class="form-footer">
+                        <button type="submit" id="btnContinue" class="btn-update">Update</button>
+                        <button type="button" id="btnBack" class="btn-cancel">Cancel</button>
+                    </div>
+                </form>
             </div>
         </div>
         <div class="body-content">
@@ -42,6 +134,132 @@
                 </div>
             </div>
             <div class="content-body content-body-collapsed">
+                <form id="trading-form">
+                    <div class="form-container-horizontal">
+                        <div class="form-group">
+                            <label for="employmentStatus">What is your employment status?</label>
+                            <select id="employmentStatus" name="employmentStatus" class="form-control" required>
+                                <option value="" selected>Please Select</option>
+                                <option value="Employed"
+                                    selected="@(Model.EmploymentStatus == "Employed" ? "selected" : null)">
+                                    Employed
+                                </option>
+                                <option value="Unemployed"
+                                    selected="@(Model.EmploymentStatus == "Unemployed" ? "selected" : null)">
+                                    Unemployed
+                                </option>
+                                <option value="Self-Employed"
+                                    selected="@(Model.EmploymentStatus == "Self-Employed" ? "selected" : null)">
+                                    Self-Employed
+                                </option>
+                                <option value="Student"
+                                    selected="@(Model.EmploymentStatus == "Student" ? "selected" : null)">
+                                    Student
+                                </option>
+                                <option value="Retired"
+                                    selected="@(Model.EmploymentStatus == "Retired" ? "selected" : null)">
+                                    Retired
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="annualIncome">What is your annual income (US Dollars)?</label>
+                            <select id="annualIncome" name="annualIncome" class="form-control" required>
+                                <option value="" selected>Please Select</option>
+                                <option value="1000-5000"
+                                    selected="@(Model.AnnualIncome == "1000-5000" ? "selected" : null)">
+                                    $1000-$5000
+                                </option>
+                                <option value="5000-10000"
+                                    selected="@(Model.AnnualIncome == "5000-10000" ? "selected" : null)">
+                                    $5000-$10000
+                                </option>
+                                <option value="10000-20000"
+                                    selected="@(Model.AnnualIncome == "10000-20000" ? "selected" : null)">
+                                    $10000-$20000
+                                </option>
+                                <option value="Above 20000"
+                                    selected="@(Model.AnnualIncome == "Above 20000" ? "selected" : null)">
+                                    $Above-$20000
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="primarySourceOfTradingFund">What is the primary source of your trading
+                                funds?</label>
+                            <select id="primarySourceOfTradingFund" name="primarySourceOfTradingFund"
+                                class="form-control" required>
+                                <option value="" selected>Please Select</option>
+                                <option value="income"
+                                    selected="@(Model.PrimarySourceOfTradingFund == "income" ? "selected" : null)">
+                                    Income
+                                </option>
+                                <option value="unemployment"
+                                    selected="@(Model.PrimarySourceOfTradingFund == "unemployment" ? "selected" : null)">
+                                    Unemployment Benefits
+                                </option>
+                                <option value="business"
+                                    selected="@(Model.PrimarySourceOfTradingFund == "business" ? "selected" : null)">
+                                    Business Income
+                                </option>
+                                <option value="studentLoan"
+                                    selected="@(Model.PrimarySourceOfTradingFund == "studentLoan" ? "selected" : null)">
+                                    Student Loans
+                                </option>
+                                <option value="pension"
+                                    selected="@(Model.PrimarySourceOfTradingFund == "pension" ? "selected" : null)">
+                                    Pension
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tradingObjective">What is your trading objective?</label>
+                            <select id="tradingObjective" name="tradingObjective" class="form-control" required>
+                                <option value="" selected>Please Select</option>
+                                <option value="income"
+                                    selected="@(Model.TradingObjective == "income" ? "selected" : null)">
+                                    Generate Income
+                                </option>
+                                <option value="speculation"
+                                    selected="@(Model.TradingObjective == "speculation" ? "selected" : null)">
+                                    Speculation
+                                </option>
+                                <option value="hedging"
+                                    selected="@(Model.TradingObjective == "hedging" ? "selected" : null)">
+                                    Hedging
+                                </option>
+                                <option value="algo" selected="@(Model.TradingObjective == "algo" ? "selected" : null)">
+                                    Algo Trading
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="degreeOfRisk">Please select the degree of risk you are willing to take with
+                                the assets in this account</label>
+                            <select id="degreeOfRisk" name="degreeOfRisk" class="form-control" required>
+                                <option value="" selected>Please Select</option>
+                                <option value="low" selected="@(Model.DegreeOfRisk == "low" ? "selected" : null)">
+                                    Low
+                                </option>
+                                <option value="medium" selected="@(Model.DegreeOfRisk == "medium" ? "selected" : null)">
+                                    Moderate
+                                </option>
+                                <option value="high" selected="@(Model.DegreeOfRisk == "high" ? "selected" : null)">
+                                    High
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-footer">
+                        <button type="submit" id="btnContinue" class="btn-update">Update</button>
+                        <button type="button" id="btnBack" class="btn-cancel">Cancel</button>
+                    </div>
+                </form>
             </div>
         </div>
         <div class="body-content">
@@ -54,6 +272,47 @@
                 </div>
             </div>
             <div class="content-body content-body-collapsed">
+                <form id="trading-form">
+                    <div class="form-container-horizontal">
+                        <div class="form-group">
+                            <label for="yearsOfExperience">How long have you been trading CFDs or FX?</label>
+                            <select id="yearsOfExperience" class="form-control" required>
+                                <option value="" selected>Please Select</option>
+                                <option value="Less than 2 year"
+                                    selected="@(Model.YearsOfTradingExperience == "Less than 2 year" ? "selected" : null)">
+                                    Less than 2 year
+                                </option>
+                                <option value="More than 2 year"
+                                    selected="@(Model.YearsOfTradingExperience == "More than 2 year" ? "selected" : null)">
+                                    More than 2 year
+                                </option>
+                                <option value="None"
+                                    selected="@(Model.YearsOfTradingExperience == "None" ? "selected" : null)">None
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="confirmTradingKnowledge">Based on your trading experience, do you feel you
+                                have a good understanding of the risks involved?</label>
+                            <select id="confirmTradingKnowledge" class="form-control" required>
+                                <option value="" selected>Please Select</option>
+                                <option value="Yes" selected="@(Model.ConfirmTradingKnowledge ? "selected" : null)">
+                                    Yes
+                                </option>
+                                <option value="No"
+                                    selected="@(Model.ConfirmTradingKnowledge == false ? "selected" : null)">
+                                    No
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-footer">
+                        <button type="submit" id="btnContinue" class="btn-update">Update</button>
+                        <button type="button" id="btnBack" class="btn-cancel">Cancel</button>
+                    </div>
+                </form>
             </div>
         </div>
         <div class="body-content">
@@ -70,9 +329,9 @@
                     <div class="form-container-horizontal">
                         <div class="form-group">
                             <label for="buildingNumber">Building Number</label>
-                            <input type="text" id="buildingNumber" class="form-control" />
+                            <input type="text" id="buildingNumber" class="form-control" value=@Model.BuildingNumber />
                         </div>
-                        <div class="form-group">
+                        <div class=" form-group">
                             <label for="street">Street</label>
                             <input type="text" id="street" class="form-control" required />
                         </div>
@@ -94,7 +353,8 @@
                         </div>
                     </div>
                     <div class="form-footer">
-                        <button type="submit" id="btnContinue" class="btn-submitt">Update</button>
+                        <button type="submit" id="btnContinue" data-profile-section="AdditionalInfo"
+                            class="btn-update">Update</button>
                         <button type="button" id="btnBack" class="btn-cancel">Cancel</button>
                     </div>
 
@@ -171,7 +431,7 @@
                     We can help you if you have any questions. Please email us at support@gcfx.com
                 </p>
                 <div class="content-footer">
-                    <button>Next</button>
+                    <button class="btn-update">Next</button>
                 </div>
             </div>
         </div>
@@ -203,10 +463,12 @@
                 // currently collapsed → expand it
                 contentBody.classList.remove('content-body-collapsed');
                 contentHeader.classList.remove('content-header-collapsed');
+                sortDirection = "asc";
             } else {
                 // currently expanded → collapse it
                 contentBody.classList.add('content-body-collapsed');
                 contentHeader.classList.add('content-header-collapsed');
+                sortDirection = "desc";
             }
 
             if (arrowToggle) {
@@ -217,8 +479,7 @@
                             <path d="${sortDirection === 'asc' ? sortIcons.asc : sortIcons.desc}"/>
                         </svg>
                     </button>`;
-                // flip the arrow direction
-                sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+
                 // rebind click for new arrow button
                 const toggleBtn = contentRemarks.querySelector('.toggle-content-body');
                 toggleBtn.addEventListener('click', function () {
@@ -240,7 +501,13 @@
                 }
             }
 
-
+            // rebind click for new arrow button
+            const cancelBtn = contentBody.querySelector('.btn-cancel');
+            if (cancelBtn) {
+                cancelBtn.addEventListener('click', function () {
+                    toggleSection(bodyContent, false);
+                });
+            }
         }
 
         // for Modify buttons
@@ -251,11 +518,16 @@
                 toggleSection(bodyContent, true);
             });
         });
-        // rebind click for new arrow button
-        const cancelBtn = document.querySelectorAll('.btn-cancel');
-        cancelBtn.forEach(button => {
-            const bodyContent = this.closest('.body-content');
-            toggleSection(bodyContent, false);
-        })
+
+        //for update buttons
+        const updateButtons = document.querySelectorAll('.btn-update');
+        updateButtons.forEach(button => {
+            button.addEventListener('click', function (event) {
+                event.preventDefault(); // Prevent form submission for demo purposes
+                const bodyContent = this.closest('.body-content');
+                toggleSection(bodyContent, false);
+            });
+        });
+
     });
 </script>
