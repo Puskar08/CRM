@@ -389,7 +389,7 @@ public class ClientsController : Controller
             {
                 success = true,
                 message = "Additional details saved. Registration complete.",
-                redirectUrl = Url.Action("Index", "Home") // Redirect to home or dashboard
+                redirectUrl = Url.Action("CompleteProfile", "Clients") // Redirect to complete profile
             });
 
         }
@@ -402,38 +402,44 @@ public class ClientsController : Controller
     }
 
     [HttpGet]
-    [Authorize]
-    [Route("Home/CompleteProfile")]
+    public async Task<IActionResult> ProfileComplete()
+    {
+        return View();
+    }
+
+    [HttpGet]
+    // [Authorize]
+    [Route("Clients/CompleteProfile")]
     public async Task<IActionResult> CompleteProfile()
     {
-        var user = await _userManager.GetUserAsync(User);
-        if(user == null)
-        {
-            return RedirectToAction("Login", "Account");
-        }
-        var profile = await _context.ClientProfiles.FirstOrDefaultAsync(p => p.UserId == user.Id);
-        if(profile == null)
-        {
-            return RedirectToAction("RegisterClient", "Clients");
-        }
-        var model = new ClientRegistrationModel
-        {
-            Email = user.Email,
-            PhoneNumber = user.PhoneNumber,
-            MarketingConsent = profile.MarketingConsent,
-            EmploymentStatus = profile.EmploymentStatus,
-            AnnualIncome = profile.AnnualIncome,
-            PrimarySourceOfTradingFund = profile.PrimarySourceOfTradingFund,
-            TradingObjective = profile.TradingObjective,
-            DegreeOfRisk = profile.DegreeOfRisk,
-            ConfirmTradingKnowledge = profile.ConfirmTradingKnowledge,
-            BuildingNumber = profile.BuildingNumber,
-            Street = profile.Street,
-            City = profile.City,
-            PostalCode = profile.PostalCode,
-            Nationality = profile.Nationality,
-            PlaceOfBirth = profile.PlaceOfBirth
-        };
+        // var user = await _userManager.GetUserAsync(User);
+        // if(user == null)
+        // {
+        //     return RedirectToAction("Login", "Account");
+        // }
+        // var profile = await _context.ClientProfiles.FirstOrDefaultAsync(p => p.UserId == user.Id);
+        // if(profile == null)
+        // {
+        //     return RedirectToAction("RegisterClient", "Clients");
+        // }
+        // var model = new ClientRegistrationModel
+        // {
+        //     Email = user.Email,
+        //     PhoneNumber = user.PhoneNumber,
+        //     MarketingConsent = profile.MarketingConsent,
+        //     EmploymentStatus = profile.EmploymentStatus,
+        //     AnnualIncome = profile.AnnualIncome,
+        //     PrimarySourceOfTradingFund = profile.PrimarySourceOfTradingFund,
+        //     TradingObjective = profile.TradingObjective,
+        //     DegreeOfRisk = profile.DegreeOfRisk,
+        //     ConfirmTradingKnowledge = profile.ConfirmTradingKnowledge,
+        //     BuildingNumber = profile.BuildingNumber,
+        //     Street = profile.Street,
+        //     City = profile.City,
+        //     PostalCode = profile.PostalCode,
+        //     Nationality = profile.Nationality,
+        //     PlaceOfBirth = profile.PlaceOfBirth
+        // };
         return View();
     }
 }

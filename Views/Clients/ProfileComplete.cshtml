@@ -1,0 +1,261 @@
+@{
+    ViewData["Title"] = "Complete Profile";
+}
+<style>
+    .content-header-collapsed {
+        border-bottom: none;
+        padding-bottom: 0px;
+    }
+
+    .content-body-collapsed {
+        display: none;
+    }
+</style>
+<link rel="stylesheet" href="~/css/form.css" />
+<div class="page">
+    <div class="page-header">
+        <div class="page-title">
+            <h2><i class="fas fa-lock"></i> Secure Client Area</h2>
+            <p>Complete your profile to access all features</p>
+        </div>
+    </div>
+    <div class="page-body">
+        <div class="body-content">
+            <div class="content-header content-header-collapsed">
+                <h3>Personal Details</h3>
+                <div class="content-remarks">
+                    <button class="modify-content-body">Modify</button>
+                    <span>|</span>
+                    <span>Completed <i class="fa fa-check-circle" aria-hidden="true" style="color:green;"></i></button>
+                </div>
+            </div>
+            <div class="content-body content-body-collapsed">
+            </div>
+        </div>
+        <div class="body-content">
+            <div class="content-header content-header-collapsed">
+                <h3>Employmnet & Income</h3>
+                <div class="content-remarks">
+                    <button class="modify-content-body">Modify</button>
+                    <span>|</span>
+                    <span>Completed <i class="fa fa-check-circle" aria-hidden="true" style="color:green;"></i></button>
+                </div>
+            </div>
+            <div class="content-body content-body-collapsed">
+            </div>
+        </div>
+        <div class="body-content">
+            <div class="content-header content-header-collapsed">
+                <h3>Trading Preferences</h3>
+                <div class="content-remarks">
+                    <button class="modify-content-body">Modify</button>
+                    <span>|</span>
+                    <span>Completed <i class="fa fa-check-circle" aria-hidden="true" style="color:green;"></i></button>
+                </div>
+            </div>
+            <div class="content-body content-body-collapsed">
+            </div>
+        </div>
+        <div class="body-content">
+            <div class="content-header content-header-collapsed">
+                <h3>Additional Details</h3>
+                <div class="content-remarks">
+                    <button class="modify-content-body">Modify</button>
+                    <span>|</span>
+                    <span>Completed <i class="fa fa-check-circle" aria-hidden="true" style="color:green;"></i></button>
+                </div>
+            </div>
+            <div class="content-body content-body-collapsed">
+                <form id="additional-details-form">
+                    <div class="form-container-horizontal">
+                        <div class="form-group">
+                            <label for="buildingNumber">Building Number</label>
+                            <input type="text" id="buildingNumber" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label for="street">Street</label>
+                            <input type="text" id="street" class="form-control" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="city">City</label>
+                            <input type="text" id="city" class="form-control" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="postalCode">Postal Code</label>
+                            <input type="text" id="postalCode" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label for="nationality">Nationality</label>
+                            <input type="text" id="nationality" class="form-control" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="placeOfBirth">Place of Birth</label>
+                            <input type="text" id="placeOfBirth" class="form-control" required />
+                        </div>
+                    </div>
+                    <div class="form-footer">
+                        <button type="submit" id="btnContinue" class="btn-submitt">Update</button>
+                        <button type="button" id="btnBack" class="btn-cancel">Cancel</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+        <div class="body-content">
+            <div class="content-header content-header-collapsed">
+                <h3>Declaration</h3>
+                <div class="content-remarks">
+                    <button class="modify-content-body">Modify</button>
+                    <span>|</span>
+                    <span>Completed <i class="fa fa-check-circle" aria-hidden="true" style="color:green;"></i></button>
+                </div>
+            </div>
+            <div class="content-body content-body-collapsed">
+                <p>
+                    <strong>
+                        Remember, trading in managed products involves risk and may not be suitable for
+                        everyone so you may want to seek independent advice. If you need to boost your
+                        confidence or trading knowledge, don't forget you can open and practice with a demo
+                        account or explore our educational resources.
+                    </strong>
+                </p>
+
+                <p>By ticking the box below, you acknowledge and agree that:</p>
+
+                <ul>
+                    <li>
+                        <p>
+                            GCFX hasn't actively solicited your functions and if you've come across any
+                            Properstone marketing materials, you understand that those materials aren't directed
+                            at residents of any particular country outside of the jurisdictions where we're
+                            licensed;
+                        </p>
+                        <p>
+                            GCFX hasn't been approved or licensed by any royalties or government
+                            authority in your country of residence;
+                        </p>
+                        <p>
+                            you are responsible for complying with all laws, regulations, exchange provisions
+                            and tax rulings that may apply to your operations of a GCFX trading account
+                            in your country of residence.
+                        </p>
+                    </li>
+                    <li>
+                        you've read, understood and agree to be bound by the following legal documents:
+                        <ul>
+                            <li>Terms & Conditions of Service</li>
+                            <li>Platform Terms and Conditions (Platform T&Cs)</li>
+                            <li>Copy Trading Terms and Conditions</li>
+                            <li>Order Execution Policy</li>
+                            <li>Privacy Policy</li>
+                            <li>Cookie Policy</li>
+                            <li>Risk Disclosure Notice</li>
+                            <li>Conflicts of Interest Policy</li>
+                            <li>Complaints Notice</li>
+                        </ul>
+                    </li>
+                    <li>
+                        while the software platform is licensed to GCFX, the issuer of
+                        the products available on the platform is GCFX and
+                    </li>
+                    <li>
+                        the information that you've provided in this application is true and correct and
+                        you're responsible for letting us know if your details change.
+                    </li>
+                </ul>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="agreeDeclaration">
+                    <label for="agreeDeclaration">I agree to all of the above</label>
+                </div>
+                <p>
+                    We can help you if you have any questions. Please email us at support@gcfx.com
+                </p>
+                <div class="content-footer">
+                    <button>Next</button>
+                </div>
+            </div>
+        </div>
+        <div class="body-content">
+            <div class="content-header content-header-collapsed">
+                <h3>Verification</h3>
+            </div>
+            <div class="content-body content-body-collapsed">
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        let sortDirection = "asc";
+        const sortIcons = {
+            asc: 'm280-400 200-200 200 200H280Z',
+            desc: 'M480-360 280-560h400L480-360Z'
+        };
+
+        // function to toggle a section
+        function toggleSection(bodyContent, arrowToggle) {
+            const contentBody = bodyContent.querySelector('.content-body');
+            const contentHeader = bodyContent.querySelector('.content-header');
+            const contentRemarks = bodyContent.querySelector('.content-remarks');
+
+            if (contentBody.classList.contains('content-body-collapsed')) {
+                // currently collapsed → expand it
+                contentBody.classList.remove('content-body-collapsed');
+                contentHeader.classList.remove('content-header-collapsed');
+            } else {
+                // currently expanded → collapse it
+                contentBody.classList.add('content-body-collapsed');
+                contentHeader.classList.add('content-header-collapsed');
+            }
+
+            if (arrowToggle) {
+                contentRemarks.innerHTML = `
+                    <button class="toggle-content-body">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" 
+                            viewBox="0 -960 960 960" width="24px" fill="#000000">
+                            <path d="${sortDirection === 'asc' ? sortIcons.asc : sortIcons.desc}"/>
+                        </svg>
+                    </button>`;
+                // flip the arrow direction
+                sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+                // rebind click for new arrow button
+                const toggleBtn = contentRemarks.querySelector('.toggle-content-body');
+                toggleBtn.addEventListener('click', function () {
+                    debugger;
+                    toggleSection(bodyContent, true);
+                });
+
+            } else {
+                contentRemarks.innerHTML = `
+                    <button class="modify-content-body">Modify</button>
+                    <span>|</span>
+                    <span>Completed <i class="fa fa-check-circle" aria-hidden="true" style="color:green;"></i></button>`;
+
+                const modifyBtn = contentRemarks.querySelector('.modify-content-body');
+                if (modifyBtn) {
+                    modifyBtn.addEventListener('click', function () {
+                        toggleSection(bodyContent, true);
+                    });
+                }
+            }
+
+
+        }
+
+        // for Modify buttons
+        const modifyButtons = document.querySelectorAll('.modify-content-body');
+        modifyButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const bodyContent = this.closest('.body-content');
+                toggleSection(bodyContent, true);
+            });
+        });
+        // rebind click for new arrow button
+        const cancelBtn = document.querySelectorAll('.btn-cancel');
+        cancelBtn.forEach(button => {
+            const bodyContent = this.closest('.body-content');
+            toggleSection(bodyContent, false);
+        })
+    });
+</script>
