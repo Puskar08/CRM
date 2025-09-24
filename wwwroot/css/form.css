@@ -1,3 +1,8 @@
+.one-column-form {
+  display: grid;
+  grid-template-columns: auto;
+  gap: 15px;
+}
 .form-container-horizontal {
   display: grid;
   /* grid-template-columns: 1fr 1fr 1fr; */

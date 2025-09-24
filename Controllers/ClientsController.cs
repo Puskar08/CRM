@@ -638,7 +638,7 @@ public class ClientsController : Controller
                             clientProfile.IsAcceptTermsandConditions = profile.ProfileData.IsAcceptTermsandConditions;
                         }
                         successMessage = "Declartion updated successfully.";
-                        redirectUrl = Url.Action("VerifyProfile", "Clients",new { user.Id });
+                        redirectUrl = Url.Action("VerifyProfile", "Clients");
                         break;
 
                     case "Verification":
@@ -671,7 +671,7 @@ public class ClientsController : Controller
     [Route("Clients/VerifyProfile")]
     public async Task<IActionResult> VerifyProfile()
     {
-
+        return View();
     }
-    
+
 }

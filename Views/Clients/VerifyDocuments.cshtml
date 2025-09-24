@@ -1,131 +1,580 @@
-@model AdditionalDetailsModel
+<style>
+    .step-indicator {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 30px;
+        position: relative;
+    }
 
-<div class="page">
-    <div>
-        <div class="page-body">
-            <div>
-                <div class="container" style="padding: 0;">
-                    <div class="header">
-                        <h1> Additional Details</h1>
-                    </div>
+    .step-indicator::before {
+        content: '';
+        position: absolute;
+        top: 15px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background-color: var(--light-gray);
+        z-index: 1;
+    }
 
-                    <form id="additional-details-form">
-                        @Html.AntiForgeryToken()
-                        <div class="form-container">
-                            <div class="form-group">
-                                <label for="buildingNumber">Building Number</label>
-                                <input type="text" id="buildingNumber" class="form-control"
-                                    value="@Model.BuildingNumber" />
-                            </div>
-                            <div class="form-group">
-                                <label for="street">Street</label>
-                                <input type="text" id="street" class="form-control" value="@Model.Street" required />
-                            </div>
-                            <div class="form-group">
-                                <label for="city">City</label>
-                                <input type="text" id="city" class="form-control" value="@Model.City" required />
-                            </div>
-                            <div class="form-group">
-                                <label for="postalCode">Postal Code</label>
-                                <input type="text" id="postalCode" class="form-control" value="@Model.PostalCode" />
-                            </div>
-                            <div class="form-group">
-                                <label for="nationality">Nationality</label>
-                                <input type="text" id="nationality" class="form-control" value="@Model.Nationality"
-                                    required />
-                            </div>
-                            <div class="form-group">
-                                <label for="placeOfBirth">Place of Birth</label>
-                                <input type="text" id="placeOfBirth" class="form-control" value="@Model.PlaceOfBirth"
-                                    required />
-                            </div>
-                            <button type="submit" id="btnContinue" class="btn-submit">Continue</button>
-                            <button type="button" id="btnBack" class="btn-back">Back</button>
-                        </div>
-                    </form>
+    .step-indicator::after {
+        content: '';
+        position: absolute;
+        top: 15px;
+        left: 0;
+        width: 0%;
+        height: 2px;
+        background-color: var(--primary-color);
+        z-index: 2;
+        transition: width 0.5s ease;
+    }
+
+    .step-indicator.half-complete::after {
+        width: 50%;
+    }
+
+    .step-indicator.full-complete::after {
+        width: 100%;
+    }
+
+    .step {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background-color: var(--light-gray);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        position: relative;
+        z-index: 3;
+    }
+
+    .step.active {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+    .step.completed {
+        background-color: #4caf50;
+        color: white;
+    }
+
+    .step-content {
+        display: none;
+    }
+
+    .step-content.active {
+        display: block;
+    }
+
+    .step-title {
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+        color: var(--dark-gray);
+    }
+
+    .step-list {
+        list-style-type: none;
+        margin-bottom: 20px;
+    }
+
+    .step-list li {
+        padding: 10px 0;
+        border-bottom: 1px solid var(--light-gray);
+        display: flex;
+        align-items: center;
+    }
+
+    .step-list li:last-child {
+        border-bottom: none;
+    }
+
+    select,
+    input[type="file"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: var(--border-radius);
+        font-size: 1rem;
+    }
+
+    .upload-area {
+        border: 2px dashed #ddd;
+        border-radius: var(--border-radius);
+        padding: 30px;
+        text-align: center;
+        margin-top: 10px;
+        cursor: pointer;
+        transition: border-color 0.3s;
+    }
+
+    .upload-area:hover {
+        border-color: var(--primary-color);
+    }
+
+    .upload-icon {
+        font-size: 2rem;
+        color: #ddd;
+        margin-bottom: 10px;
+    }
+
+    .powered-by {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 0.8rem;
+        color: #777;
+    }
+
+    .navigation {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+
+    .nav-btn {
+        padding: 10px 20px;
+        background-color: #f0f0f0;
+        border: none;
+        border-radius: var(--border-radius);
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .nav-btn:hover {
+        background-color: #e0e0e0;
+    }
+
+    .nav-btn.primary {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+    .nav-btn.primary:hover {
+        background-color: var(--secondary-color);
+    }
+
+    .success-message {
+        text-align: center;
+        padding: 20px;
+        background-color: #e8f5e9;
+        border-radius: var(--border-radius);
+        margin-top: 20px;
+        display: none;
+    }
+
+    .success-icon {
+        font-size: 3rem;
+        color: #4caf50;
+        margin-bottom: 10px;
+    }
+
+    .document-section {
+        margin-bottom: 30px;
+        padding: 15px;
+    }
+
+    .document-status {
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
+        font-size: 0.9rem;
+    }
+
+    .status-icon {
+        margin-right: 8px;
+        font-weight: bold;
+    }
+
+    .status-verified {
+        color: #4caf50;
+    }
+
+    .status-pending {
+        color: #ff9800;
+    }
+
+    .status-not-submitted {
+        color: #f44336;
+    }
+
+    .document-preview {
+        max-width: 100%;
+        margin-top: 15px;
+        border-radius: var(--border-radius);
+        display: none;
+    }
+</style>
+
+<div class="container">
+    <h1>Let's get you verified</h1>
+
+    <!-- Step 1: Introduction -->
+    <div class="step-content active" id="step1-content">
+        <p>Follow the simple steps below</p>
+        <ul class="step-list">
+            <li>Provide identity document</li>
+            <li>Perform a liveness check</li>
+            <li>Provide address information</li>
+        </ul>
+        <div class="powered-by">Powered by <strong>sumsub</strong></div>
+        <button class="btn" id="continue-btn">Continue on this device</button>
+    </div>
+
+    <!-- Step 2: Data and Privacy -->
+    <div class="step-content" id="step2-content">
+        <h2 class="step-title">Data and Privacy</h2>
+        <p>I confirm that I have read the Privacy Notice and the Notification to Processing of Personal Data</p>
+        <div class="checkbox-container">
+            <input type="checkbox" id="consent-checkbox">
+            <label for="consent-checkbox">I consent to the processing of my personal data</label>
+        </div>
+        <div class="powered-by">Powered by <strong>sumsub</strong></div>
+        <button class="btn" id="privacy-continue-btn" disabled>Continue</button>
+    </div>
+
+    <!-- Step 3: Government ID Upload -->
+    <div class="step-content" id="step3-content">
+        <div class="step-indicator" id="doc-step-indicator">
+            <div class="step active" id="doc-step1">1</div>
+            <div class="step" id="doc-step2">2</div>
+        </div>
+
+        <h2 class="step-title">Upload your Government ID</h2>
+        <p>Please upload a government-issued ID such as a driver's license, passport, or national ID card</p>
+
+        <div class="document-section">
+            <div class="form-group">
+                <label for="document-type">Document type *</label>
+                <select id="document-type" required>
+                    <option value="">Select a document type</option>
+                    <option value="driver-license">Driver licence</option>
+                    <option value="id-card">ID card</option>
+                    <option value="passport">Passport</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="gov-id-upload">Document upload *</label>
+                <div class="upload-area" id="gov-upload-area">
+                    <div class="upload-icon">📁</div>
+                    <p>Click to upload or drag and drop</p>
+                    <p>Max file size: 5MB</p>
+                    <input type="file" id="gov-id-upload" accept="image/*" style="display: none;">
                 </div>
+                <div id="gov-file-name" style="margin-top: 10px; font-style: italic;"></div>
+                <img id="gov-preview" class="document-preview" alt="Document preview">
+            </div>
+
+            <div class="document-status" id="gov-id-status">
+                <span class="status-icon status-not-submitted">●</span>
+                <span>Not submitted</span>
             </div>
         </div>
+
+        <div class="powered-by">Powered by <strong>sumsub</strong></div>
+        <button class="btn" id="submit-gov-btn" disabled>Submit Government ID</button>
+    </div>
+
+    <!-- Step 4: Proof of Address Upload -->
+    <div class="step-content" id="step4-content">
+        <div class="step-indicator full-complete" id="doc-step-indicator-2">
+            <div class="step completed" id="doc-step1-2">1</div>
+            <div class="step active" id="doc-step2-2">2</div>
+        </div>
+
+        <h2 class="step-title">Upload your Proof of Address</h2>
+        <p>Please upload a document that proves your address, such as a utility bill or bank statement</p>
+
+        <div class="document-section">
+            <div class="form-group">
+                <label for="address-document-type">Document type *</label>
+                <select id="address-document-type" required>
+                    <option value="">Select a document type</option>
+                    <option value="utility-bill">Utility bill</option>
+                    <option value="bank-statement">Bank statement</option>
+                    <option value="lease-agreement">Lease agreement</option>
+                    <option value="tax-document">Tax document</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="address-upload">Document upload *</label>
+                <div class="upload-area" id="address-upload-area">
+                    <div class="upload-icon">📁</div>
+                    <p>Click to upload or drag and drop</p>
+                    <p>Max file size: 5MB</p>
+                    <input type="file" id="address-upload" accept="image/*" style="display: none;">
+                </div>
+                <div id="address-file-name" style="margin-top: 10px; font-style: italic;"></div>
+                <img id="address-preview" class="document-preview" alt="Document preview">
+            </div>
+
+            <div class="document-status" id="address-status">
+                <span class="status-icon status-not-submitted">●</span>
+                <span>Not submitted</span>
+            </div>
+        </div>
+
+        <div class="powered-by">Powered by <strong>sumsub</strong></div>
+        <button class="btn" id="submit-address-btn" disabled>Submit Proof of Address</button>
+    </div>
+
+    <!-- Success Message -->
+    <div class="success-message" id="success-message">
+        <div class="success-icon">✓</div>
+        <h3>Verification Submitted Successfully!</h3>
+        <p>Your documents have been submitted for verification. We'll notify you once the process is complete.</p>
+    </div>
+
+    <!-- Navigation (hidden on first step) -->
+    <div class="navigation" id="navigation" style="display: none;">
+        <button class="nav-btn" id="prev-btn">Previous</button>
+        <button class="nav-btn primary" id="next-btn">Next</button>
     </div>
 </div>
-<script src="~/js/clientregistration.js"></script>
+
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        document.getElementById("additional-details-form").addEventListener("submit", function (event) {
-            event.preventDefault();
-            changeContinueButtonState(true);
-            // Handle form submission
-            var street = document.getElementById("street").value;
-            var city = document.getElementById("city").value;
-            var buildingNumber = document.getElementById("buildingNumber").value;
-            var postalCode = document.getElementById("postalCode").value;
-            var nationality = document.getElementById("nationality").value;
-            var placeOfBirth = document.getElementById("placeOfBirth").value;
-            if (!street || !city || !nationality || !placeOfBirth) {
-                Swal.fire({
-                    toast: true,
-                    position: 'top-end',
-                    icon: 'error',
-                    title: 'Error!',
-                    text: 'Please fill out all required fields.',
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true
-                });
-                return; // Prevent form submission if validation fails
-            }
-            const formData = {
-                buildingNumber: document.getElementById("buildingNumber").value,
-                street: document.getElementById("street").value,
-                city: document.getElementById("city").value,
-                postalCode: document.getElementById("postalCode").value,
-                nationality: document.getElementById("nationality").value,
-                placeOfBirth: document.getElementById("placeOfBirth").value
-            }
-            fetch('/Clients/SaveAdditionalDetails', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
-                },
-                body: JSON.stringify(formData)
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Redirect or show success message
-                        window.location.href = data.redirectUrl;
-                    } else {
-                        changeContinueButtonState(false);
-                        Swal.fire({
-                            toast: true,
-                            position: 'top-end',
-                            icon: 'error',
-                            title: 'Error!',
-                            text: 'An error occurred. Please try again.',
-                            showConfirmButton: false,
-                            timer: 3000,
-                            timerProgressBar: true
-                        });
-                    }
-                })
-                .catch(error => {
-                    changeContinueButtonState(false);
-                    Swal.fire({
-                        toast: true,
-                        position: 'top-end',
-                        icon: 'error',
-                        title: 'Error!',
-                        text: 'An error occurred. Please try again.',
-                        showConfirmButton: false,
-                        timer: 3000,
-                        timerProgressBar: true
-                    });
-                });
+    document.addEventListener('DOMContentLoaded', function () {
+        // Elements
+        const steps = document.querySelectorAll('.step');
+        const stepContents = document.querySelectorAll('.step-content');
+        const continueBtn = document.getElementById('continue-btn');
+        const privacyContinueBtn = document.getElementById('privacy-continue-btn');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const navigation = document.getElementById('navigation');
+        const consentCheckbox = document.getElementById('consent-checkbox');
+        const successMessage = document.getElementById('success-message');
+
+        // Document elements
+        const docStepIndicator = document.getElementById('doc-step-indicator');
+        const docStepIndicator2 = document.getElementById('doc-step-indicator-2');
+        const documentTypeSelect = document.getElementById('document-type');
+        const govUploadArea = document.getElementById('gov-upload-area');
+        const govFileInput = document.getElementById('gov-id-upload');
+        const govFileName = document.getElementById('gov-file-name');
+        const govPreview = document.getElementById('gov-preview');
+        const govStatus = document.getElementById('gov-id-status');
+        const submitGovBtn = document.getElementById('submit-gov-btn');
+        const addressDocumentTypeSelect = document.getElementById('address-document-type');
+        const addressUploadArea = document.getElementById('address-upload-area');
+        const addressFileInput = document.getElementById('address-upload');
+        const addressFileName = document.getElementById('address-file-name');
+        const addressPreview = document.getElementById('address-preview');
+        const addressStatus = document.getElementById('address-status');
+        const submitAddressBtn = document.getElementById('submit-address-btn');
+
+        let currentStep = 1;
+        let govIdSubmitted = false;
+        let addressSubmitted = false;
+
+        // Initialize
+        updateStepIndicator();
+
+        // Event Listeners
+        continueBtn.addEventListener('click', function () {
+            currentStep = 2;
+            updateStepIndicator();
+            showStep(2);
+            navigation.style.display = 'flex';
         });
 
-        document.getElementById("btnBack").addEventListener("click", function () {
-            window.location.href = '/Clients/TradingInfo';
+        consentCheckbox.addEventListener('change', function () {
+            privacyContinueBtn.disabled = !this.checked;
         });
+
+        privacyContinueBtn.addEventListener('click', function () {
+            currentStep = 3;
+            updateStepIndicator();
+            showStep(3);
+        });
+
+        // Government ID upload
+        govUploadArea.addEventListener('click', function () {
+            govFileInput.click();
+        });
+
+        govFileInput.addEventListener('change', function () {
+            if (this.files.length > 0) {
+                const file = this.files[0];
+                govFileName.textContent = `Selected file: ${file.name}`;
+
+                // Show preview for images
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        govPreview.src = e.target.result;
+                        govPreview.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    govPreview.style.display = 'none';
+                }
+
+                submitGovBtn.disabled = false;
+            } else {
+                govFileName.textContent = '';
+                govPreview.style.display = 'none';
+                submitGovBtn.disabled = true;
+            }
+        });
+
+        submitGovBtn.addEventListener('click', function () {
+            // In a real application, you would submit the form data to a server here
+            govIdSubmitted = true;
+            govStatus.innerHTML = '<span class="status-icon status-pending">●</span><span>Verification pending</span>';
+            submitGovBtn.disabled = true;
+            submitGovBtn.textContent = 'Submitted';
+
+            // Update progress indicator to show half completion
+            docStepIndicator.classList.add('half-complete');
+            document.getElementById('doc-step1').classList.remove('active');
+            document.getElementById('doc-step1').classList.add('completed');
+            document.getElementById('doc-step2').classList.add('active');
+
+            // Move to next step after a short delay
+            setTimeout(function () {
+                currentStep = 4;
+                updateStepIndicator();
+                showStep(4);
+            }, 1000);
+        });
+
+        // Address upload
+        addressUploadArea.addEventListener('click', function () {
+            addressFileInput.click();
+        });
+
+        addressFileInput.addEventListener('change', function () {
+            if (this.files.length > 0) {
+                const file = this.files[0];
+                addressFileName.textContent = `Selected file: ${file.name}`;
+
+                // Show preview for images
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        addressPreview.src = e.target.result;
+                        addressPreview.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    addressPreview.style.display = 'none';
+                }
+
+                submitAddressBtn.disabled = false;
+            } else {
+                addressFileName.textContent = '';
+                addressPreview.style.display = 'none';
+                submitAddressBtn.disabled = true;
+            }
+        });
+
+        submitAddressBtn.addEventListener('click', function () {
+            // In a real application, you would submit the form data to a server here
+            addressSubmitted = true;
+            addressStatus.innerHTML = '<span class="status-icon status-pending">●</span><span>Verification pending</span>';
+            submitAddressBtn.disabled = true;
+            submitAddressBtn.textContent = 'Submitted';
+
+            // Update progress indicator to show full completion
+            docStepIndicator2.classList.add('full-complete');
+            document.getElementById('doc-step2-2').classList.remove('active');
+            document.getElementById('doc-step2-2').classList.add('completed');
+
+            // Show success message
+            successMessage.style.display = 'block';
+            navigation.style.display = 'none';
+
+            // Reset form after 5 seconds (for demo purposes)
+            setTimeout(function () {
+                resetForm();
+            }, 5000);
+        });
+
+        prevBtn.addEventListener('click', function () {
+            if (currentStep > 1) {
+                currentStep--;
+                updateStepIndicator();
+                showStep(currentStep);
+
+                if (currentStep === 1) {
+                    navigation.style.display = 'none';
+                }
+            }
+        });
+
+        nextBtn.addEventListener('click', function () {
+            if (currentStep < 4) {
+                currentStep++;
+                updateStepIndicator();
+                showStep(currentStep);
+            }
+        });
+
+        // Functions
+        function updateStepIndicator() {
+            steps.forEach((step, index) => {
+                if (index + 1 < currentStep) {
+                    step.classList.add('completed');
+                    step.classList.remove('active');
+                } else if (index + 1 === currentStep) {
+                    step.classList.add('active');
+                    step.classList.remove('completed');
+                } else {
+                    step.classList.remove('active', 'completed');
+                }
+            });
+        }
+
+        function showStep(stepNumber) {
+            stepContents.forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(`step${stepNumber}-content`).classList.add('active');
+        }
+
+        function resetForm() {
+            // Reset form to initial state
+            currentStep = 1;
+            updateStepIndicator();
+            showStep(1);
+            navigation.style.display = 'none';
+            successMessage.style.display = 'none';
+
+            // Reset form fields
+            consentCheckbox.checked = false;
+            privacyContinueBtn.disabled = true;
+            documentTypeSelect.value = '';
+            govFileInput.value = '';
+            govFileName.textContent = '';
+            govPreview.style.display = 'none';
+            submitGovBtn.disabled = true;
+            submitGovBtn.textContent = 'Submit Government ID';
+            addressDocumentTypeSelect.value = '';
+            addressFileInput.value = '';
+            addressFileName.textContent = '';
+            addressPreview.style.display = 'none';
+            submitAddressBtn.disabled = true;
+            submitAddressBtn.textContent = 'Submit Proof of Address';
+
+            // Reset status indicators
+            govIdSubmitted = false;
+            addressSubmitted = false;
+            govStatus.innerHTML = '<span class="status-icon status-not-submitted">●</span><span>Not submitted</span>';
+            addressStatus.innerHTML = '<span class="status-icon status-not-submitted">●</span><span>Not submitted</span>';
+
+            // Reset document step indicators
+            docStepIndicator.classList.remove('half-complete', 'full-complete');
+            docStepIndicator2.classList.remove('half-complete', 'full-complete');
+            document.getElementById('doc-step1').classList.add('active');
+            document.getElementById('doc-step1').classList.remove('completed');
+            document.getElementById('doc-step2').classList.remove('active', 'completed');
+            document.getElementById('doc-step1-2').classList.add('completed');
+            document.getElementById('doc-step1-2').classList.remove('active');
+            document.getElementById('doc-step2-2').classList.add('active');
+            document.getElementById('doc-step2-2').classList.remove('completed');
+        }
     });
 </script>

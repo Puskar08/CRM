@@ -1,0 +1,486 @@
+<style>
+    .step-container {
+        display: none;
+    }
+
+    .step-container.active {
+        display: block;
+    }
+
+    .content {
+        padding: 30px;
+    }
+
+    .steps {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .step {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .step-icon {
+        width: 50px;
+        height: 50px;
+        background: #f6f6f6;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: cadetblue;
+        font-size: 20px;
+        flex-shrink: 0;
+    }
+
+    .step-content {
+        flex: 1;
+    }
+
+    .step-number {
+        font-size: 14px;
+        font-weight: 550;
+        color: #808080;
+        margin-bottom: 4px;
+    }
+
+    .step-text {
+        font-size: 16px;
+        color: #333;
+        line-height: 1.4;
+    }
+
+    .divider {
+        height: 1px;
+        background: #eaeaea;
+        margin: 24px 0;
+    }
+
+    select,
+    input[type="file"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 1rem;
+    }
+
+    .upload-area {
+        border: 2px dashed #ddd;
+        border-radius: 12px;
+        padding: 30px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s;
+        position: relative;
+        min-height: 200px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+    }
+
+    .upload-area:hover {
+        border-color: #3a86ff;
+        background-color: #f8fbff;
+    }
+
+    .upload-area.has-file {
+        border-style: solid;
+        border-color: #3a86ff;
+        background-color: #f0f7ff;
+    }
+
+    .upload-icon {
+        font-size: 48px;
+        color: #ccc;
+        margin-bottom: 15px;
+        transition: all 0.3s;
+    }
+
+    .upload-area:hover .upload-icon {
+        color: #3a86ff;
+    }
+
+    .upload-text {
+        color: #777;
+        margin-bottom: 5px;
+    }
+
+    .upload-hint {
+        color: #999;
+        font-size: 14px;
+    }
+
+    .file-preview {
+        max-width: 100%;
+        max-height: 150px;
+        border-radius: 8px;
+        display: none;
+    }
+
+    .delete-btn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: rgba(255, 255, 255, 0.9);
+        border: none;
+        border-radius: 50%;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: #ff4d4f;
+        font-size: 18px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        opacity: 0;
+        transition: opacity 0.3s;
+        z-index: 10;
+    }
+
+    .upload-area.has-file .delete-btn {
+        opacity: 1;
+    }
+
+    .delete-btn:hover {
+        background: #ff4d4f;
+        color: white;
+        transform: scale(1.1);
+    }
+
+    .file-info {
+        margin-top: 15px;
+        font-style: italic;
+        color: #666;
+        text-align: center;
+    }
+
+    .instructions {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        font-size: 14px;
+        color: #666;
+    }
+
+    .instructions h4 {
+        margin-bottom: 8px;
+        color: #333;
+    }
+
+    .instructions ul {
+        padding-left: 20px;
+    }
+
+    .instructions li {
+        font-size: 15px;
+        margin-bottom: 5px;
+    }
+
+    .instructions p {
+        font-size: 15px;
+        margin-bottom: 5px;
+    }
+
+    .btn-submit:hover:not(:disabled) {
+        transform: translateY(-2px);
+    }
+
+    .btn-submit:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+        transform: none;
+    }
+</style>
+
+<div class="container" style="padding: 0;">
+    <!--step 1-->
+    <div class="step-container active" id="step1-container-content">
+        <div class="header">
+            <h1>Let's get you verified</h1>
+        </div>
+
+        <div class="content">
+            <p>Follow the simple steps below</p>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-icon">
+                        <i class="fas fa-id-card"></i>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-number">Step 1</div>
+                        <div class="step-text">Provide identity document</div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <div class="step-icon">
+                        <i class="fas fa-home"></i>
+                    </div>
+                    <div class="step-content">
+                        <div class="step-number">Step 2</div>
+                        <div class="step-text">Provide address information</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <button class="btn-submit" data-container-step="1">Continue</button>
+        </div>
+    </div>
+
+    <!--setep 2-->
+    <div class="step-container" id="step2-container-content">
+        <div class="header">
+            <h1>Upload your Government ID</h1>
+        </div>
+
+        <div class="content">
+            <div class="instructions">
+                <h4>Accepted Documents:</h4>
+                <ul>
+                    <li>Driver's License</li>
+                    <li>Passport</li>
+                    <li>National ID Card</li>
+                </ul>
+                <p>Make sure your document is clear and all information is visible.</p>
+            </div>
+
+            <div class="one-column-form">
+                <div class="form-group">
+                    <label for="gov-document-type">Document Type *</label>
+                    <select id="gov-document-type" class="document-type">
+                        <option value="">Select document type</option>
+                        <option value="driver-license">Driver's License</option>
+                        <option value="passport">Passport</option>
+                        <option value="id-card">National ID Card</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Upload Document *</label>
+                    <div class="upload-area" id="gov-upload-area">
+                        <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                        <p class="upload-text">Click to upload or drag and drop</p>
+                        <p class="upload-hint">Max file size: 5MB</p>
+                        <img class="file-preview" id="gov-preview" alt="Document preview">
+                        <button class="delete-btn" id="delete-btn">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        <input type="file" id="gov-id-upload" accept="image/*,.pdf" style="display: none;">
+                    </div>
+                    <div class="file-info" id="gov-file-name"></div>
+                </div>
+            </div>
+            <div class="divider"></div>
+
+            <button class="btn-submit" data-container-step="2" disabled id="submit-gov-btn">Submit</button>
+        </div>
+    </div>
+
+    <!--setep 3-->
+    <div class="step-container" id="step3-container-content">
+        <div class="header">
+            <h1>Upload Proof of Address</h1>
+        </div>
+
+        <div class="content">
+            <div class="instructions">
+                <h4>Accepted Documents:</h4>
+                <ul>
+                    <li>Bank Statement (issue in last 6 months)</li>
+                    <li>Utility bill (e.g. phone, gas, water, electric, mobile phone, internet, or cable bill issued in
+                        the last 6 months)
+                    </li>
+                </ul>
+                <p>Make sure your document is clear and all information is visible.</p>
+            </div>
+
+            <div class="one-column-form">
+                <div class="form-group">
+                    <label for="add-document-type">Document Type *</label>
+                    <select id="add-document-type" class="document-type">
+                        <option value="">Select document type</option>
+                        <option value="driver-license">Driver's License</option>
+                        <option value="passport">Passport</option>
+                        <option value="id-card">National ID Card</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Upload Document *</label>
+                    <div class="upload-area" id="gov-upload-area">
+                        <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                        <p class="upload-text">Click to upload or drag and drop</p>
+                        <p class="upload-hint">Max file size: 5MB</p>
+                        <img class="file-preview" id="gov-preview" alt="Document preview">
+                        <button class="delete-btn" id="delete-btn">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        <input type="file" id="gov-id-upload" accept="image/*,.pdf" style="display: none;">
+                    </div>
+                    <div class="file-info" id="gov-file-name"></div>
+                </div>
+            </div>
+            <div class="divider"></div>
+
+            <button class="btn-submit" data-container-step="2" disabled id="submit-gov-btn">Submit</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    const continueBtn = document.querySelectorAll('.btn-submit');
+    const stepContainers = document.querySelectorAll('.step-container');
+    let currentStep = 0;
+    continueBtn.forEach(btn => {
+        btn.addEventListener('click', function () {
+            const step = btn.getAttribute('data-container-step');
+            const st = this.dataset.containerStep;
+            currentStep = parseInt(step) + 1;
+            if (currentStep > 1 && currentStep <= stepContainers.length) {
+                // show navigation if current step is greater than 1
+                // const navigation = document.getElementById('navigation
+                showStep(currentStep);
+                @* if (currentStep > 1) {
+                navigation.style.display = 'flex';*@
+            }
+        });
+    })
+
+    function showStep(stepNumber) {
+        stepContainers.forEach(content => {
+            content.classList.remove('active');
+        });
+        document.getElementById(`step${stepNumber}-container-content`).classList.add('active');
+    }
+
+
+    const govUploadArea = document.getElementById('gov-upload-area');
+    const govFileInput = document.getElementById('gov-id-upload');
+    const govFileName = document.getElementById('gov-file-name');
+    const govPreview = document.getElementById('gov-preview');
+    const deleteBtn = document.getElementById('delete-btn');
+    const submitGovBtn = document.getElementById('submit-gov-btn');
+    const govStatus = document.getElementById('gov-status');
+    const uploadIcon = document.querySelector('.upload-icon');
+    const uploadText = document.querySelector('.upload-text');
+    const uploadHint = document.querySelector('.upload-hint');
+
+    // Government ID upload
+    govUploadArea.addEventListener('click', function (e) {
+        // Prevent triggering when clicking on delete button
+        if (e.target !== deleteBtn && !deleteBtn.contains(e.target)) {
+            if (document.getElementById('gov-document-type').value) {
+                govFileInput.click();
+            } else {
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'warning',
+                    title: 'Warning!',
+                    text: 'Please select the document type.',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true
+                });
+            }
+        }
+    });
+
+    govFileInput.addEventListener('change', function () {
+        if (this.files.length > 0) {
+            const file = this.files[0];
+            govFileName.textContent = `Selected file: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
+
+            // Show preview for images
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    govPreview.src = e.target.result;
+                    govPreview.style.display = 'block';
+
+                    // Hide upload text and icon
+                    uploadIcon.style.display = 'none';
+                    uploadText.style.display = 'none';
+                    uploadHint.style.display = 'none';
+
+                    // Add class to indicate file is present
+                    govUploadArea.classList.add('has-file');
+                };
+                reader.readAsDataURL(file);
+            } else {
+                // For PDF files, show a PDF icon
+                govPreview.style.display = 'none';
+                uploadIcon.className = 'fas fa-file-pdf upload-icon';
+                uploadIcon.style.display = 'block';
+                uploadText.textContent = file.name;
+                uploadHint.textContent = 'PDF Document';
+
+                // Add class to indicate file is present
+                govUploadArea.classList.add('has-file');
+            }
+
+            submitGovBtn.disabled = false;
+        }
+    });
+
+    // Delete button functionality
+    deleteBtn.addEventListener('click', function (e) {
+        e.stopPropagation(); // Prevent triggering the file input
+
+        // Reset the file input
+        govFileInput.value = '';
+
+        // Reset the preview
+        govPreview.style.display = 'none';
+        govPreview.src = '';
+
+        // Reset upload area to initial state
+        uploadIcon.className = 'fas fa-cloud-upload-alt upload-icon';
+        uploadIcon.style.display = 'block';
+        uploadText.textContent = 'Click to upload or drag and drop';
+        uploadText.style.display = 'block';
+        uploadHint.textContent = 'Max file size: 5MB';
+        uploadHint.style.display = 'block';
+
+        // Remove the has-file class
+        govUploadArea.classList.remove('has-file');
+
+        // Clear file info
+        govFileName.textContent = '';
+
+        // Disable submit button
+        submitGovBtn.disabled = true;
+    });
+
+    submitGovBtn.addEventListener('click', function () {
+        // In a real application, you would submit the form data to a server here
+        govIdSubmitted = true;
+        govStatus.innerHTML = '<span class="status-icon status-pending">●</span><span>Verification pending</span>';
+        submitGovBtn.disabled = true;
+        submitGovBtn.textContent = 'Submitted';
+
+        // Update progress indicator to show half completion
+        docStepIndicator.classList.add('half-complete');
+        document.getElementById('doc-step1').classList.remove('active');
+        document.getElementById('doc-step1').classList.add('completed');
+        document.getElementById('doc-step2').classList.add('active');
+
+        // Move to next step after a short delay
+        setTimeout(function () {
+            currentStep = 4;
+            updateStepIndicator();
+            showStep(4);
+        }, 1000);
+    });
+</script>
