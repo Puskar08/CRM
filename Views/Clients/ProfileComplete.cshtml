@@ -8,6 +8,18 @@
     .content-body-collapsed {
         display: none;
     }
+
+    .form-control.error {
+        border-color: #e74c3c;
+        box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.2);
+    }
+
+    .error-message {
+        color: #e74c3c;
+        font-size: 14px;
+        margin-top: 5px;
+        display: none;
+    }
 </style>
 <link rel="stylesheet" href="~/css/form.css" />
 <div class="page">
@@ -19,6 +31,7 @@
     </div>
     <div class="page-body">
         @Html.AntiForgeryToken()
+        <!--Personal Details-->
         <div class="body-content">
             <div class="content-header content-header-collapsed">
                 <h3>Personal Details</h3>
@@ -31,19 +44,21 @@
             <div class="content-body content-body-collapsed">
                 <form id="personal-info-form">
                     <div class="form-container-horizontal">
-
-
+                        <input type="hidden" name="userId" id="userId" value="@Model.UserId" />
                         <div class="form-group">
                             <label for="firstName">First name</label>
                             <input type="text" id="firstName" class="form-control" value="@Model.FirstName" required>
+                            <div class="error-message" id="firstNameError">First name is required</div>
                         </div>
                         <div class="form-group">
                             <label for="lastName">Last name</label>
                             <input type="text" id="lastName" class="form-control" value="@Model.LastName" required>
+                            <div class="error-message" id="lastName">Last name is required</div>
                         </div>
                         <div class="form-group">
                             <label for="email">Email address</label>
                             <input type="email" id="email" class="form-control" disabled value="@Model.Email" />
+                            <div class="error-message" id="emailError">Email is required</div>
                         </div>
                         <div class="form-group">
                             <label for="phoneCode">Mobile phone</label>
@@ -65,6 +80,8 @@
                                 <input type="tel" id="phoneNumber" class="form-control" value="@Model.PhoneNumber"
                                     required>
                             </div>
+                            <div class="error-message" id="phoneCodeError">Phone code is required</div>
+                            <div class="error-message" id="phoneNumberError">Phone number is required</div>
                         </div>
 
                         <div class="form-group">
@@ -93,8 +110,10 @@
                                     Oman
                                 </option>
                             </select>
+                            <div class="error-message" id="countryOfResidenceError">Country of residence is required
+                            </div>
                         </div>
-
+                        <input type="hidden" id="accountType" name="accountType" value="@Model.AccountType" />
                         @* <div class="form-group">
                             <label for="accountType">Account type</label>
                             <select id="accountType" class="form-control" disabled>
@@ -115,15 +134,18 @@
                             <input id="dateOfBirth" class="dateSelect form-control" name="dateOfBirth" type="date"
                                 value="@(Model.DateOfBirth.HasValue? Model.DateOfBirth.Value.ToString(format: "yyyy-MM-dd") : "")" />
                             <div class="form-note">As shown on ID documents</div>
+                            <div class="error-message" id="dateOfBirthError">Date of birth is required</div>
                         </div>
                     </div>
                     <div class="form-footer">
-                        <button type="submit" id="btnContinue" class="btn-update">Update</button>
+                        <button type="submit" id="btnContinue" data-profile-section="PersonalDetails"
+                            class="btn-update">Update</button>
                         <button type="button" id="btnBack" class="btn-cancel">Cancel</button>
                     </div>
                 </form>
             </div>
         </div>
+        <!--Employment & Income-->
         <div class="body-content">
             <div class="content-header content-header-collapsed">
                 <h3>Employmnet & Income</h3>
@@ -161,6 +183,7 @@
                                     Retired
                                 </option>
                             </select>
+                            <div class="error-message" id="employmentStatusError">Employment status is required</div>
                         </div>
 
                         <div class="form-group">
@@ -184,6 +207,7 @@
                                     $Above-$20000
                                 </option>
                             </select>
+                            <div class="error-message" id="annualIncomeError">Annual income is required</div>
                         </div>
 
                         <div class="form-group">
@@ -213,6 +237,8 @@
                                     Pension
                                 </option>
                             </select>
+                            <div class="error-message" id="primarySourceOfTradingFundError">Primary source of trading
+                                fund is required</div>
                         </div>
 
                         <div class="form-group">
@@ -235,6 +261,8 @@
                                     Algo Trading
                                 </option>
                             </select>
+                            <div class="error-message" id="tradingObjectiveError">Please specify your trading objective
+                            </div>
                         </div>
 
                         <div class="form-group">
@@ -252,16 +280,19 @@
                                     High
                                 </option>
                             </select>
+                            <div class="error-message" id="degreeOfRiskError">Please select your degree of risk</div>
                         </div>
                     </div>
 
                     <div class="form-footer">
-                        <button type="submit" id="btnContinue" class="btn-update">Update</button>
+                        <button type="submit" id="btnContinue" class="btn-update"
+                            data-profile-section="Employment&Income">Update</button>
                         <button type="button" id="btnBack" class="btn-cancel">Cancel</button>
                     </div>
                 </form>
             </div>
         </div>
+        <!--Trading Preferences-->
         <div class="body-content">
             <div class="content-header content-header-collapsed">
                 <h3>Trading Preferences</h3>
@@ -290,6 +321,8 @@
                                     selected="@(Model.YearsOfTradingExperience == "None" ? "selected" : null)">None
                                 </option>
                             </select>
+                            <div class="error-message" id="yearsOfExperienceError">Years of trading experience is
+                                required</div>
                         </div>
 
                         <div class="form-group">
@@ -305,16 +338,20 @@
                                     No
                                 </option>
                             </select>
+                            <div class="error-message" id="confirmTradingKnowledgeError">Trading knowledge need to be
+                                confirmed</div>
                         </div>
                     </div>
 
                     <div class="form-footer">
-                        <button type="submit" id="btnContinue" class="btn-update">Update</button>
+                        <button type="submit" id="btnContinue" class="btn-update"
+                            data-profile-section="TradingPreference">Update</button>
                         <button type="button" id="btnBack" class="btn-cancel">Cancel</button>
                     </div>
                 </form>
             </div>
         </div>
+        <!--Additional Details-->
         <div class="body-content">
             <div class="content-header content-header-collapsed">
                 <h3>Additional Details</h3>
@@ -333,27 +370,33 @@
                         </div>
                         <div class=" form-group">
                             <label for="street">Street</label>
-                            <input type="text" id="street" class="form-control" required />
+                            <input type="text" id="street" class="form-control" value="@Model.Street" required />
+                            <div class="error-message" id="streetError">Street is required</div>
                         </div>
                         <div class="form-group">
                             <label for="city">City</label>
-                            <input type="text" id="city" class="form-control" required />
+                            <input type="text" id="city" class="form-control" value="@Model.City" required />
+                            <div class="error-message" id="cityError">City is required</div>
                         </div>
                         <div class="form-group">
                             <label for="postalCode">Postal Code</label>
-                            <input type="text" id="postalCode" class="form-control" />
+                            <input type="text" id="postalCode" class="form-control" value="@Model.PostalCode" />
                         </div>
                         <div class="form-group">
                             <label for="nationality">Nationality</label>
-                            <input type="text" id="nationality" class="form-control" required />
+                            <input type="text" id="nationality" class="form-control" value="@Model.Nationality"
+                                required />
+                            <div class="error-message" id="nationalityError">Nationality is required</div>
                         </div>
                         <div class="form-group">
                             <label for="placeOfBirth">Place of Birth</label>
-                            <input type="text" id="placeOfBirth" class="form-control" required />
+                            <input type="text" id="placeOfBirth" class="form-control" value="@Model.PlaceOfBirth"
+                                required />
+                            <div class="error-message" id="placeOfBirthError">Place of birth is required</div>
                         </div>
                     </div>
                     <div class="form-footer">
-                        <button type="submit" id="btnContinue" data-profile-section="AdditionalInfo"
+                        <button type="submit" id="btnContinue" data-profile-section="AdditionalDetails"
                             class="btn-update">Update</button>
                         <button type="button" id="btnBack" class="btn-cancel">Cancel</button>
                     </div>
@@ -361,6 +404,7 @@
                 </form>
             </div>
         </div>
+        <!--Declaration-->
         <div class="body-content">
             <div class="content-header content-header-collapsed">
                 <h3>Declaration</h3>
@@ -424,17 +468,22 @@
                     </li>
                 </ul>
                 <div class="checkbox-group">
-                    <input type="checkbox" id="agreeDeclaration">
-                    <label for="agreeDeclaration">I agree to all of the above</label>
+                    <input type="checkbox" id="isAcceptTermsandConditions" name="isAcceptTermsandConditions" 
+                    @(Model != null && Model.IsAcceptTermsandConditions ? "checked aria-checked='true'" : "aria-checked='false'")/>
+                    <label for="isAcceptTermsandConditions">I agree to all of the above</label>
                 </div>
+                <div class="error-message" id="isAcceptTermsandConditions">You need to agree before continuing.</div>
                 <p>
                     We can help you if you have any questions. Please email us at support@gcfx.com
                 </p>
                 <div class="content-footer">
-                    <button class="btn-update">Next</button>
+                    @* <button class="btn-update">Next</button> *@
+                    <button type="submit" id="btnContinue" data-profile-section="Declaration"
+                            class="btn-update">Next</button>
                 </div>
             </div>
         </div>
+        <!--Verification-->
         <div class="body-content">
             <div class="content-header content-header-collapsed">
                 <h3>Verification</h3>
@@ -447,6 +496,66 @@
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        // Map your form input IDs to the corresponding record properties
+        const fieldMapping = {
+            firstName: "FirstName",
+            lastName: "LastName",
+            email: "Email",
+            phoneCode: "PhoneCode",
+            phoneNumber: "PhoneNumber",
+            countryOfResidence: "CountryOfResidence",
+            dateOfBirth: "DateOfBirth"
+        };
+        // Clear error states when user starts typing
+        document.querySelectorAll('.form-control').forEach(input => {
+            input.addEventListener('input', function () {
+                clearError(this);
+            });
+
+            // For select elements, listen for change event
+            if (input.tagName === 'SELECT') {
+                input.addEventListener('change', function () {
+                    clearError(this);
+                });
+            }
+        });
+        // Function to focus on a specific field and show error state
+        function focusOnField(fieldName) {
+            const field = document.getElementById(fieldName);
+            if (field) {
+                field.focus();
+                field.classList.add('error');
+
+                // Show the error message
+                const errorElement = document.getElementById(fieldName + 'Error');
+                if (errorElement) {
+                    errorElement.style.display = 'block';
+                }
+
+                // Scroll to the field if it's not in view
+                field.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+        // Function to clear error state from a field
+        function clearError(field) {
+            field.classList.remove('error');
+            const errorElement = document.getElementById(field.id + 'Error');
+            if (errorElement) {
+                errorElement.style.display = 'none';
+            }
+        }
+
+        // Function to clear all error states
+        function clearAllErrors() {
+            document.querySelectorAll('.form-control').forEach(field => {
+                field.classList.remove('error');
+            });
+
+            document.querySelectorAll('.error-message').forEach(error => {
+                error.style.display = 'none';
+            });
+        }
+
         let sortDirection = "asc";
         const sortIcons = {
             asc: 'm280-400 200-200 200 200H280Z',
@@ -483,7 +592,6 @@
                 // rebind click for new arrow button
                 const toggleBtn = contentRemarks.querySelector('.toggle-content-body');
                 toggleBtn.addEventListener('click', function () {
-                    debugger;
                     toggleSection(bodyContent, true);
                 });
 
@@ -522,12 +630,171 @@
         //for update buttons
         const updateButtons = document.querySelectorAll('.btn-update');
         updateButtons.forEach(button => {
+            debugger;
             button.addEventListener('click', function (event) {
                 event.preventDefault(); // Prevent form submission for demo purposes
                 const bodyContent = this.closest('.body-content');
-                toggleSection(bodyContent, false);
+                const profileSection = this.dataset.profileSection;
+                getFormData(profileSection);
             });
         });
+
+        function getFormData(profileSection) {
+            let data = {};
+            // Fields to ignore
+            const ignoreFields = ["buildingNumber", "postalCode"];
+            switch (profileSection) {
+                case "PersonalDetails":
+                    data = {
+                        firstName: document.getElementById('firstName')?.value.trim(),
+                        lastName: document.getElementById('lastName')?.value.trim(),
+                        email: document.getElementById('email')?.value.trim(),
+                        phoneCode: document.getElementById('phoneCode')?.value.trim(),
+                        phoneNumber: document.getElementById('phoneNumber')?.value.trim(),
+                        countryOfResidence: document.getElementById('countryOfResidence')?.value.trim(),
+                        dateOfBirth: document.getElementById('dateOfBirth')?.value.trim(),
+                        accountType: document.getElementById('accountType')?.value.trim()
+                    }
+                    break;
+                case "Employment&Income":
+                    data = {
+                        employmentStatus: document.getElementById("employmentStatus")?.value.trim(),
+                        annualIncome: document.getElementById("annualIncome")?.value.trim(),
+                        primarySourceOfTradingFund: document.getElementById("primarySourceOfTradingFund")?.value.trim(),
+                        tradingObjective: document.getElementById("tradingObjective")?.value.trim(),
+                        degreeOfRisk: document.getElementById("degreeOfRisk")?.value.trim(),
+                    }
+                    break;
+                case "TradingPreference":
+                    data = {
+                        yearsOfExperience: document.getElementById("yearsOfExperience")?.value.trim(),
+                        confirmTradingKnowledge: document.getElementById("confirmTradingKnowledge")?.value.trim()
+                    }
+                    break;
+                case "AdditionalDetails":
+                    data = {
+                        buildingNumber: document.getElementById("buildingNumber")?.value.trim(),
+                        street: document.getElementById("street")?.value.trim(),
+                        city: document.getElementById("city")?.value.trim(),
+                        postalCode: document.getElementById("postalCode")?.value.trim(),
+                        nationality: document.getElementById("nationality")?.value.trim(),
+                        placeOfBirth: document.getElementById("placeOfBirth")?.value.trim()
+                    }
+                    break;
+                case "Declaration":
+                    debugger;
+                    const isAcceptTermsandConditions = document.getElementById("isAcceptTermsandConditions")?.checked || false;
+                    data = {
+                        isAcceptTermsandConditions: isAcceptTermsandConditions
+                    };
+                    break;
+                case "Verification":
+                    data = {
+
+                    }
+                    break;
+            }
+            data.userId = document.getElementById('userId')?.value.trim();
+            // Clear all previous errors
+            clearAllErrors();
+
+            let emptyField = Object.entries(data)
+                .filter(([key]) => !ignoreFields.includes(key)) // ignore these
+                .find(([key, value]) => !value);
+
+            if (emptyField) {
+                let [fieldName] = emptyField;
+                // Find the label linked to the input
+                let label = document.querySelector(`label[for="${fieldName}"]`)?.innerText || fieldName;
+                // Focus on the empty field after alert is closed
+                focusOnField(fieldName);
+                // Show error message with SweetAlert
+                @* Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'warning',
+                    title: 'Missing Field!',
+                    text: `${label} is required.`,
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true
+                }); *@
+            } else {
+                updateProfileData(data, profileSection);
+            }
+        }
+        function updateProfileData(formData, profileSection) {
+            debugger;
+            let payload = {
+                profileData: formData,
+                profileSection: profileSection
+            }
+            fetch('/Clients/UpdateProfileData', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                },
+                body: JSON.stringify(payload)
+            })
+                .then(response => response.json())
+                .then(responseData => {
+                    debugger;
+                    if (responseData.success) {
+                        if (responseData.updatedRecord) {
+                            const record = responseData.updatedRecord;
+                            // Loop through mapping and update the input values
+                            Object.entries(fieldMapping).forEach(([inputId, propertyName]) => {
+                                const element = document.getElementById(inputId);
+                                const value = record[propertyName];
+                                if (element && value !== undefined && value !== null) {
+                                    if (element.tagName === "SELECT") {
+                                        element.value = value; // selects the matching option
+                                    } else {
+                                        element.value = value; // inputs, textarea
+                                    }
+                                }
+                            });
+                        }
+                        if(responseData.redirectUrl){
+                            window.location.href = responseData.redirectUrl
+                        }
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Success!',
+                            text: responseData.message || "Profile updated successfully.",
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true
+                        })
+                    } else {
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'error',
+                            title: 'Error!',
+                            text: responseData.message || "An error occurred.",
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true
+                        });
+                    }
+                })
+                .catch(error => {
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'Error!',
+                        text: 'An error occurred while submitting the form.',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true
+                    });
+                });
+        }
 
     });
 </script>

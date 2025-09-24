@@ -31,6 +31,7 @@ namespace CRM.Models
         public string? ProofofAddressUrl { get; set; }
         public bool IsProfileComplete { get; set; }
         public DateTime CreatedOn { get; set; }
+        public bool IsAcceptTermsandConditions { get; set; }
     }
 
 
@@ -65,5 +66,12 @@ namespace CRM.Models
         public string? ProofofAddressUrl { get; set; }
         public bool IsProfileComplete { get; set; }
         public DateTime CreatedOn { get; set; }
+        public bool IsAcceptTermsandConditions { get; set; }
+    }
+
+    public class UpdateProfileDTO
+    {
+        public ProfileViewModel ProfileData { get; set; }
+        public string? ProfileSection { get; set; }
     }
 }

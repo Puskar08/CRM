@@ -7,6 +7,10 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.EntityFrameworkCore.Storage;
+using System.Transactions;
+using Microsoft.AspNetCore.Routing.Tree;
 
 namespace CRM.Controllers;
 
@@ -404,12 +408,6 @@ public class ClientsController : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> ProfileComplete()
-    {
-        return View();
-    }
-
-    [HttpGet]
     // [Authorize]
     [Route("Clients/CompleteProfile")]
     public async Task<IActionResult> CompleteProfile()
@@ -444,7 +442,8 @@ public class ClientsController : Controller
             PlaceOfBirth = profile.PlaceOfBirth,
             PassportUrl = profile.PassportUrl,
             ProofofAddressUrl = profile.ProofofAddressUrl,
-            IsProfileComplete = profile.IsProfileComplete
+            IsProfileComplete = profile.IsProfileComplete,
+            IsAcceptTermsandConditions = profile.IsAcceptTermsandConditions
         };
         // var user = await _userManager.GetUserAsync(User);
         // if(user == null)
@@ -458,4 +457,221 @@ public class ClientsController : Controller
         // }
         return View("ProfileComplete", model);
     }
+
+    public static List<string> ValidateRequiredFields<T>(T obj, params string[] requiredFields)
+    {
+        var missingFields = new List<string>();
+
+        if (obj == null)
+        {
+            missingFields.Add("Object is null");
+            return missingFields;
+        }
+
+        var type = typeof(T);
+
+        foreach (var field in requiredFields)
+        {
+            var prop = type.GetProperty(field);
+            if (prop != null)
+            {
+                var value = prop.GetValue(obj)?.ToString();
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    missingFields.Add(field);
+                }
+            }
+        }
+
+        return missingFields; // empty list means all fields are filled
+    }
+
+
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    // [Authorize]
+    [Route("Clients/UpdateProfileData")]
+    public async Task<IActionResult> UpdateProfileData([FromBody] CRM.Models.UpdateProfileDTO profile)
+    {
+        string successMessage = string.Empty;
+        List<string> missingFields = new List<string>();
+        var redirectUrl = "";
+        try
+        {
+            if (profile != null)
+            {
+                var clientProfile = await _context.ClientProfiles.FirstOrDefaultAsync(p => p.UserId == profile.ProfileData.UserId);
+                ApplicationUser? user = null;
+                if (!string.IsNullOrEmpty(profile.ProfileData.UserId))
+                {
+                    user = await _userManager.FindByIdAsync(profile.ProfileData.UserId);
+                }
+                if (clientProfile == null || user == null)
+                {
+                    return StatusCode(500, new { success = false, message = "Profile not found." });
+                }
+                var updateProfileDataTransaction = await _context.Database.BeginTransactionAsync();
+                switch (profile.ProfileSection)
+                {
+                    case "PersonalDetails":
+                        missingFields = ValidateRequiredFields(profile.ProfileData,
+                           nameof(profile.ProfileData.UserId),
+                           nameof(profile.ProfileData.FirstName),
+                           nameof(profile.ProfileData.LastName),
+                           nameof(profile.ProfileData.Email),
+                           nameof(profile.ProfileData.PhoneCode),
+                           nameof(profile.ProfileData.PhoneNumber),
+                           nameof(profile.ProfileData.AccountType),
+                           nameof(profile.ProfileData.DateOfBirth),
+                           nameof(profile.ProfileData.CountryOfResidence)
+                       );
+
+                        if (missingFields.Any())
+                        {
+                            // You can return all missing fields in a message
+                            var message = "The following fields are required: " + string.Join(", ", missingFields);
+                            return BadRequest(new { success = false, message = message });
+                        }
+
+                        //update client profile fields
+                        clientProfile.FirstName = profile.ProfileData.FirstName;
+                        clientProfile.LastName = profile.ProfileData.LastName;
+                        clientProfile.AccountType = profile.ProfileData.AccountType;
+                        clientProfile.CountryOfResidence = profile.ProfileData.CountryOfResidence;
+
+                        //update client user fields
+                        user.Name = profile.ProfileData.FirstName + " " + profile.ProfileData.LastName;
+                        user.CountryCode = profile.ProfileData.PhoneCode;
+                        user.PhoneNumber = profile.ProfileData.PhoneNumber;
+                        user.DateOfBirth = profile.ProfileData.DateOfBirth?.ToUniversalTime();
+
+                        var result = await _userManager.UpdateAsync(user);
+                        if (!result.Succeeded)
+                        {
+                            return StatusCode(500, new { success = false, message = "Unable to update client user." });
+                        }
+
+                        successMessage = "Personal details updated successfully.";
+                        break;
+
+                    case "Employment&Income":
+                        missingFields = ValidateRequiredFields(profile.ProfileData,
+                            nameof(profile.ProfileData.EmploymentStatus),
+                            nameof(profile.ProfileData.AnnualIncome),
+                            nameof(profile.ProfileData.PrimarySourceOfTradingFund),
+                            nameof(profile.ProfileData.TradingObjective),
+                            nameof(profile.ProfileData.DegreeOfRisk)
+                        );
+
+                        if (missingFields.Any())
+                        {
+                            successMessage = "The following fields are required: " + string.Join(", ", missingFields);
+                            return BadRequest(new { success = false, message = successMessage });
+                        }
+                        if (clientProfile != null)
+                        {
+                            clientProfile.EmploymentStatus = profile.ProfileData.EmploymentStatus;
+                            clientProfile.AnnualIncome = profile.ProfileData.AnnualIncome;
+                            clientProfile.PrimarySourceOfTradingFund = profile.ProfileData.PrimarySourceOfTradingFund;
+                            clientProfile.TradingObjective = profile.ProfileData.TradingObjective;
+                            clientProfile.DegreeOfRisk = profile.ProfileData.DegreeOfRisk;
+                        }
+                        successMessage = "Employment and income details updated successfully.";
+                        break;
+
+                    case "TradingPreference":
+                        missingFields = ValidateRequiredFields(profile.ProfileData,
+                            nameof(profile.ProfileData.YearsOfTradingExperience),
+                            nameof(profile.ProfileData.ConfirmTradingKnowledge)
+                        );
+
+                        if (missingFields.Any())
+                        {
+                            successMessage = "The following fields are required: " + string.Join(", ", missingFields);
+                            return BadRequest(new { success = false, message = successMessage });
+                        }
+                        if (clientProfile != null)
+                        {
+                            clientProfile.YearsOfTradingExperience = profile.ProfileData.YearsOfTradingExperience;
+                            clientProfile.ConfirmTradingKnowledge = profile.ProfileData.ConfirmTradingKnowledge;
+                        }
+                        successMessage = "Trading preferences updated successfully.";
+                        break;
+
+                    case "AdditionalDetails":
+                        missingFields = ValidateRequiredFields(profile.ProfileData,
+                            nameof(profile.ProfileData.Street),
+                            nameof(profile.ProfileData.City),
+                            nameof(profile.ProfileData.Nationality),
+                            nameof(profile.ProfileData.PlaceOfBirth)
+                        );
+
+                        if (missingFields.Any())
+                        {
+                            successMessage = "The following fields are required: " + string.Join(", ", missingFields);
+                            return BadRequest(new { success = false, message = successMessage });
+                        }
+                        if (clientProfile != null)
+                        {
+                            clientProfile.BuildingNumber = profile.ProfileData.BuildingNumber;
+                            clientProfile.Street = profile.ProfileData.Street;
+                            clientProfile.PostalCode = profile.ProfileData.PostalCode;
+                            clientProfile.Nationality = profile.ProfileData.Nationality;
+                            clientProfile.PlaceOfBirth = profile.ProfileData.PlaceOfBirth;
+                        }
+                        successMessage = "Additional details updated successfully.";
+                        break;
+
+                    case "Declaration":
+                        missingFields = ValidateRequiredFields(profile.ProfileData,
+                            nameof(profile.ProfileData.IsAcceptTermsandConditions)
+                        );
+
+                        if (missingFields.Any())
+                        {
+                            successMessage = "The following fields are required: " + string.Join(", ", missingFields);
+                            return BadRequest(new { success = false, message = successMessage });
+                        }
+                        if (clientProfile != null)
+                        {
+                            clientProfile.IsAcceptTermsandConditions = profile.ProfileData.IsAcceptTermsandConditions;
+                        }
+                        successMessage = "Declartion updated successfully.";
+                        redirectUrl = Url.Action("VerifyProfile", "Clients",new { user.Id });
+                        break;
+
+                    case "Verification":
+                        break;
+                    default:
+                        break;
+                }
+                if (clientProfile != null)
+                {
+                    _context.ClientProfiles.Update(clientProfile);
+
+                    var savechangesResult = await _context.SaveChangesAsync();
+                    if (savechangesResult > 0)
+                    {
+                        await updateProfileDataTransaction.CommitAsync();
+                        return Ok(new { success = true, message = successMessage, updatedRecord = clientProfile, redirectUrl = redirectUrl });
+                    }
+                }
+            }
+            return BadRequest(new { success = false, message = "Invalid form data." });
+        }
+        catch (Exception ex)
+        {
+            successMessage = ex.Message;
+            return BadRequest(new { success = false, message = "An error occurred while updating the profile." });
+        }
+    }
+
+    [HttpGet]
+    [Route("Clients/VerifyProfile")]
+    public async Task<IActionResult> VerifyProfile()
+    {
+
+    }
+    
 }
