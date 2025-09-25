@@ -21,12 +21,18 @@ public class ClientsController : Controller
     private const string PendingUserSessionKey = "PendingUserId";
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly SignInManager<ApplicationUser> _signInManager;
+    private readonly string _uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
     public ClientsController(ILogger<ClientsController> logger, AppDbContext context, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
     {
         _logger = logger;
         _context = context;
         _userManager = userManager;
         _signInManager = signInManager;
+        // Ensure upload directory exists
+        if (!Directory.Exists(_uploadPath))
+        {
+            Directory.CreateDirectory(_uploadPath);
+        }
     }
 
     public IActionResult Index()
@@ -674,4 +680,102 @@ public class ClientsController : Controller
         return View();
     }
 
+    private enum Documents
+    {
+        Passport,
+        GovernmentID,
+        License,
+        BankStatement,
+        UtilityBill
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [Route("Clients/DocumentUpload")]
+    public async Task<IActionResult> DocumentUpload(string documentType, IFormFile file, string documentSection)
+    {
+        try
+        {
+            // Validate inputs
+            if (string.IsNullOrEmpty(documentType))
+            {
+                return BadRequest(new { success = false, message = "Document type is required." });
+            }
+
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest(new { success = false, message = "No file uploaded." });
+            }
+
+            // Validate file size (5MB limit)
+            if (file.Length > 5 * 1024 * 1024)
+            {
+                return BadRequest(new { success = false, message = "File size exceeds 5MB limit." });
+            }
+
+            // Validate file type
+            var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".pdf" };
+            var fileExtension = Path.GetExtension(file.FileName).ToLowerInvariant();
+            if (!allowedExtensions.Contains(fileExtension))
+            {
+                return BadRequest(new { success = false, message = "Invalid file type. Only images and PDFs are allowed." });
+            }
+
+            // Validate document type
+            string[] validDocumentTypes = Array.Empty<string>(); // empty array
+
+            if (documentSection == "governmentDocument")
+            {
+                validDocumentTypes = new[] { "license", "passport", "idcard" };
+            }
+            else if (documentSection == "proofOfAddDocument")
+            {
+                validDocumentTypes = new[] { "bankstatement", "utilitybill" };
+            }
+            // var validDocumentTypes = documentSection == "2" 
+            //         ? new[] { "driver-license", "passport", "id-card" }
+            //         : new[] { "bank-statement", "utility-bill" };
+
+
+            if (!validDocumentTypes.Contains(documentType))
+            {
+                return BadRequest(new { success = false, message = "Invalid document type." });
+            }
+
+            // Generate unique file name
+            var uniqueFileName = $"{Guid.NewGuid()}{fileExtension}";
+            var filePath = Path.Combine(_uploadPath, uniqueFileName);
+
+            // Save file
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            // Here you can add logic to save documentType and filePath to your database
+            // Example:
+            // var document = new Document
+            // {
+            //     DocumentType = documentType,
+            //     FilePath = filePath,
+            //     FileName = file.FileName,
+            //     UploadDate = DateTime.UtcNow
+            // };
+            // _context.Documents.Add(document);
+            // await _context.SaveChangesAsync();
+            var redirectUrl = string.Empty;
+            if (documentSection == "proofOfAddDocument")
+            {
+                // redirectUrl = Url.Action("Dashboard", "Clients");
+                redirectUrl = Url.Action("Index", "Home");
+            }
+
+            return Ok(new { success = true, message = "Document uploaded successfully.", redirectUrl = redirectUrl });
+        }
+        catch (Exception ex)
+        {
+            // Log the exception (implement your logging mechanism)
+            return StatusCode(500, new { success = true, message = $"An error occurred: {ex.Message}" });
+        }
+    }
 }

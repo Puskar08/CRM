@@ -186,7 +186,8 @@ footer {
   grid-area: footer;
   margin-left: 0px;
   padding: 1rem 2rem;
-  background: white;
+  /* background: white; */
+  background-color: #f8f8f8;
   border-top: 1px solid #e1e4e8;
 }
 footer p {

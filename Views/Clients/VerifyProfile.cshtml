@@ -201,6 +201,7 @@
 </style>
 
 <div class="container" style="padding: 0;">
+    @Html.AntiForgeryToken()
     <!--step 1-->
     <div class="step-container active" id="step1-container-content">
         <div class="header">
@@ -233,7 +234,7 @@
 
             <div class="divider"></div>
 
-            <button class="btn-submit" data-container-step="1">Continue</button>
+            <button type="button" class="btn-submit btn-continue" data-container-step="1">Continue</button>
         </div>
     </div>
 
@@ -259,30 +260,33 @@
                     <label for="gov-document-type">Document Type *</label>
                     <select id="gov-document-type" class="document-type">
                         <option value="">Select document type</option>
-                        <option value="driver-license">Driver's License</option>
                         <option value="passport">Passport</option>
-                        <option value="id-card">National ID Card</option>
+                        <option value="license">Driver's License</option>
+                        <option value="idcard">National ID Card</option>
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label>Upload Document *</label>
-                    <div class="upload-area" id="gov-upload-area">
+                    <div class="upload-area" id="gov-upload-area" data-target-file-input="gov-id-upload"
+                        data-target-document-selection="gov-document-type">
                         <i class="fas fa-cloud-upload-alt upload-icon"></i>
                         <p class="upload-text">Click to upload or drag and drop</p>
                         <p class="upload-hint">Max file size: 5MB</p>
-                        <img class="file-preview" id="gov-preview" alt="Document preview">
-                        <button class="delete-btn" id="delete-btn">
+                        <img class="file-preview" alt="Document preview">
+                        <button class="delete-btn">
                             <i class="fas fa-trash"></i>
                         </button>
-                        <input type="file" id="gov-id-upload" accept="image/*,.pdf" style="display: none;">
+                        <input type="file" id="gov-id-upload" class="file-input" accept="image/*,.pdf"
+                            style="display: none;">
                     </div>
                     <div class="file-info" id="gov-file-name"></div>
                 </div>
             </div>
             <div class="divider"></div>
 
-            <button class="btn-submit" data-container-step="2" disabled id="submit-gov-btn">Submit</button>
+            <button type="button" class="btn-submit submit-file" data-container-step="2"
+                data-document-section="governmentDocument" disabled id="submit-gov-btn">Submit</button>
         </div>
     </div>
 
@@ -309,79 +313,81 @@
                     <label for="add-document-type">Document Type *</label>
                     <select id="add-document-type" class="document-type">
                         <option value="">Select document type</option>
-                        <option value="driver-license">Driver's License</option>
-                        <option value="passport">Passport</option>
-                        <option value="id-card">National ID Card</option>
+                        <option value="bankstatement">Bank Statement</option>
+                        <option value="utilitybill">Utility-Bill</option>
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label>Upload Document *</label>
-                    <div class="upload-area" id="gov-upload-area">
+                    <div class="upload-area" id="add-upload-area" data-target-file-input="add-id-upload"
+                        data-target-document-selection="add-document-type">
                         <i class="fas fa-cloud-upload-alt upload-icon"></i>
                         <p class="upload-text">Click to upload or drag and drop</p>
                         <p class="upload-hint">Max file size: 5MB</p>
-                        <img class="file-preview" id="gov-preview" alt="Document preview">
-                        <button class="delete-btn" id="delete-btn">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                        <input type="file" id="gov-id-upload" accept="image/*,.pdf" style="display: none;">
+                        <img class="file-preview" alt="Document preview">
+                        <button class="delete-btn"><i class="fas fa-trash"></i></button>
+                        <input type="file" id="add-id-upload" class="file-input" accept="image/*,.pdf"
+                            style="display: none;">
                     </div>
-                    <div class="file-info" id="gov-file-name"></div>
+                    <div class="file-info" id="add-file-name"></div>
                 </div>
             </div>
             <div class="divider"></div>
 
-            <button class="btn-submit" data-container-step="2" disabled id="submit-gov-btn">Submit</button>
+            <button type="button" class="btn-submit submit-file" data-container-step="3"
+                data-document-section="proofOfAddDocument" disabled>Submit</button>
         </div>
     </div>
 
 </div>
 
 <script>
-    const continueBtn = document.querySelectorAll('.btn-submit');
+    const continueBtn = document.querySelectorAll('.btn-continue');
     const stepContainers = document.querySelectorAll('.step-container');
-    let currentStep = 0;
     continueBtn.forEach(btn => {
         btn.addEventListener('click', function () {
-            const step = btn.getAttribute('data-container-step');
-            const st = this.dataset.containerStep;
-            currentStep = parseInt(step) + 1;
-            if (currentStep > 1 && currentStep <= stepContainers.length) {
-                // show navigation if current step is greater than 1
-                // const navigation = document.getElementById('navigation
-                showStep(currentStep);
-                @* if (currentStep > 1) {
-                navigation.style.display = 'flex';*@
-            }
+            continueOrSubmitBtnClick(btn);
         });
     })
 
+    function continueOrSubmitBtnClick(btn) {
+        debugger;
+        const step = btn.getAttribute('data-container-step');
+        const nextStep = parseInt(step) + 1;
+        if (nextStep > 1 && nextStep <= stepContainers.length) {
+            // show navigation if current step is greater than 1
+            showStep(nextStep);
+            @* if (currentStep > 1) {
+                navigation.style.display = 'flex';
+            } *@
+        }
+    }
+
     function showStep(stepNumber) {
+        debugger;
         stepContainers.forEach(content => {
             content.classList.remove('active');
         });
         document.getElementById(`step${stepNumber}-container-content`).classList.add('active');
     }
 
+    // upload-area event listener
+    const uploadAreas = document.querySelectorAll('.upload-area');
+    uploadAreas.forEach(area => {
+        area.addEventListener('click', function (e) {
+            const deleteBtn = this.querySelector('.delete-btn'); // child button
 
-    const govUploadArea = document.getElementById('gov-upload-area');
-    const govFileInput = document.getElementById('gov-id-upload');
-    const govFileName = document.getElementById('gov-file-name');
-    const govPreview = document.getElementById('gov-preview');
-    const deleteBtn = document.getElementById('delete-btn');
-    const submitGovBtn = document.getElementById('submit-gov-btn');
-    const govStatus = document.getElementById('gov-status');
-    const uploadIcon = document.querySelector('.upload-icon');
-    const uploadText = document.querySelector('.upload-text');
-    const uploadHint = document.querySelector('.upload-hint');
+            // if the delete button (or its icon) was clicked → stop here
+            if (deleteBtn && (e.target === deleteBtn || deleteBtn.contains(e.target))) {
+                return;
+            }
 
-    // Government ID upload
-    govUploadArea.addEventListener('click', function (e) {
-        // Prevent triggering when clicking on delete button
-        if (e.target !== deleteBtn && !deleteBtn.contains(e.target)) {
-            if (document.getElementById('gov-document-type').value) {
-                govFileInput.click();
+            const fileInput = document.getElementById(area.getAttribute("data-target-file-input"));
+            const documentType = document.getElementById(area.getAttribute("data-target-document-selection"))?.value;
+
+            if (fileInput && documentType) {
+                fileInput.click();
             } else {
                 Swal.fire({
                     toast: true,
@@ -394,93 +400,219 @@
                     timerProgressBar: true
                 });
             }
-        }
+        });
     });
 
-    govFileInput.addEventListener('change', function () {
-        if (this.files.length > 0) {
-            const file = this.files[0];
-            govFileName.textContent = `Selected file: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
 
-            // Show preview for images
-            if (file.type.startsWith('image/')) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    govPreview.src = e.target.result;
-                    govPreview.style.display = 'block';
+    // helper to get all elements inside a form-group
+    function getFormGroupElements(formGroup) {
+        return {
+            fileInput: formGroup.querySelector('.file-input'),
+            filePreview: formGroup.querySelector('.file-preview'),
+            uploadIcon: formGroup.querySelector('.upload-icon'),
+            uploadText: formGroup.querySelector('.upload-text'),
+            uploadHint: formGroup.querySelector('.upload-hint'),
+            uploadArea: formGroup.querySelector('.upload-area'),
+            fileInfo: formGroup.querySelector('.file-info'),
+            submitBtn: formGroup.closest('.content').querySelector('.btn-submit')
+        };
+    }
 
-                    // Hide upload text and icon
-                    uploadIcon.style.display = 'none';
-                    uploadText.style.display = 'none';
-                    uploadHint.style.display = 'none';
+    //file-input event listener
+    const fileInputs = document.querySelectorAll('.file-input');
+    fileInputs.forEach(fileinput => {
+        fileinput.addEventListener('change', function (e) {
+            e.preventDefault();
+            if (this.files.length > 0) {
+                const file = this.files[0];
+                //select the closest form-group
+                const formGroup = this.closest('.form-group');
+                const elements = getFormGroupElements(formGroup);
+
+                //display the file name in the file-info
+                elements.fileInfo.textContent = `Selected file: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
+
+                //show preview for images
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        //diplay image inside file-preview
+                        elements.filePreview.src = e.target.result;
+                        elements.filePreview.style.display = 'block';
+
+                        //hide upload text and icon
+                        elements.uploadIcon.style.display = 'none';
+                        elements.uploadText.style.display = 'none';
+                        elements.uploadHint.style.display = 'none';
+
+                        // Add class to indicate file is present
+                        elements.uploadArea.classList.add('has-file');
+                    }
+                    reader.readAsDataURL(file);
+                } else {
+                    // For PDF files, show a PDF icon
+                    elements.filePreview.style.display = 'none';
+                    elements.uploadIcon.className = 'fas fa-file-pdf upload-icon';
+                    elements.uploadIcon.style.display = 'block';
+                    elements.uploadText.textContent = file.name;
+                    elements.uploadHint.textContent = 'PDF Document';
 
                     // Add class to indicate file is present
-                    govUploadArea.classList.add('has-file');
-                };
-                reader.readAsDataURL(file);
-            } else {
-                // For PDF files, show a PDF icon
-                govPreview.style.display = 'none';
-                uploadIcon.className = 'fas fa-file-pdf upload-icon';
-                uploadIcon.style.display = 'block';
-                uploadText.textContent = file.name;
-                uploadHint.textContent = 'PDF Document';
+                    elements.uploadArea.classList.add('has-file');
+                }
+                //enable submit button
+                elements.submitBtn.disabled = false;
+            }
+        });
+    });
 
-                // Add class to indicate file is present
-                govUploadArea.classList.add('has-file');
+    //delete button functionlity
+    const deleteBtns = document.querySelectorAll('.delete-btn');
+    deleteBtns.forEach(delBtn => {
+        delBtn.addEventListener('click', function (e) {
+            e.stopPropagation(); //prevent triggering the file input
+
+            //reset the file input
+            const formGroup = this.closest('.form-group');
+            const elements = getFormGroupElements(formGroup);
+
+
+            elements.fileInput.value = '';
+
+            elements.filePreview.style.display = 'none';
+            elements.filePreview.src = '';
+
+            elements.uploadIcon.className = 'fas fa-cloud-upload-alt upload-icon';
+            elements.uploadIcon.style.display = 'block';
+
+            elements.uploadText.textContent = 'Click to upload or drag and drop';
+            elements.uploadText.style.display = 'block';
+
+            elements.uploadHint.textContent = 'Max file size: 5MB';
+            elements.uploadHint.style.display = 'block';
+
+            elements.uploadArea.classList.remove('has-file');
+            //clear file info
+            elements.fileInfo.textContent = '';
+            //disable submit button
+            elements.submitBtn.disabled = true;
+        })
+    })
+
+    // Handle form submission
+    const fileSubmitBtns = document.querySelectorAll('.submit-file');
+    fileSubmitBtns.forEach(filesubmitBtn => {
+        filesubmitBtn.addEventListener('click', async function (e) {
+            e.preventDefault();
+            const content = this.closest('.content');
+            const documentType = content.querySelector('.document-type');
+            const fileInput = content.querySelector('.file-input');
+            const documentSection = this.getAttribute('data-document-section');
+            if (!documentType.value) {
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'warning',
+                    title: 'Warning!',
+                    text: 'Please select a document type.',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true
+                });
+                return;
+            }
+            if (!fileInput.files[0]) {
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'warning',
+                    title: 'Warning!',
+                    text: 'Please upload a document.',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true
+                });
+                return;
             }
 
-            submitGovBtn.disabled = false;
-        }
+            const formData = new FormData();
+            formData.append('documentType', documentType.value);
+            formData.append('file', fileInput.files[0]);
+            formData.append('documentSection', documentSection);
+
+            try {
+                const response = await fetch('/Clients/DocumentUpload', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                    }
+                });
+
+                let responseData;
+                try {
+                    responseData = await response.json();
+                } catch (parseError) {
+                    throw new Error("Invalid JSON response from the server.");
+                }
+
+                if (response.ok) {
+                    if (responseData.success) {
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'success',
+                            title: 'Success!',
+                            text: responseData.message || 'Document uploaded successfully.',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true
+                        }).then(() => {
+                            if (responseData.redirectUrl) {
+                                window.location.href = responseData.redirectUrl;
+                            }
+                            continueOrSubmitBtnClick(filesubmitBtn);
+                        })
+                    }
+                    else {
+                        Swal.fire({
+                            toast: true,
+                            position: 'top-end',
+                            icon: 'error',
+                            title: 'Error!',
+                            text: responseData.message,
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true
+                        });
+
+                    }
+                }
+                else {
+                    Swal.fire({
+                        toast: true,
+                        position: 'top-end',
+                        icon: 'error',
+                        title: 'Error!',
+                        text: responseData.message || `HTTP error ${response.status}`,
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true
+                    });
+                }
+            } catch (error) {
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'An error occurred while uploading the document.',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true
+                });
+            }
+        });
     });
 
-    // Delete button functionality
-    deleteBtn.addEventListener('click', function (e) {
-        e.stopPropagation(); // Prevent triggering the file input
-
-        // Reset the file input
-        govFileInput.value = '';
-
-        // Reset the preview
-        govPreview.style.display = 'none';
-        govPreview.src = '';
-
-        // Reset upload area to initial state
-        uploadIcon.className = 'fas fa-cloud-upload-alt upload-icon';
-        uploadIcon.style.display = 'block';
-        uploadText.textContent = 'Click to upload or drag and drop';
-        uploadText.style.display = 'block';
-        uploadHint.textContent = 'Max file size: 5MB';
-        uploadHint.style.display = 'block';
-
-        // Remove the has-file class
-        govUploadArea.classList.remove('has-file');
-
-        // Clear file info
-        govFileName.textContent = '';
-
-        // Disable submit button
-        submitGovBtn.disabled = true;
-    });
-
-    submitGovBtn.addEventListener('click', function () {
-        // In a real application, you would submit the form data to a server here
-        govIdSubmitted = true;
-        govStatus.innerHTML = '<span class="status-icon status-pending">●</span><span>Verification pending</span>';
-        submitGovBtn.disabled = true;
-        submitGovBtn.textContent = 'Submitted';
-
-        // Update progress indicator to show half completion
-        docStepIndicator.classList.add('half-complete');
-        document.getElementById('doc-step1').classList.remove('active');
-        document.getElementById('doc-step1').classList.add('completed');
-        document.getElementById('doc-step2').classList.add('active');
-
-        // Move to next step after a short delay
-        setTimeout(function () {
-            currentStep = 4;
-            updateStepIndicator();
-            showStep(4);
-        }, 1000);
-    });
 </script>
