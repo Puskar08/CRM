@@ -56,6 +56,8 @@
 <script src="~/js/clientregistration.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+        // Pass ViewBag.TargetUserId to a local variable
+        var targetUserId = '@ViewBag.TargetUserId' || '';
         document.getElementById("trading-form").addEventListener("submit", function (event) {
             event.preventDefault();
             changeContinueButtonState(true);
@@ -80,8 +82,11 @@
                 yearsOfExperience: document.getElementById("yearsOfExperience").value,
                 confirmTradingKnowledge: document.getElementById("confirmTradingKnowledge").value === "Yes"
             }
-
-            fetch('/Clients/SaveTradingInfo', {
+            let url = '/Clients/SaveTradingInfo';
+            if (targetUserId && targetUserId.trim() !== '') {
+                url += '?targetUserId=' + encodeURIComponent(targetUserId.trim());
+            }
+            fetch(url, {
                 method: 'POST',
                 body: JSON.stringify(formData),
                 headers: {

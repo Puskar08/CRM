@@ -496,6 +496,8 @@
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        // Pass ViewBag.TargetUserId to a local variable
+        var targetUserId = '@ViewBag.TargetUserId' || '';
         // Map your form input IDs to the corresponding record properties
         const fieldMapping = {
             firstName: "FirstName",
@@ -728,6 +730,10 @@
             let payload = {
                 profileData: formData,
                 profileSection: profileSection
+            }
+            let url = '/Clients/UpdateProfileData';
+            if (targetUserId && targetUserId.trim() !== '') {
+                url += '?targetUserId=' + encodeURIComponent(targetUserId.trim());
             }
             fetch('/Clients/UpdateProfileData', {
                 method: 'POST',

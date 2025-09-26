@@ -343,6 +343,8 @@
 </div>
 
 <script>
+    // Pass ViewBag.TargetUserId to a local variable
+    var targetUserId = '@ViewBag.TargetUserId' || '';
     const continueBtn = document.querySelectorAll('.btn-continue');
     const stepContainers = document.querySelectorAll('.step-container');
     continueBtn.forEach(btn => {
@@ -539,9 +541,12 @@
             formData.append('documentType', documentType.value);
             formData.append('file', fileInput.files[0]);
             formData.append('documentSection', documentSection);
-
+            let url = '/Clients/DocumentUpload';
+            if (targetUserId && targetUserId.trim() !== '') {
+                url += '?targetUserId=' + encodeURIComponent(targetUserId.trim());
+            }
             try {
-                const response = await fetch('/Clients/DocumentUpload', {
+                const response = await fetch(url, {
                     method: 'POST',
                     body: formData,
                     headers: {

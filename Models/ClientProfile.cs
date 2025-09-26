@@ -32,6 +32,7 @@ namespace CRM.Models
         public bool IsProfileComplete { get; set; }
         public DateTime CreatedOn { get; set; }
         public bool IsAcceptTermsandConditions { get; set; }
+        public int RegistrationStep { get; set; }
     }
 
 

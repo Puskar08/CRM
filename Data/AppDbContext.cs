@@ -11,4 +11,5 @@ public class AppDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<ClientAccount> ClientAccounts { get; set; }
     public DbSet<Transaction> Transactions { get; set; }
     public DbSet<ClientProfile> ClientProfiles { get; set; }
+    public DbSet<UserDocument> UserDocuments { get; set; }
 }

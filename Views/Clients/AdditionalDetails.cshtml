@@ -51,6 +51,9 @@
 <script src="~/js/clientregistration.js"></script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+        // Pass ViewBag.TargetUserId to a local variable
+        var targetUserId = '@ViewBag.TargetUserId' || '';
+
         document.getElementById("additional-details-form").addEventListener("submit", function (event) {
             event.preventDefault();
             changeContinueButtonState(true);
@@ -82,7 +85,12 @@
                 nationality: document.getElementById("nationality").value,
                 placeOfBirth: document.getElementById("placeOfBirth").value
             }
-            fetch('/Clients/SaveAdditionalDetails', {
+            let url = '/Clients/SaveAdditionalDetails';
+            if (targetUserId && targetUserId.trim() !== '') {
+                url += '?targetUserId=' + encodeURIComponent(targetUserId.trim());
+            }
+
+            fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
