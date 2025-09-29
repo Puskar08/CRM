@@ -1,4 +1,10 @@
 <style>
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: var(--dark-gray);
+    }
+
     .step-indicator {
         display: flex;
         justify-content: space-between;
@@ -88,6 +94,37 @@
 
     .step-list li:last-child {
         border-bottom: none;
+    }
+
+
+
+    .btn:hover {
+        background-color: var(--secondary-color);
+    }
+
+    .btn:disabled {
+        background-color: #cccccc;
+        cursor: not-allowed;
+    }
+
+    .checkbox-container {
+        display: flex;
+        align-items: center;
+        margin: 20px 0;
+    }
+
+    .checkbox-container input {
+        margin-right: 10px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
     }
 
     select,

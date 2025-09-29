@@ -30,6 +30,23 @@ public class ClientsController : Controller
         }
     }
 
+    public IActionResult ClientDashboard()
+    {
+        return View("Dashboard");
+    }
+
+    [HttpGet]
+    [Authorize(Roles = "Admin,Client")]
+    public async Task<IActionResult> Dashboard()
+    {
+        var profile = await _context.ClientProfiles.FirstOrDefaultAsync(p => p.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier));
+        if (profile == null || profile.RegistrationStep < 4)
+        {
+            return RedirectToAction("RegisterClient");
+        }
+        ViewBag.IsProfileComplete = profile.IsProfileComplete;
+        return View();
+    }
     public IActionResult Index()
     {
         //var users = await _context.users.ToListAsync();
@@ -981,6 +998,12 @@ public class ClientsController : Controller
             };
 
             _context.UserDocuments.Add(document);
+
+            if (documentSection == "proofOfAddDocument" && profile != null)
+            {
+                profile.IsProfileComplete = true;
+                _context.ClientProfiles.Update(profile);
+            }
             await _context.SaveChangesAsync();
 
             await transaction.CommitAsync();

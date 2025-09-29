@@ -1,0 +1,188 @@
+<style>
+    .dashboard-title {
+        font-size: 1.8rem;
+        margin-bottom: 25px;
+        color: #2c3e50;
+        font-weight: 600;
+    }
+
+    .accounts-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 25px;
+        margin-bottom: 40px;
+    }
+
+    .account-name {
+        border: 1px solid;
+        border-radius: 38px;
+        font-size: 14px;
+        width: 15%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .account-card {
+        background: #ededee;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: 1px solid #e0e0e0;
+    }
+
+    .account-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .account-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .account-number {
+        color: #7f8c8d;
+        font-size: 0.9rem;
+    }
+
+    .account-details {
+        margin-bottom: 20px;
+    }
+
+    .balance-section {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 15px;
+        margin: 20px 0;
+        text-align: center;
+    }
+
+    .balance-label {
+        color: #7f8c8d;
+        font-size: 0.95rem;
+        margin-bottom: 5px;
+    }
+
+    .balance-amount {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #27ae60;
+    }
+
+    .account-actions {
+        display: flex;
+        gap: 10px;
+    }
+
+    .btn {
+        flex: 1;
+        padding: 12px 15px;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: linear-gradient(135deg, #2980b9 0%, #2471a3 100%);
+    }
+
+    .btn-second {
+        background: rgba(52, 73, 94, 0.1);
+        color: #2c3e50;
+        border: 1px solid #e0e0e0;
+    }
+
+    .btn-second:hover {
+        background: rgba(52, 73, 94, 0.15);
+    }
+</style>
+
+<div class="page">
+    <div class="page-header">
+        <div class="page-title">
+            <h2>Hi, Puskar</h2>
+            <p>Welcome to your trading dashboard</p>
+        </div>
+    </div>
+    <div class="page-body">
+        <div class="body-content">
+            <h2 class="dashboard-title">Trading Accounts</h2>
+            <div class="accounts-grid">
+                <!-- Account #1 -->
+                <div class="account-card">
+                    <div class="account-header">
+                        <div class="account-name">Live</div>
+                        <div class="account-number">ACC-738291</div>
+                    </div>
+
+                    @* <div class="account-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Leverage</span>
+                            <span class="detail-value">1:100</span>
+                        </div>
+                    </div> *@
+                    <div class="balance-section">
+                        <div class="balance-label">Balance</div>
+                        <div class="balance-amount">$55,861.25</div>
+                    </div>
+                    <div class="account-actions">
+                        <button class="btn btn-primary">
+                            @* <i class="fas fa-chart-line"></i>  *@
+                            Deposit
+                        </button>
+                        <button class="btn btn-second">
+                            @* <i class="fas fa-eye"></i>  *@
+                            Withdraw
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+    // Add interactivity to the "Add Account" card
+    document.querySelector('.add-account-card').addEventListener('click', function () {
+        alert('Add new trading account functionality would go here.');
+    });
+
+    // Add hover effects to account cards
+    const accountCards = document.querySelectorAll('.account-card:not(.add-account-card)');
+    accountCards.forEach(card => {
+        card.addEventListener('mouseenter', function () {
+            this.style.transform = 'translateY(-5px)';
+        });
+
+        card.addEventListener('mouseleave', function () {
+            this.style.transform = 'translateY(0)';
+        });
+    });
+
+    // Menu item selection
+    const menuItems = document.querySelectorAll('.menu-item');
+    menuItems.forEach(item => {
+        item.addEventListener('click', function () {
+            menuItems.forEach(i => i.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+</script>

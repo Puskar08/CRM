@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using CRM.Models;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.EntityFrameworkCore;
 
 namespace CRM.Controllers
 {
@@ -10,12 +11,14 @@ namespace CRM.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly AppDbContext _context;
 
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager)
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager, AppDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
+            _context = context;
         }
 
         [HttpGet]
@@ -97,45 +100,72 @@ namespace CRM.Controllers
             {
                 // For toaster notification on redirected page
                 TempData["ShowLoginSuccessToaster"] = true;
+                // Re-sign in with custom properties
+                var user = await _signInManager.UserManager.FindByEmailAsync(model.Email);
+                if (user == null)
+                {
+                    return BadRequest(new
+                    {
+                        success = false,
+                        message = "User not found."
+                    });
+                }
                 // Customize authentication properties for RememberMe
                 if (model.RememberMe)
                 {
+
                     var authProperties = new AuthenticationProperties
                     {
                         IsPersistent = true, // Persist across browser sessions
                         ExpiresUtc = DateTimeOffset.UtcNow.AddDays(1) // 7-day total lifetime
                     };
-                    // Re-sign in with custom properties
-                    var user = await _signInManager.UserManager.FindByEmailAsync(model.Email);
-                    if (user != null)
+                    await _signInManager.SignInAsync(user, authProperties);
+                }
+
+                // Check user roles
+                var roles = await _signInManager.UserManager.GetRolesAsync(user);
+                if (roles.Contains("Client", StringComparer.OrdinalIgnoreCase))
+                {
+                    var profile = await _context.ClientProfiles.FirstOrDefaultAsync(p => p.UserId == user.Id);
+                    if (profile == null)
                     {
-                        await _signInManager.SignInAsync(user, authProperties);
-                    }
-                    else
-                    {
-                        return BadRequest(new
+                        return StatusCode(500, new
                         {
                             success = false,
-                            message = "User not found."
+                            message = "User profile not found. Please contact support."
+                        });
+                    }
+
+                    if (profile.RegistrationStep < 5)
+                    {
+                        return Ok(new
+                        {
+                            success = true,
+                            message = "Login successful, redirecting to registration step.",
+                            redirectUrl = Url.Action("RegistrationStep", "Clients")
+                        });
+                    }
+
+                    else
+                    {
+                        return Ok(new
+                        {
+                            success = true,
+                            message = "Login successful, redirecting to client dashboard.",
+                            redirectUrl = Url.Action("Dashboard", "Clients")
                         });
                     }
                 }
-                if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                else
                 {
+                    // Admin or other roles redirect to Home/Index
                     return Ok(new
                     {
                         success = true,
-                        message = "Login successful",
-                        redirectUrl = returnUrl
+                        message = "Login successful, redirecting to home.",
+                        redirectUrl = Url.Action("Index", "Home")
                     });
                 }
-
-                return Ok(new
-                {
-                    success = true,
-                    message = "Login successful",
-                    redirectUrl = Url.Action("Index", "Home")
-                });
             }
 
             return BadRequest(new
