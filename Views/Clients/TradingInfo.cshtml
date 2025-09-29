@@ -12,40 +12,44 @@
                     <form id="trading-form">
                         @Html.AntiForgeryToken()
                         <div class="form-container">
-                            <div class="form-group">
-                                <label for="yearsOfExperience">How long have you been trading CFDs or FX?</label>
-                                <select id="yearsOfExperience" class="form-control" required>
-                                    <option value="" selected>Please Select</option>
-                                    <option value="Less than 2 year"
-                                        selected="@(Model.YearsOfExperience == "Less than 2 year" ? "selected" : null)">
-                                        Less than 2 year
-                                    </option>
-                                    <option value="More than 2 year"
-                                        selected="@(Model.YearsOfExperience == "More than 2 year" ? "selected" : null)">
-                                        More than 2 year
-                                    </option>
-                                    <option value="None"
-                                        selected="@(Model.YearsOfExperience == "None" ? "selected" : null)">None
-                                    </option>
-                                </select>
-                            </div>
+                            <div class="one-column-form">
+                                <div class="form-group">
+                                    <label for="yearsOfExperience">How long have you been trading CFDs or FX?</label>
+                                    <select id="yearsOfExperience" class="form-control" required>
+                                        <option value="" selected>Please Select</option>
+                                        <option value="Less than 2 year"
+                                            selected="@(Model.YearsOfExperience == "Less than 2 year" ? "selected" : null)">
+                                            Less than 2 year
+                                        </option>
+                                        <option value="More than 2 year"
+                                            selected="@(Model.YearsOfExperience == "More than 2 year" ? "selected" : null)">
+                                            More than 2 year
+                                        </option>
+                                        <option value="None"
+                                            selected="@(Model.YearsOfExperience == "None" ? "selected" : null)">None
+                                        </option>
+                                    </select>
+                                </div>
 
-                            <div class="form-group">
-                                <label for="confirmTradingKnowledge">Based on your trading experience, do you feel you
-                                    have a good understanding of the risks involved?</label>
-                                <select id="confirmTradingKnowledge" class="form-control" required>
-                                    <option value="" selected>Please Select</option>
-                                    <option value="Yes" selected="@(Model.ConfirmTradingKnowledge ? "selected" : null)">
-                                        Yes
-                                    </option>
-                                    <option value="No"
-                                        selected="@(Model.ConfirmTradingKnowledge == false ? "selected" : null)">No
-                                    </option>
-                                </select>
-                            </div>
+                                <div class="form-group">
+                                    <label for="confirmTradingKnowledge">Based on your trading experience, do you feel
+                                        you
+                                        have a good understanding of the risks involved?</label>
+                                    <select id="confirmTradingKnowledge" class="form-control" required>
+                                        <option value="" selected>Please Select</option>
+                                        <option value="Yes"
+                                            selected="@(Model.ConfirmTradingKnowledge ? "selected" : null)">
+                                            Yes
+                                        </option>
+                                        <option value="No"
+                                            selected="@(Model.ConfirmTradingKnowledge == false ? "selected" : null)">No
+                                        </option>
+                                    </select>
+                                </div>
 
-                            <button type="submit" id="btnContinue" class="btn-submit">Continue</button>
-                            <button type="button" id="btnBack" class="btn-back">Back</button>
+                                <button type="submit" id="btnContinue" class="btn-submit">Continue</button>
+                                <button type="button" id="btnBack" class="btn-back">Back</button>
+                            </div>
                         </div>
                     </form>
                 </div>

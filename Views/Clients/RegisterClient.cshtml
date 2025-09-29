@@ -11,29 +11,29 @@
                     <form id="client-form">
                         @Html.AntiForgeryToken()
                         <div class="form-container">
-                            <div class="form-group">
-                                <label for="countryOfResidence">Country of residence</label>
-                                <select id="countryOfResidence" class="form-control" required>
-                                    <option value="" selected>Select Country</option>
-                                    <option value="AE">United Arab Emirates</option>
-                                    <option value="SA">Saudi Arabia</option>
-                                    <option value="QA">Qatar</option>
-                                    <option value="KW">Kuwait</option>
-                                    <option value="BH">Bahrain</option>
-                                    <option value="OM">Oman</option>
-                                </select>
-                            </div>
+                            <div class="one-column-form">
+                                <div class="form-group">
+                                    <label for="countryOfResidence">Country of residence</label>
+                                    <select id="countryOfResidence" class="form-control" required>
+                                        <option value="" selected>Select Country</option>
+                                        <option value="AE">United Arab Emirates</option>
+                                        <option value="SA">Saudi Arabia</option>
+                                        <option value="QA">Qatar</option>
+                                        <option value="KW">Kuwait</option>
+                                        <option value="BH">Bahrain</option>
+                                        <option value="OM">Oman</option>
+                                    </select>
+                                </div>
 
-                            <div class="form-group">
-                                <label for="accountType">Account type</label>
-                                <select id="accountType" class="form-control" required>
-                                    <option value="">Please Select</option>
-                                    <option value="individual">Individual</option>
-                                    <option value="corporate">Corporate</option>
-                                </select>
-                            </div>
+                                <div class="form-group">
+                                    <label for="accountType">Account type</label>
+                                    <select id="accountType" class="form-control" required>
+                                        <option value="">Please Select</option>
+                                        <option value="individual">Individual</option>
+                                        <option value="corporate">Corporate</option>
+                                    </select>
+                                </div>
 
-                            <div class="form-row">
                                 <div class="form-group">
                                     <label for="firstName">First name</label>
                                     <input type="text" id="firstName" class="form-control" required>
@@ -42,92 +42,95 @@
                                     <label for="lastName">Last name</label>
                                     <input type="text" id="lastName" class="form-control" required>
                                 </div>
-                            </div>
 
-                            <div class="form-group">
-                                <label for="dob">Date of birth</label>
-                                <div class="form-row">
-                                    <select id="dobDay" class="form-control" required>
-                                        <option value="">DD</option>
-                                        <!-- Days 1-31 -->
-                                        <script>
-                                            for (let i = 1; i <= 31; i++) {
-                                                document.write(`<option value="${i}">${i}</option>`);
-                                            }
-                                        </script>
-                                    </select>
-                                    <select id="dobMonth" class="form-control" required>
-                                        <option value="">MM</option>
-                                        <option value="1">January</option>
-                                        <option value="2">February</option>
-                                        <option value="3">March</option>
-                                        <option value="4">April</option>
-                                        <option value="5">May</option>
-                                        <option value="6">June</option>
-                                        <option value="7">July</option>
-                                        <option value="8">August</option>
-                                        <option value="9">September</option>
-                                        <option value="10">October</option>
-                                        <option value="11">November</option>
-                                        <option value="12">December</option>
-                                    </select>
-                                    <select id="dobYear" class="form-control" required>
-                                        <option value="">YYYY</option>
-                                        <!-- Years from 1950 to current year - 18 -->
-                                        <script>
-                                            const currentYear = new Date().getFullYear();
-                                            for (let i = currentYear - 18; i >= 1950; i--) {
-                                                document.write(`<option value="${i}">${i}</option>`);
-                                            }
-                                        </script>
-                                    </select>
+                                <div class="form-group">
+                                    <label for="dob">Date of birth</label>
+                                    <div class="form-row">
+                                        <select id="dobDay" class="form-control" required>
+                                            <option value="">DD</option>
+                                            <!-- Days 1-31 -->
+                                            <script>
+                                                for (let i = 1; i <= 31; i++) {
+                                                    document.write(`<option value="${i}">${i}</option>`);
+                                                }
+                                            </script>
+                                        </select>
+                                        <select id="dobMonth" class="form-control" required>
+                                            <option value="">MM</option>
+                                            <option value="1">January</option>
+                                            <option value="2">February</option>
+                                            <option value="3">March</option>
+                                            <option value="4">April</option>
+                                            <option value="5">May</option>
+                                            <option value="6">June</option>
+                                            <option value="7">July</option>
+                                            <option value="8">August</option>
+                                            <option value="9">September</option>
+                                            <option value="10">October</option>
+                                            <option value="11">November</option>
+                                            <option value="12">December</option>
+                                        </select>
+                                        <select id="dobYear" class="form-control" required>
+                                            <option value="">YYYY</option>
+                                            <!-- Years from 1950 to current year - 18 -->
+                                            <script>
+                                                const currentYear = new Date().getFullYear();
+                                                for (let i = currentYear - 18; i >= 1950; i--) {
+                                                    document.write(`<option value="${i}">${i}</option>`);
+                                                }
+                                            </script>
+                                        </select>
+                                    </div>
+                                    <div class="form-note">As shown on ID documents</div>
                                 </div>
-                                <div class="form-note">As shown on ID documents</div>
-                            </div>
 
-                            <div class="form-group">
-                                <label for="phone">Mobile phone</label>
-                                <div class="form-row">
-                                    <select id="phoneCode" class="form-control" required style="width: 20%;">
-                                        <option value="+971">+971</option>
-                                        <option value="+966">+966</option>
-                                        <option value="+974">+974</option>
-                                        <option value="+965">+965</option>
-                                        <option value="+973">+973</option>
-                                        <option value="+968">+968</option>
-                                    </select>
-                                    <input type="tel" id="phoneNumber" class="form-control" required>
+                                <div class="form-group">
+                                    <label for="phone">Mobile phone</label>
+                                    <div class="form-row">
+                                        <select id="phoneCode" class="form-control" required style="width: 20%;">
+                                            <option value="+971">+971</option>
+                                            <option value="+966">+966</option>
+                                            <option value="+974">+974</option>
+                                            <option value="+965">+965</option>
+                                            <option value="+973">+973</option>
+                                            <option value="+968">+968</option>
+                                        </select>
+                                        <input type="tel" id="phoneNumber" class="form-control" required>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="form-group">
-                                <label for="email">Email address</label>
-                                <input type="email" id="email" class="form-control" required>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="password">Password</label>
-                                <div class="password-container">
-                                    <input type="password" id="password" class="form-control" required>
-                                    <span class="toggle-password" id="togglePassword">
-                                        <i class="fas fa-eye-slash"></i>
-                                    </span>
+                                <div class="form-group">
+                                    <label for="email">Email address</label>
+                                    <input type="email" id="email" class="form-control" required>
                                 </div>
-                                <div class="form-note">Use 8+ characters with a mix of letters, numbers & symbols</div>
-                            </div>
 
-                            <div class="checkbox-group">
-                                <input type="checkbox" id="marketingConsent">
-                                <label for="marketingConsent">We'd like to keep you informed of educational trading
-                                    materials, events, relevant products and services via email, phone, SMS and other
-                                    messaging platforms. Tick here to ensure you won't miss these communications that
-                                    are relevant to you</label>
-                            </div>
+                                <div class="form-group">
+                                    <label for="password">Password</label>
+                                    <div class="password-container">
+                                        <input type="password" id="password" class="form-control" required>
+                                        <span class="toggle-password" id="togglePassword">
+                                            <i class="fas fa-eye-slash"></i>
+                                        </span>
+                                    </div>
+                                    <div class="form-note">Use 8+ characters with a mix of letters, numbers & symbols
+                                    </div>
+                                </div>
 
-                            <button type="submit" id="btnContinue" class="btn-submit">Continue</button>
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="marketingConsent">
+                                    <label for="marketingConsent">We'd like to keep you informed of educational trading
+                                        materials, events, relevant products and services via email, phone, SMS and
+                                        other
+                                        messaging platforms. Tick here to ensure you won't miss these communications
+                                        that
+                                        are relevant to you</label>
+                                </div>
 
-                            <div class="login-link">
-                                Already a client? <a href="#">Login here</a>.
+                                <button type="submit" id="btnContinue" class="btn-submit">Continue</button>
+
+                                <div class="login-link">
+                                    Already a client? <a href="#">Login here</a>.
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -154,7 +157,7 @@
                 this.innerHTML = '<i class="fas fa-eye"></i>';
             }
         });
-        
+
         // Form validation and submission
         document.getElementById('client-form').addEventListener('submit', function (e) {
             e.preventDefault(); // Prevent default form submission
@@ -201,8 +204,13 @@
                 marketingConsent: document.getElementById('marketingConsent').checked
             };
 
-
-            fetch('/Clients/SaveBasicInfo', {
+            // Pass ViewBag.TargetUserId to a local variable
+            var targetUserId = '@ViewBag.TargetUserId' || '';
+            let url = '/Clients/SaveBasicInfo';
+            if (targetUserId && targetUserId.trim() !== '') {
+                url = '/Clients/AdminSaveBasicInfo';
+            }
+            fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

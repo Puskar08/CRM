@@ -12,35 +12,37 @@
                     <form id="additional-details-form">
                         @Html.AntiForgeryToken()
                         <div class="form-container">
-                            <div class="form-group">
-                                <label for="buildingNumber">Building Number</label>
-                                <input type="text" id="buildingNumber" class="form-control"
-                                    value="@Model.BuildingNumber" />
+                            <div class="one-column-form">
+                                <div class="form-group">
+                                    <label for="buildingNumber">Building Number</label>
+                                    <input type="text" id="buildingNumber" class="form-control"
+                                        value="@Model.BuildingNumber" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="street">Street</label>
+                                    <input type="text" id="street" class="form-control" value="@Model.Street" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="city">City</label>
+                                    <input type="text" id="city" class="form-control" value="@Model.City" required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="postalCode">Postal Code</label>
+                                    <input type="text" id="postalCode" class="form-control" value="@Model.PostalCode" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="nationality">Nationality</label>
+                                    <input type="text" id="nationality" class="form-control" value="@Model.Nationality"
+                                        required />
+                                </div>
+                                <div class="form-group">
+                                    <label for="placeOfBirth">Place of Birth</label>
+                                    <input type="text" id="placeOfBirth" class="form-control" value="@Model.PlaceOfBirth"
+                                        required />
+                                </div>
+                                <button type="submit" id="btnContinue" class="btn-submit">Continue</button>
+                                <button type="button" id="btnBack" class="btn-back">Back</button>
                             </div>
-                            <div class="form-group">
-                                <label for="street">Street</label>
-                                <input type="text" id="street" class="form-control" value="@Model.Street" required />
-                            </div>
-                            <div class="form-group">
-                                <label for="city">City</label>
-                                <input type="text" id="city" class="form-control" value="@Model.City" required />
-                            </div>
-                            <div class="form-group">
-                                <label for="postalCode">Postal Code</label>
-                                <input type="text" id="postalCode" class="form-control" value="@Model.PostalCode" />
-                            </div>
-                            <div class="form-group">
-                                <label for="nationality">Nationality</label>
-                                <input type="text" id="nationality" class="form-control" value="@Model.Nationality"
-                                    required />
-                            </div>
-                            <div class="form-group">
-                                <label for="placeOfBirth">Place of Birth</label>
-                                <input type="text" id="placeOfBirth" class="form-control" value="@Model.PlaceOfBirth"
-                                    required />
-                            </div>
-                            <button type="submit" id="btnContinue" class="btn-submit">Continue</button>
-                            <button type="button" id="btnBack" class="btn-back">Back</button>
                         </div>
                     </form>
                 </div>

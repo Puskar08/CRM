@@ -14,13 +14,15 @@ public class ClientsController : Controller
     private const string PendingUserSessionKey = "PendingUserId";
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly SignInManager<ApplicationUser> _signInManager;
+    private readonly RoleManager<IdentityRole> _roleManager;
     private readonly string _uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
-    public ClientsController(ILogger<ClientsController> logger, AppDbContext context, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+    public ClientsController(ILogger<ClientsController> logger, AppDbContext context, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<IdentityRole> roleManager)
     {
         _logger = logger;
         _context = context;
         _userManager = userManager;
         _signInManager = signInManager;
+        _roleManager = roleManager;
         // Ensure upload directory exists
         if (!Directory.Exists(_uploadPath))
         {
@@ -45,9 +47,10 @@ public class ClientsController : Controller
                 return RedirectToAction("TradingInfo", targetUserId);
             case 3: // Complete
                 return RedirectToAction("AdditionalDetails", targetUserId);
-                return RedirectToAction("Dashboard", "Home");
             case 4:
                 return RedirectToAction("ReviewProfile", targetUserId);
+            case 5:
+                return RedirectToAction("Index");//dashboard index
             default:
                 return RedirectToAction("RegisterClient");
         }
@@ -58,7 +61,8 @@ public class ClientsController : Controller
     public async Task<IActionResult> RegisterClient()
     {
         //if already logged in and registraion incomplete, redirect to current step
-        if (User.Identity != null && User.Identity.IsAuthenticated)
+        bool isCurrentUserAdmin = User.IsInRole("Admin");
+        if (User.Identity != null && User.Identity.IsAuthenticated && !User.IsInRole("Admin"))
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var profile = await _context.ClientProfiles.FirstOrDefaultAsync(p => p.UserId == userId);
@@ -67,6 +71,10 @@ public class ClientsController : Controller
                 return RedirectToRegistrationStep(profile.RegistrationStep, null);
             }
             return RedirectToAction("Index", "Home");
+        }
+        if (isCurrentUserAdmin)
+        {
+            ViewBag.targetUserId = "targetUserId";//pass to view for consiquent submission
         }
         return View();
     }
@@ -111,6 +119,15 @@ public class ClientsController : Controller
             return BadRequest(new { success = false, message = "Password is required." });
         }
         var transaction = await _context.Database.BeginTransactionAsync();
+        // Ensure Admin role exists
+        if (!await _roleManager.RoleExistsAsync("Client"))
+        {
+            var roleResult = await _roleManager.CreateAsync(new IdentityRole("Client"));
+            if (!roleResult.Succeeded)
+            {
+                return BadRequest(new { success = false, message = string.Join("; ", roleResult.Errors.Select(e => e.Description)) });
+            }
+        }
         try
         {
             // Create user with password
@@ -887,6 +904,7 @@ public class ClientsController : Controller
     }
 
     [HttpPost]
+    [Authorize]
     [ValidateAntiForgeryToken]
     [Route("Clients/DocumentUpload")]
     public async Task<IActionResult> DocumentUpload(string documentType, IFormFile file, string documentSection, string? targetUserId = null)
@@ -956,7 +974,7 @@ public class ClientsController : Controller
             // Save document info in DB
             var document = new UserDocument
             {
-                UserId = "", // TODO: Replace with actual logged-in user ID
+                UserId = targetUserId != null ? targetUserId : (user != null ? user.Id : string.Empty),
                 DocumentId = uniqueFileName,
                 DocumentName = file.FileName,
                 DocumentType = (int)documentEnum

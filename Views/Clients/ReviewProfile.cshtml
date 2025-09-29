@@ -406,15 +406,21 @@
         </div>
         <!--Declaration-->
         <div class="body-content">
-            <div class="content-header content-header-collapsed">
+            <div class="content-header">
                 <h3>Declaration</h3>
                 <div class="content-remarks">
-                    <button class="modify-content-body">Modify</button>
+                    <button class="toggle-content-body">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="20px" 
+                            viewBox="0 -960 960 960" width="24px" fill="#000000">
+                            <path d="m280-400 200-200 200 200H280Z"/>
+                        </svg>
+                    </button>
+                    @* <button class="modify-content-body">Modify</button>
                     <span>|</span>
-                    <span>Completed <i class="fa fa-check-circle" aria-hidden="true" style="color:green;"></i></button>
+                    <span>Completed <i class="fa fa-check-circle" aria-hidden="true" style="color:green;"></i></button> *@
                 </div>
             </div>
-            <div class="content-body content-body-collapsed">
+            <div class="content-body">
                 <p>
                     <strong>
                         Remember, trading in managed products involves risk and may not be suitable for
@@ -629,6 +635,15 @@
             });
         });
 
+        // for toggle buttons
+        const toggleBtns = document.querySelectorAll('.toggle-content-body');
+        toggleBtns.forEach(button => {
+            button.addEventListener('click', function () {
+                const bodyContent = this.closest('.body-content');
+                toggleSection(bodyContent, true);
+            });
+        });
+
         //for update buttons
         const updateButtons = document.querySelectorAll('.btn-update');
         updateButtons.forEach(button => {
@@ -735,7 +750,7 @@
             if (targetUserId && targetUserId.trim() !== '') {
                 url += '?targetUserId=' + encodeURIComponent(targetUserId.trim());
             }
-            fetch('/Clients/UpdateProfileData', {
+            fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

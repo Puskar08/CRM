@@ -10,14 +10,9 @@
             <h2>Clients</h2>
             <p>Manage and review all clients</p>
         </div>
-        <div class="page-actions d-flex gap-2">
-            <button type="button" class="add-button" data-bs-toggle="modal" data-bs-target="#TransactionModal">
-                <i class="fas fa-plus"></i> Add Client
-            </button>
-            <a asp-controller="Clients" asp-action="Register" class="add-button" style="text-decoration: none; color: white;">
-                <i class="fas fa-plus"></i> Add Client
-            </a>
-            <a asp-controller="Clients" asp-action="RegisterClient" class="add-button" style="text-decoration: none; color: white;">
+        <div class="page-actions">
+            <a asp-controller="Clients" asp-action="RegisterClient" class="add-button"
+                style="text-decoration: none; color: white;">
                 <i class="fas fa-plus"></i> Register Client
             </a>
         </div>
@@ -39,7 +34,7 @@
                             <div class="table-filter">
                                 <input type="text" id="filterLoginId" placeholder="Filter ID" />
                             </div>
-                            </th>
+                        </th>
                         <th data-sort="AccountID">
                             AccountID
                             <div class="table-filter">
@@ -113,6 +108,73 @@
 
                 </tbody>
             </table>
+
+            <div class="table-to-card-container">
+                <div class="card">
+                    <div class="card-row">
+                        <span class="card-label">LoginID:</span>
+                        <span class="card-value">1014</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">AccountID:</span>
+                        <span class="card-value">ACC-5014</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">Name:</span>
+                        <span class="card-value">Sophia Hall</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">Email:</span>
+                        <span class="card-value">sophia.h@example.com</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">Phone:</span>
+                        <span class="card-value">+1-202-555-0199</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">Group:</span>
+                        <span class="card-value">User</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">Status:</span>
+                        <span class="card-value status-inactive">Inactive</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-row">
+                        <span class="card-label">LoginID:</span>
+                        <span class="card-value">1015</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">AccountID:</span>
+                        <span class="card-value">ACC-5015</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">Name:</span>
+                        <span class="card-value">Christopher Young</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">Email:</span>
+                        <span class="card-value">chris.y@example.com</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">Phone:</span>
+                        <span class="card-value">+1-202-555-0182</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">Group:</span>
+                        <span class="card-value">Manager</span>
+                    </div>
+                    <div class="card-row">
+                        <span class="card-label">Status:</span>
+                        <span class="card-value status-active">Active</span>
+                    </div>
+                </div>
+            </div>
+
+
+
             <div class="pagination">
                 <div class="pagination-info" id="paginationInfo">Showing 0 to 0 of 0 entries</div>
                 <div class="pagination-controls" id="paginationControls">

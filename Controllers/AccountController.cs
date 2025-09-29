@@ -103,7 +103,7 @@ namespace CRM.Controllers
                     var authProperties = new AuthenticationProperties
                     {
                         IsPersistent = true, // Persist across browser sessions
-                        ExpiresUtc = DateTimeOffset.UtcNow.AddDays(7) // 7-day total lifetime
+                        ExpiresUtc = DateTimeOffset.UtcNow.AddDays(1) // 7-day total lifetime
                     };
                     // Re-sign in with custom properties
                     var user = await _signInManager.UserManager.FindByEmailAsync(model.Email);
@@ -134,7 +134,7 @@ namespace CRM.Controllers
                 {
                     success = true,
                     message = "Login successful",
-                    redirectUrl = Url.Action("Index", "User")
+                    redirectUrl = Url.Action("Index", "Home")
                 });
             }
 
