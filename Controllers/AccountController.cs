@@ -72,7 +72,7 @@ namespace CRM.Controllers
         public IActionResult Login(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
-            return View();
+            return View("Login1");
         }
 
         [HttpPost]

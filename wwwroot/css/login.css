@@ -17,12 +17,11 @@ body {
   grid-template-columns: 1fr; /* Reserve space for sidebar */
 }
 main {
-  grid-area: main;
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh; /* Full viewport height */
-
+  padding: 50px;
   /* padding: 20px; */
 }
 /* Login Container */
@@ -32,7 +31,7 @@ main {
   align-items: center;
   gap: 20px;
   padding: 20px;
-  width: 100%;
+  width: 450px;
 }
 
 /* Login Logo */
@@ -64,7 +63,7 @@ main {
 }
 
 /* Form Group */
-.form-group {
+/* .form-group {
   margin-bottom: 15px;
 }
 
@@ -88,7 +87,7 @@ main {
   outline: none;
   border-color: var(--accent-clr);
   box-shadow: 0 0 0 2px rgba(75, 123, 236, 0.2);
-}
+} */
 
 /* Login Button */
 .login-btn {
@@ -108,7 +107,7 @@ main {
   background-color: #3b6bd6;
   /* Darker shade of accent color */
 }
-.form-check-label {
-  display: inline-block; /* make label stay next to checkbox */
-  margin-left: 5px; /* optional spacing */
-}
+/* .form-check-label {
+  display: inline-block; 
+  margin-left: 5px; 
+} */
