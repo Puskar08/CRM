@@ -1,0 +1,673 @@
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ForexPro - Trade Forex & CFDs</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+         
+        /* Markets Section */
+        .markets {
+            padding: 60px 0;
+            background: white;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-title h2 {
+            font-size: 2.2rem;
+            color: var(--dark);
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .market-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .market-card {
+            background: var(--light);
+            border-radius: 8px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+
+        .market-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .market-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .market-card h3 {
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+
+        /* Platforms Section */
+        .platforms {
+            padding: 20px 0;
+            background: #f0f4f8;
+        }
+        .platform-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            gap: 50px;
+            max-width: 1500px;
+            margin: 0 auto;
+        }
+        .platform-content {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+        .platform-image {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* padding: 20px; */
+        }
+        @* .platform-container {
+            display: flex;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            gap: 50px;
+        } *@
+
+        @* .platform-content {
+            flex: 1;
+        }
+
+        .platform-image {
+            flex: 1;
+            text-align: center;
+        } *@
+
+        .platform-image img {
+            max-width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .platform-content h2 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+
+        .platform-content p {
+            @* margin-bottom: 25px; *@
+            color: var(--gray);
+        }
+
+        .platform-features {
+            display: grid;
+            grid-template-columns: auto auto;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .feature i {
+            color: var(--success);
+        }
+@*
+        /* Account Types */
+        .accounts {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .account-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .account-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s;
+        }
+
+        .account-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .account-header {
+            background: var(--primary);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .account-body {
+            padding: 30px;
+        }
+
+        .account-features {
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .account-features li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .account-features li:last-child {
+            border-bottom: none;
+        }
+
+        .account-features i {
+            color: var(--success);
+            margin-right: 10px;
+        }
+
+        /* Why Choose Us */
+        .why-us {
+            padding: 80px 0;
+            background: linear-gradient(135deg, #1a2b3c 0%, #2c3e50 100%);
+            color: white;
+        }
+
+        .benefits {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .benefit {
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .benefit-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--secondary);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 60px 0 20px;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+        }
+
+        .footer-col h3 {
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-col a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-col a:hover {
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+            color: #aaa;
+            font-size: 0.9rem;
+        } *@
+        /* Responsive */
+        @* @media
+        (max-width: 768px) {
+            .main-nav {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .platform-container {
+                flex-direction: column;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 250px;
+                text-align: center;
+            }
+        } *@
+    </style>
+    <link rel="stylesheet" href="~/css/webpage.css" />
+</head>
+
+@* <div class="top-bar">
+            <div class="top-bar-container">
+                <div class="top-bar-contact">
+                    <span><i class="fas fa-phone"></i> +1 (800) 123-4567</span>
+                </div>
+                <div class="top-bar-links">
+                    <a href="#"><i class="fas fa-globe"></i> English</a>
+                    <a href="#"><i class="fas fa-user"></i> Client Login</a>
+                </div>
+            </div>
+        </div> *@
+
+<body>
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                <img src="~/images/gcfxlogo.png" alt="CRM Logo" />
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#">Markets</a></li>
+                    <li><a href="#">Platforms</a></li>
+                    <li><a href="#">Institutional</a></li>
+                    <li><a href="#">Partners</a></li>
+                    <li><a href="#">Learn</a></li>
+                    <li><a href="#">About Us</a></li>
+                </ul>
+            </nav>
+            <div class="auth-buttons">
+                <a href="#" class="btn btn-secondary">Login</a>
+                <a href="#" class="btn btn-primary register">Register</a>
+                <a href="#" class="btn mobile-menu-btn" id="open-sidebar"><i class="fa fa-bars"
+                        aria-hidden="true"></i></a>
+                <button class="btn close-sidebar" id="close-sidebar"><i class="fa fa-times"
+                        aria-hidden="true"></i></button>
+            </div>
+        </div>
+    </nav>
+    <!-- Mobile Sidebar -->
+    <div class="sidebar-overlay"></div>
+    <div class="mobile-sidebar">
+        <nav class="mobile-nav">
+            <ul>
+                <li><a href="#">Markets</a></li>
+                <li><a href="#">Platforms</a></li>
+                <li><a href="#">Institutional</a></li>
+                <li><a href="#">Partners</a></li>
+                <li><a href="#">Learn</a></li>
+                <li><a href="#">About Us</a></li>
+            </ul>
+        </nav>
+
+        <div class="mobile-auth">
+            <a href="#" class="btn btn-secondary">Login</a>
+            <a href="#" class="btn btn-primary">Register</a>
+        </div>
+    </div>
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-container">
+                <div class="hero-message">
+                    <h1>Trade Forex & CFDs with Confidence</h1>
+                    <p>Join thousands of traders who trust our advanced platforms, tight spreads, and exceptional
+                        execution.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="#" class="btn btn-primary">Start Trading</a>
+                        <a href="#" class="btn btn-secondary">Demo Account</a>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <img src="~/images/hero-image.png" alt="CRM Logo" />
+                </div>
+            </div>
+        </section>
+        <section class="markets">
+            <div class="section-title">
+                <h2>Trade Global Markets</h2>
+                <p>Access 1000+ instruments across multiple asset classes with competitive pricing</p>
+            </div>
+            <div class="market-cards">
+                <div class="market-card">
+                    <div class="market-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Forex</h3>
+                    <p>Trade 60+ currency pairs with ultra-low spreads</p>
+                </div>
+                <div class="market-card">
+                    <div class="market-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3>Indices</h3>
+                    <p>Major global indices with competitive margins</p>
+                </div>
+                <div class="market-card">
+                    <div class="market-icon">
+                        <i class="fas fa-oil-well"></i>
+                    </div>
+                    <h3>Commodities</h3>
+                    <p>Gold, oil, silver and more with tight spreads</p>
+                </div>
+                <div class="market-card">
+                    <div class="market-icon">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <h3>Crypto</h3>
+                    <p>Major cryptocurrencies with 24/7 trading</p>
+                </div>
+            </div>
+        </section>
+        <!-- Platforms Section -->
+        <section class="platforms">
+            <div class="platform-container">
+                <div class="platform-content">
+                    <h2>Advanced Trading Platforms</h2>
+                    <p>Trade with the world's most popular platform MT5, featuring advanced charting tools, fast execution, and
+                        customizable interfaces.</p>
+                    <div class="platform-features">
+                        <div class="feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Advanced Charting</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>One-Click Trading</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Expert Advisors</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Mobile Trading</span>
+                        </div>
+                    </div>
+                    @* <a href="#" class="btn btn-primary">Explore Platforms</a> *@
+                </div>
+                <div class="platform-image">
+                    <!-- This would be an image in a real implementation -->
+                    <div>
+                        <img src="~/images/mt5platform.jpg" alt="CRM Logo" />
+                       
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+
+    </footer>
+    <!-- Markets Section -->
+    @* 
+
+    
+
+    <!-- Account Types -->
+    <section class="accounts">
+        <div class="section-title">
+            <h2>Choose Your Account Type</h2>
+            <p>We offer account types for every trader, from beginners to professionals</p>
+        </div>
+        <div class="account-cards">
+            <div class="account-card">
+                <div class="account-header">
+                    <h3>Standard Account</h3>
+                    <p>Perfect for beginners</p>
+                </div>
+                <div class="account-body">
+                    <p>Start your trading journey with our most popular account</p>
+                    <ul class="account-features">
+                        <li><i class="fas fa-check"></i> Minimum deposit: $200</li>
+                        <li><i class="fas fa-check"></i> Spreads from 1.0 pips</li>
+                        <li><i class="fas fa-check"></i> Leverage up to 1:500</li>
+                        <li><i class="fas fa-check"></i> All trading platforms</li>
+                    </ul>
+                    <a href="#" class="btn btn-primary" style="width: 100%; text-align: center;">Open Account</a>
+                </div>
+            </div>
+            <div class="account-card">
+                <div class="account-header" style="background: var(--secondary);">
+                    <h3>Pro Account</h3>
+                    <p>For experienced traders</p>
+                </div>
+                <div class="account-body">
+                    <p>Advanced features and pricing for serious traders</p>
+                    <ul class="account-features">
+                        <li><i class="fas fa-check"></i> Minimum deposit: $1,000</li>
+                        <li><i class="fas fa-check"></i> Spreads from 0.0 pips</li>
+                        <li><i class="fas fa-check"></i> Commission: $3.5 per lot</li>
+                        <li><i class="fas fa-check"></i> Premium tools & analysis</li>
+                    </ul>
+                    <a href="#" class="btn btn-primary" style="width: 100%; text-align: center;">Open Account</a>
+                </div>
+            </div>
+            <div class="account-card">
+                <div class="account-header" style="background: var(--dark);">
+                    <h3>Islamic Account</h3>
+                    <p>Swap-free trading</p>
+                </div>
+                <div class="account-body">
+                    <p>Sharia-compliant account with no swap or rollover fees</p>
+                    <ul class="account-features">
+                        <li><i class="fas fa-check"></i> No swap charges</li>
+                        <li><i class="fas fa-check"></i> No rollover interest</li>
+                        <li><i class="fas fa-check"></i> All standard features</li>
+                        <li><i class="fas fa-check"></i> Available for all account types</li>
+                    </ul>
+                    <a href="#" class="btn btn-primary" style="width: 100%; text-align: center;">Open Account</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section class="why-us">
+        <div class="section-title">
+            <h2>Why Choose ForexPro?</h2>
+            <p>We're committed to providing the best trading experience for our clients</p>
+        </div>
+        <div class="benefits">
+            <div class="benefit">
+                <div class="benefit-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Regulated & Secure</h3>
+                <p>We are regulated by multiple financial authorities worldwide</p>
+            </div>
+            <div class="benefit">
+                <div class="benefit-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h3>Fast Execution</h3>
+                <p>99% of orders executed in less than 50ms with no requotes</p>
+            </div>
+            <div class="benefit">
+                <div class="benefit-icon">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <h3>24/5 Support</h3>
+                <p>Multilingual customer support available 24 hours a day</p>
+            </div>
+            <div class="benefit">
+                <div class="benefit-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h3>Free Education</h3>
+                <p>Comprehensive educational resources for all experience levels</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-col">
+                <h3>Company</h3>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Regulation</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Trading</h3>
+                <ul>
+                    <li><a href="#">Account Types</a></li>
+                    <li><a href="#">Platforms</a></li>
+                    <li><a href="#">Markets</a></li>
+                    <li><a href="#">Economic Calendar</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Education</h3>
+                <ul>
+                    <li><a href="#">Tutorials</a></li>
+                    <li><a href="#">Webinars</a></li>
+                    <li><a href="#">E-books</a></li>
+                    <li><a href="#">Glossary</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms & Conditions</a></li>
+                    <li><a href="#">Risk Disclosure</a></li>
+                    <li><a href="#">Complaints</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>© 2023 ForexPro. All rights reserved.</p>
+            <p>Risk Warning: Trading Forex and CFDs carries a high level of risk and may not be suitable for all
+                investors.</p>
+        </div>
+    </footer> *@
+
+    <script>
+        // Mobile sidebar functionality
+        const openSidebar = document.getElementById('open-sidebar');
+        const closeSidebar = document.getElementById('close-sidebar');
+        const mobileSidebar = document.querySelector('.mobile-sidebar');
+
+        function toggleSidebar() {
+            const isOpen = mobileSidebar.classList.contains('active');
+
+            if (!isOpen) {
+                // Open sidebar
+                mobileSidebar.classList.add('active');
+                openSidebar.style.display = 'none';
+                closeSidebar.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            } else {
+                // Close sidebar
+                mobileSidebar.classList.remove('active');
+                openSidebar.style.display = 'flex';
+                closeSidebar.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        openSidebar.addEventListener('click', toggleSidebar);
+        closeSidebar.addEventListener('click', toggleSidebar);
+
+        // Close sidebar when clicking on a link
+        const mobileLinks = document.querySelectorAll('.mobile-nav a, .mobile-auth a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileSidebar.classList.remove('active');
+                openSidebar.style.display = 'flex';
+                closeSidebar.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            });
+        });
+
+        // Close sidebar on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                mobileSidebar.classList.remove('active');
+                openSidebar.style.display = 'flex';
+                closeSidebar.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Close sidebar when window is resized to desktop size
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                mobileSidebar.classList.remove('active');
+                openSidebar.style.display = 'none';
+                closeSidebar.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            } else {
+                // On mobile, show hamburger icon if sidebar is closed
+                if (!mobileSidebar.classList.contains('active')) {
+                    openSidebar.style.display = 'flex';
+                    closeSidebar.style.display = 'none';
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -19,7 +19,10 @@ public class HomeController : Controller
         _context = context;
         _userManager = userManager;
     }
-
+    public IActionResult Webpage()
+    {
+        return View();
+    }
     public IActionResult Index()
     {
         return View();
@@ -36,5 +39,5 @@ public class HomeController : Controller
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 
-    
+
 }
