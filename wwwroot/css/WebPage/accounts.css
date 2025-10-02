@@ -1,0 +1,117 @@
+/* Account Types */
+.accounts {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding: 60px 0;
+  background: white;
+}
+
+/* .account-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+} 
+
+.account-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  width: 100%;
+}
+
+.account-card {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}*/
+
+.account-card:hover {
+  transform: translateY(-10px);
+}
+
+.account-header {
+  background: var(--primary);
+  color: white;
+  padding: 20px;
+  text-align: center;
+}
+
+.account-body {
+  padding: 30px;
+}
+
+.account-features {
+  list-style: none;
+  margin: 20px 0;
+}
+
+.account-features li {
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.account-features li:last-child {
+  border-bottom: none;
+}
+
+.account-features i {
+  color: var(--success);
+  margin-right: 10px;
+}
+
+@media (max-width: 768px) {
+  .accounts .section-title {
+    text-align: center;
+  }
+}
+
+.account-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  width: 100%;
+}
+
+.account-card {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s, box-shadow 0.3s;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 300px; /* Grow, shrink, with 300px base */
+  min-width: 300px;
+  max-width: 400px;
+}
+
+/* Responsive for flexbox */
+@media (max-width: 768px) {
+  .account-card {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .account-card {
+    flex: 1 1 calc(50% - 30px);
+    max-width: calc(50% - 30px);
+  }
+}
