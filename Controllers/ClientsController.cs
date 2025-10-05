@@ -1036,4 +1036,78 @@ public class ClientsController : Controller
         }
     }
 
+    [HttpPost]
+    [Authorize]
+    [ValidateAntiForgeryToken]
+    [Route("Clients/CreateAccount")]
+    public async Task<IActionResult> CreateAccount([FromBody] AccountViewModel model, string? targetUserId = null)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(new { success = false, message = "Invalid data submitted." });
+        }
+        var (isAdmin, user, profile, errorResult) = await ResolveUserAndProfileAsync(targetUserId ?? string.Empty, expectedCompletedStep: 4);
+        if (errorResult != null)
+        {
+            return errorResult;
+        }
+        if (profile == null || user == null)
+        {
+            return RedirectToAction("RegisterClient");
+        }
+        var createAccountTransaction = await _context.Database.BeginTransactionAsync();
+        try
+        {
+            // Call external API to create MT5 account
+            // var mt5AccountResponse = await _mt5Service.CreateMt5AccountAsync(new Mt5AccountRequest
+            // {
+            //     AccountType = model.AccountType!,
+            //     Leverage = model.Leverage!,
+            //     Currency = model.Currency!,
+            //     Platform = model.Platform!,
+            //     ClientName = profile.FirstName + " " + profile.LastName,
+            //     ClientEmail = user.Email!,
+            //     ClientPhone = user.PhoneNumber!
+            // });
+            // if (!mt5AccountResponse.IsSuccess)
+            // {
+            //     return StatusCode(500, new { success = false, message = "Failed to create trading account: " + mt5AccountResponse.ErrorMessage });
+            // }
+            // Save account info in DB
+            var clientAccount = new ClientAccount
+            {
+                UserId = user.Id,
+                Mt5LoginID = 1001, //mt5AccountResponse.LoginId,
+                AccountType = model.AccountType,
+                CreatedDate = DateTime.UtcNow,
+                Currency = model.Currency ?? throw new ArgumentNullException(nameof(model.Currency), "Currency cannot be null"),
+                Balance = 0,
+                CreditBalance = 0
+            };
+            _context.ClientAccounts.Add(clientAccount);
+            var result = await _context.SaveChangesAsync();
+            if (result == 0)
+            {
+                throw new Exception("Failed to create client account.");
+            }
+            await createAccountTransaction.CommitAsync();
+            string? redirectUrl = isAdmin
+                                ? (user != null ? Url.Action("Index", "Clients", new { targetUserId = user.Id }) : null)
+                                : Url.Action("ClientDashboard", "Clients");//client dashboard
+            return Ok(new
+            {
+                success = true,
+                message = "Trading account created successfully.",
+                redirectUrl
+            });
+
+
+        }
+        catch (Exception ex)
+        {
+            await createAccountTransaction.RollbackAsync();
+            _logger.LogError(ex, "Error creating trading account for user {UserId}", user != null ? user.Id : "unknown");
+            return StatusCode(500, new { success = false, message = "An error occurred while creating the trading account. Please try again." });
+        }
+    }
 }

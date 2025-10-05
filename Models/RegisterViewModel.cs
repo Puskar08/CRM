@@ -17,3 +17,14 @@ public class RegisterViewModel
     public string? Name { get; set; }
     public string? PhoneNumber { get; set; }
 }
+public class AccountViewModel
+{
+    [Required]
+    public string? AccountType { get; set; }
+    [Required]
+    public string? Leverage { get; set; }
+    [Required]
+    public string? Currency { get; set; }
+    [Required]
+    public string? Platform { get; set; }
+}

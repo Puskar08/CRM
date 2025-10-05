@@ -1,9 +1,20 @@
 <style>
     .dashboard-title {
-        font-size: 1.8rem;
-        margin-bottom: 25px;
+        font-size: 1.2rem;
         color: #2c3e50;
-        font-weight: 600;
+        font-weight: 700;
+        margin: 0 !important;
+    }
+
+    .btn-add-account {
+        transition: background 0.3s ease, border-color 0.3s ease;
+        background: rgba(52, 73, 94, 0.1);
+        color: #2c3e50;
+        border: 1px solid #e0e0e0;
+    }
+
+    .btn-add-account:hover {
+        background: rgba(52, 73, 94, 0.15);
     }
 
     .accounts-grid {
@@ -78,8 +89,6 @@
     }
 
     .btn {
-        flex: 1;
-        padding: 12px 15px;
         border: none;
         border-radius: 8px;
         font-weight: 600;
@@ -92,23 +101,35 @@
         gap: 8px;
     }
 
-    .btn-primary {
+    .btn-deposit {
         background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
         color: white;
+        width: 100%;
+        padding: 12px 15px;
     }
 
-    .btn-primary:hover {
+    .btn-deposit:hover {
         background: linear-gradient(135deg, #2980b9 0%, #2471a3 100%);
     }
 
-    .btn-second {
+    .btn-withdraw {
         background: rgba(52, 73, 94, 0.1);
         color: #2c3e50;
         border: 1px solid #e0e0e0;
+        width: 100%;
+        padding: 12px 15px;
+
     }
 
-    .btn-second:hover {
+    .btn-withdraw:hover {
         background: rgba(52, 73, 94, 0.15);
+    }
+
+    .accounts-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
     }
 </style>
 
@@ -121,13 +142,18 @@
     </div>
     <div class="page-body">
         <div class="body-content">
-            <h2 class="dashboard-title">Trading Accounts</h2>
+            <div class="accounts-title">
+                <h3 class="dashboard-title">Trading Accounts</h3>
+                <button type="button" class="btn btn-add-account">
+                    <i class="fas fa-plus"></i> Add Trading Account
+                </button>
+            </div>
             <div class="accounts-grid">
                 <!-- Account #1 -->
                 <div class="account-card">
                     <div class="account-header">
                         <div class="account-name">Live</div>
-                        <div class="account-number">ACC-738291</div>
+                        <div class="account-number">ACC-738291 1:200</div>
                     </div>
 
                     @* <div class="account-details">
@@ -141,11 +167,11 @@
                         <div class="balance-amount">$55,861.25</div>
                     </div>
                     <div class="account-actions">
-                        <button class="btn btn-primary">
+                        <button class="btn btn-deposit btn-100-width">
                             @* <i class="fas fa-chart-line"></i>  *@
                             Deposit
                         </button>
-                        <button class="btn btn-second">
+                        <button class="btn btn-withdraw btn-100-width">
                             @* <i class="fas fa-eye"></i>  *@
                             Withdraw
                         </button>
@@ -155,8 +181,6 @@
         </div>
     </div>
 </div>
-
-
 
 
 <script>

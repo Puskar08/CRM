@@ -21,6 +21,8 @@ public class TransactionController : Controller
     [HttpGet]
     public async Task<IActionResult> Index()
     {
+        var tran = from tr in _context.Transactions.ToList()
+                   select tr;
         var trans = await (from tr in _context.Transactions
                            join acc in _context.ClientAccounts on tr.Mt5LoginID equals acc.Mt5LoginID
                            join user in _context.Users on acc.UserId equals user.Id
