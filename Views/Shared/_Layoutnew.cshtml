@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/layout.css" />
+    <link rel="stylesheet" href="~/css/pagination.css" />
+    <link rel="stylesheet" href="~/css/datatable.css" />
+    <link rel="stylesheet" href="~/css/clientregistration.css" />
+    <link rel="stylesheet" href="~/css/form.css" />
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+    @if (User?.Identity?.IsAuthenticated == true)
+    {
+        <button class="nav-toggle" id="navToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <nav id="navbar">
+            <div class="logo">
+                <a href="@Url.Action("Index", "Home")">
+                    <img src="~/images/gcfxlogo.png" alt="CRM Logo" />
+                </a>
+                <button class="toggle-btn" aria-label="Toggle Sidebar">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                        fill="#000000">
+                        <path d="M120-680v-80h720v80H120Zm0 480v-80h720v80H120Zm0-240v-80h720v80H120Z" />
+                    </svg>
+                </button>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#" id="profileButton">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                            fill="#000000">
+                            <path
+                                d="M234-276q51-39 114-61.5T480-360q69 0 132 22.5T726-276q35-41 54.5-93T800-480q0-133-93.5-226.5T480-800q-133 0-226.5 93.5T160-480q0 59 19.5 111t54.5 93Zm246-164q-59 0-99.5-40.5T340-580q0-59 40.5-99.5T480-720q59 0 99.5 40.5T620-580q0 59-40.5 99.5T480-440Zm0 360q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q53 0 100-15.5t86-44.5q-39-29-86-44.5T480-280q-53 0-100 15.5T294-220q39 29 86 44.5T480-160Zm0-360q26 0 43-17t17-43q0-26-17-43t-43-17q-26 0-43 17t-17 43q0 26 17 43t43 17Zm0-60Zm0 360Z" />
+                        </svg>
+                        <span>Profile</span>
+                    </a>
+                    <div class="dropdown-menu" id="profileDropdown">
+                        <button class="dropdown-item" id="logoutButton">Logout</button>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+
+        <aside id="sidebar">
+            <div class="logo">
+                <h1><i class="fas fa-database"></i> CCFX</h1>
+            </div>
+
+            <ul style="padding-left:0 !important;" class="nav-menu">
+                @if (User.IsInRole("Admin"))
+                {
+                    <li class="active">
+                        <a href="@Url.Action("Webpage", "Home")">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Databoard</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="@Url.Action("Index", "Home")">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Databoard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "Clients")">
+                            <i class="fas fa-users"></i>
+                            <span>Clients</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "Transaction")">
+                            <i class="fas fa-exchange-alt"></i>
+                            <span>Transactions</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("CompleteProfile", "Clients")">
+                            <i class="fas fa-tools"></i>
+                            <span>Tools</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("ClientDashboard", "Clients")">
+                            <i class="fas fa-bell"></i>
+                            <span>Remainders</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "Home")">
+                            <i class="fas fa-star"></i>
+                            <span>Leads</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "Home")">
+                            <i class="fas fa-clipboard-list"></i>
+                            <span>Requests</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "User")">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "Home")">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Reports</span>
+                        </a>
+                    </li>
+                }
+                else if (User.IsInRole("Client"))
+                {
+                    <li>
+                        <a href="@Url.Action("ClientDashboard", "Clients")">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "Home")">
+                            <i class="fa fa-arrow-down" aria-hidden="true"></i>
+                            <span>Deposit</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "Home")">
+                            <i class="fa fa-arrow-up" aria-hidden="true"></i>
+                            <span>Withdraw</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", controller: "Home")">
+                            <i class="fas fa-exchange-alt"></i>
+                            <span>Transfer</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="@Url.Action("Index", "Home")">
+                            <i class="fa fa-history" aria-hidden="true"></i>
+                            <span>Transaction History</span>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </aside>
+    }
+
+    <main>
+        @RenderBody()
+    </main>
+    @if (User?.Identity?.IsAuthenticated == true)
+    {
+        <footer>
+            <div class="footer-content">
+                <p>© GCFX 2025</p>
+                <p>Version 2.3.1</p>
+            </div>
+        </footer>
+    }
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/layout.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+
+</html>

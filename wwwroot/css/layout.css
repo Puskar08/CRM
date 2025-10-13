@@ -8,8 +8,9 @@
 body {
   display: grid;
   grid-template-areas:
-    "nav main"
-    "nav footer";
+  "nav nav"
+    "aside main"
+    "aside footer";
   grid-template-columns: auto 1fr;
   grid-template-rows: 1fr auto;
   min-height: 100vh;
@@ -21,10 +22,11 @@ body {
 }
 
 /* Navigation/Sidebar */
-nav {
-  grid-area: nav;
-  background: linear-gradient(to bottom, #2c3e50, #1a2530);
-  color: white;
+aside {
+  grid-area: aside;
+  /* background: linear-gradient(to bottom, #2c3e50, #1a2530); */
+  /* color: white; */
+  color: black;
   position: sticky;
   top: 0;
   height: 100vh;
@@ -32,6 +34,7 @@ nav {
   transition: transform 0.3s ease;
   z-index: 100;
   overflow-y: auto;
+  border-right: 1px solid #e1e4e8;
 }
 
 .logo {
@@ -52,12 +55,13 @@ nav {
 .nav-menu {
   list-style: none;
 }
-.nav ul {
+/* .nav ul {
   padding-left: 0 !important;
-}
+} */
 .nav-menu li a {
   text-decoration: none;
-  color: white;
+  /* color: white; */
+  color: black;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -70,7 +74,8 @@ nav {
 }
 
 .nav-menu li:hover {
-  background-color: #3a4b5c;
+  /* background-color: #3a4b5c; */
+  background-color: #e9ecef;
   cursor: pointer;
 }
 
@@ -212,7 +217,7 @@ footer p {
     grid-template-columns: 1fr;
   }
 
-  nav {
+  aside {
     transform: translateX(-100%);
     position: fixed;
     width: 250px;
@@ -220,7 +225,7 @@ footer p {
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
   }
 
-  nav.active {
+  aside.active {
     transform: translateX(0);
   }
 

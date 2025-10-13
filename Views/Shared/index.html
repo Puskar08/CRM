@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Sidebar Overlay Demo</title>
+    <style>
+        :root {
+            --line-clr: #e0e0e0;
+            --primary-color: #4a6fa5;
+            --text-color: #333;
+            --sidebar-bg: #f7f7f7;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            color: var(--text-color);
+        }
+
+        .main-body-container {
+            display: flex;
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        main {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background-color: rgb(255, 255, 255);
+            border-radius: 0%;
+            border: 1px solid var(--line-clr);
+            border-top: none;
+            display: grid;
+            gap: 20px;
+            transition: filter 0.3s ease;
+        }
+
+        .main-footer-container {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        nav {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            padding: 15px 20px;
+            background-color: var(--sidebar-bg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+                0 2px 4px -2px rgba(0, 0, 0, 0.06);
+            z-index: 30;
+            border-bottom: 1px solid var(--line-clr);
+            height: 70px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .toggle-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--primary-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        aside {
+            display: flex;
+            flex-direction: column;
+            width: 250px;
+            background-color: var(--sidebar-bg);
+            padding: 20px;
+            padding-top: 0px;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+            z-index: 20;
+            border-top: 1px solid var(--line-clr);
+        }
+
+        .sidebar-header {
+            padding: 15px 0;
+            border-bottom: 1px solid var(--line-clr);
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+        }
+
+        .cancel-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--primary-color);
+        }
+
+        .sidebar ul {
+            list-style: none;
+        }
+
+        .sidebar li {
+            margin-bottom: 10px;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 10px 15px;
+            text-decoration: none;
+            color: var(--text-color);
+            border-radius: 5px;
+            transition: background-color 0.2s;
+        }
+
+        .sidebar a:hover {
+            background-color: rgba(74, 111, 165, 0.1);
+        }
+
+        .overlay {
+            display: none;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 35;
+        }
+
+        .overlay.active {
+            display: flex;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--line-clr);
+        }
+
+        .card h3 {
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        footer {
+            background-color: var(--sidebar-bg);
+            padding: 20px;
+            text-align: center;
+            border-top: 1px solid var(--line-clr);
+        }
+        @media (max-width: 1024px) {
+            .main-body-container {
+                flex-direction: row;
+            }
+        }
+
+        /* Mobile styles */
+        @media (max-width: 768px) {
+            .main-body-container {
+                position: relative;
+            }
+
+            /* Sidebar: Hidden by default, positioned absolutely */
+            aside {
+                display: flex;
+                position: fixed;
+                left: 0;
+                height: 100%;
+                transform: translateX(-100%);
+                z-index: 40;
+                width: 280px;
+                box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            }
+
+            /* Sidebar when open: Overlay on top */
+            aside.sidebar-open {
+                transform: translateX(0);
+            }
+
+            /* Main content stays in place */
+            main {
+                width: 100%;
+                position: relative;
+                z-index: 10;
+            }
+
+            /* Dim main content when sidebar is open */
+            .dimmed {
+                filter: brightness(0.8);
+            }
+
+            /* Show toggle button on mobile */
+            .toggle-btn {
+                display: inline-block;
+            }
+
+            /* Hide nav links on mobile */
+            .nav-links {
+                display: none;
+            }
+
+            /* Show cancel button when sidebar is open */
+            .cancel-btn {
+                display: block;
+            }
+
+            /* Adjust sidebar links for cancel button */
+            .sidebar ul {
+                margin-top: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-footer-container">
+        <nav>
+            <div class="logo">CompanyLogo</div>
+            <div class="nav-links">
+                <a href="#">Home</a>
+                <a href="#">About</a>
+                <a href="#">Services</a>
+                <a href="#">Contact</a>
+            </div>
+            <button class="toggle-btn">☰</button>
+        </nav>
+
+        <div class="main-body-container">
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <h2>Navigation</h2>
+                    <button class="cancel-btn">✕</button>
+                </div>
+                <ul>
+                    <li><a href="#">Dashboard</a></li>
+                    <li><a href="#">Profile</a></li>
+                    <li><a href="#">Messages</a></li>
+                    <li><a href="#">Settings</a></li>
+                    <li><a href="#">Help & Support</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </aside>
+
+            <div class="overlay"></div>
+
+            <main>
+                <div class="card">
+                    <h3>Welcome to the Demo</h3>
+                    <p>This demo shows a sidebar that overlays on top of the main content on mobile devices without displacing it.</p>
+                    <p>Resize your browser window to see the mobile behavior, or use the toggle button in the top right corner.</p>
+                </div>
+
+                <div class="card">
+                    <h3>How It Works</h3>
+                    <p>On desktop screens, the sidebar appears as a normal column to the left of the main content.</p>
+                    <p>On mobile screens (width ≤ 768px), the sidebar:</p>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>Is hidden by default</li>
+                        <li>Slides in from the left when the menu button is tapped</li>
+                        <li>Overlays on top of the main content without displacing it</li>
+                        <li>Can be closed by tapping the X button or the overlay</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>Sample Content</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam auctor, nisl eget ultricies tincidunt, nunc nisl aliquam nisl, eget ultricies nisl nisl eget nisl.</p>
+                    <p>Sed euismod, nisl eget ultricies tincidunt, nunc nisl aliquam nisl, eget ultricies nisl nisl eget nisl.</p>
+                    <p>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed euismod, nisl eget ultricies tincidunt, nunc nisl aliquam nisl, eget ultricies nisl nisl eget nisl.</p>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2023 Company Name. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleBtn = document.querySelector('.toggle-btn');
+            const cancelBtn = document.querySelector('.cancel-btn');
+            const sidebar = document.querySelector('aside');
+            const overlay = document.querySelector('.overlay');
+            const main = document.querySelector('main');
+
+            function openSidebar() {
+                sidebar.classList.add('sidebar-open');
+                overlay.classList.add('active');
+                main.classList.add('dimmed');
+                document.body.style.overflow = 'hidden'; // Prevent body scrolling
+            }
+
+            function closeSidebar() {
+                sidebar.classList.remove('sidebar-open');
+                overlay.classList.remove('active');
+                main.classList.remove('dimmed');
+                document.body.style.overflow = ''; // Restore body scrolling
+            }
+
+            toggleBtn.addEventListener('click', openSidebar);
+            cancelBtn.addEventListener('click', closeSidebar);
+            overlay.addEventListener('click', closeSidebar);
+
+            // Close sidebar when clicking on a link (optional)
+            const sidebarLinks = document.querySelectorAll('.sidebar a');
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', closeSidebar);
+            });
+
+            // Close sidebar on window resize if it's open and we're no longer in mobile view
+            window.addEventListener('resize', function() {
+                if (window.innerWidth > 768 && sidebar.classList.contains('sidebar-open')) {
+                    closeSidebar();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
