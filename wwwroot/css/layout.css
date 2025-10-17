@@ -296,11 +296,6 @@ footer p {
     margin-bottom: 12px;
   }
 
-  /* .content-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 15px;
-  } */
   .content-header {
     display: grid;
     grid-template-columns: 1fr auto;

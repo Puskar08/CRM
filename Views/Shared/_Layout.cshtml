@@ -15,7 +15,126 @@
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
+        .user-info-section-mobile-only {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 4px;
+            gap: 10px;
+            border-bottom: 1px solid #f0f0f0;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
 
+        .user-details {
+            flex-grow: 1;
+        }
+
+        .dropdowntoggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #6c757d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 24px;
+            padding: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .dropdowntoggle.rotated {
+            transform: rotate(180deg);
+        }
+
+        .dropdownsection {
+            max-height: 0;
+            width: 100%;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+
+        .dropdownsection.show {
+            max-height: 200px;
+        }
+
+        .user-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        .user-icon svg {
+            color: #6c757d;
+        }
+
+        .user-details div:first-child {
+            font-weight: 600;
+            font-size: 14px;
+            color: #212529;
+        }
+
+        .user-details div:last-child {
+            font-size: 12px;
+            color: #6c757d;
+            margin-top: 2px;
+        }
+
+        .profile-dropdown {
+            position: absolute;
+            right: 20px;
+            width: 280px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0px 5px 15px -3px rgba(0, 0, 0, 0.1),
+                0px 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e0e0e0;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .profile-dropdown.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .profile-section-menus {
+            display: flex;
+            flex-direction: column;
+            padding: 8px 4px;
+        }
+
+        .profile-section-menus li {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .profile-section-menus li a {
+            text-decoration: none;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            border-radius: 5px;
+        }
+
+        .profile-section-menus li a:hover {
+            background-color: rgba(74, 111, 165, 0.1);
+        }
     </style>
 </head>
 
@@ -23,6 +142,7 @@
 
     <div class="app-container">
         <nav>
+
             <button class="toggle-btn">
                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
                     fill="#000000">
@@ -49,9 +169,10 @@
 
                         <!-- Profile Dropdown -->
                         <div class="profile-dropdown" id="profileDropdown">
-                            <ul class="dropdown-list" role="menu">
+                            <div style="padding-left:0 !important; margin-bottom: 0 !important;"
+                                class="profile-section-mobile-only" role="menu">
                                 <!-- User Info Section -->
-                                <div class="user-info-section">
+                                <div class="user-info-section-mobile-only" id="">
                                     <div class="user-icon">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -63,137 +184,114 @@
                                         </svg>
                                     </div>
                                     <div class="user-details">
-                                        <div class="user-full-name">PUSKAR GHIMIRE</div>
-                                        <div class="user-email">jrws@gmail.com</div>
+                                        <div>PUSKAR GHIMIRE</div>
+                                        <div>jrws@gmail.com</div>
                                     </div>
                                 </div>
 
-                                <!-- Menu Items -->
-                                <a class="dropdown-item" href="/pa/settings" role="menuitem">
-                                    <div class="item-content">Settings</div>
-                                </a>
-
-                                <a class="dropdown-item" href="/pa/settings/swapfree" role="menuitem">
-                                    <div class="item-content">Trading conditions</div>
-                                </a>
-
-                                <!-- Divider -->
-                                <hr class="dropdown-divider">
-
-                                <!-- Sign Out -->
-                                <li class="dropdown-item sign-out" role="menuitem">
-                                    <div class="item-content">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round">
-                                            <path
-                                                d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2">
-                                            </path>
-                                            <path d="M9 12h12l-3 -3"></path>
-                                            <path d="M18 15l3 -3"></path>
-                                        </svg>
-                                        Sign Out
-                                    </div>
-                                </li>
-                            </ul>
+                                <!-- Dropdown Menu -->
+                                <div class="profile-section-menus">
+                                    <li>
+                                        <a href="#">
+                                            <i class="sidebar-icon fas fa-cog"></i>
+                                            <span class="link-text">Settings</span>
+                                        </a>
+                                    </li>
+                                    <li class="sign-out" role="menuitem">
+                                        <a>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round" class="sidebar-icon">
+                                                <path
+                                                    d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2">
+                                                </path>
+                                                <path d="M9 12h12l-3 -3"></path>
+                                                <path d="M18 15l3 -3"></path>
+                                            </svg>
+                                            <span class="link-text">Sign Out</span>
+                                        </a>
+                                    </li>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
-                    <!-- Notification icon - always visible -->
-                    <div class="notification-section">
-                        <a href="#" id="notificationButton">
-                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
-                                fill="#000000">
-                                <path
-                                    d="M480-80q-33 0-56.5-23.5T400-160h160q0 33-23.5 56.5T480-80Zm0-420ZM160-200v-80h80v-280q0-83 50-147.5T420-792v-28q0-25 17.5-42.5T480-880q25 0 42.5 17.5T540-820v13q-11 22-16 45t-4 47q-10-2-19.5-3.5T480-720q-66 0-113 47t-47 113v280h320v-257q18 8 38.5 12.5T720-520v240h80v80H160Zm560-400q-50 0-85-35t-35-85q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35Z" />
-                            </svg>
-                        </a>
-                    </div>
                 </div>
+                <!-- Notification icon - always visible -->
+                <div class="notification-section">
+                    <a href="#" id="notificationButton">
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px"
+                            fill="#000000">
+                            <path
+                                d="M480-80q-33 0-56.5-23.5T400-160h160q0 33-23.5 56.5T480-80Zm0-420ZM160-200v-80h80v-280q0-83 50-147.5T420-792v-28q0-25 17.5-42.5T480-880q25 0 42.5 17.5T540-820v13q-11 22-16 45t-4 47q-10-2-19.5-3.5T480-720q-66 0-113 47t-47 113v280h320v-257q18 8 38.5 12.5T720-520v240h80v80H160Zm560-400q-50 0-85-35t-35-85q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35Z" />
+                        </svg>
+                    </a>
+                </div>
+
             </div>
         </nav>
 
 
         <div class="content-wrapper">
             <aside class="sidebar">
-                <div class="sidebar-header">
-                    <!-- Mobile Profile Section -->
-                    <div class="" id="profileDropdown">
-                            <ul class="dropdown-list" role="menu">
-                                <!-- User Info Section -->
-                                <div class="user-info-section">
-                                    <div class="user-icon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
-                                            <path d="M12 10m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
-                                            <path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855">
-                                            </path>
-                                        </svg>
-                                    </div>
-                                    <div class="user-details">
-                                        <div class="user-full-name">PUSKAR GHIMIRE</div>
-                                        <div class="user-email">jrws@gmail.com</div>
-                                    </div>
-                                </div>
-
-                                <!-- Menu Items -->
-                                <a class="dropdown-item" href="/pa/settings" role="menuitem">
-                                    <div class="item-content">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
-                                            <path d="M12 10m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
-                                            <path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855">
-                                            </path>
-                                        </svg>
-                                        Settings</div>
-                                </a>
-
-                                <a class="dropdown-item" href="/pa/settings/swapfree" role="menuitem">
-                                    <div class="item-content">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
-                                            <path d="M12 10m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
-                                            <path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855">
-                                            </path>
-                                        </svg>
-                                        Trading conditions</div>
-                                </a>
-
-                                <!-- Divider -->
-                                <hr class="dropdown-divider">
-
-                                <!-- Sign Out -->
-                                <li class="dropdown-item sign-out" role="menuitem">
-                                    <div class="item-content">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round">
-                                            <path
-                                                d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2">
-                                            </path>
-                                            <path d="M9 12h12l-3 -3"></path>
-                                            <path d="M18 15l3 -3"></path>
-                                        </svg>
-                                        Sign Out
-                                    </div>
-                                </li>
-                            </ul>
+                <div class="sidebar-content">
+                    <ul style="padding-left:0 !important; margin-bottom: 0 !important;"
+                        class="profile-section-mobile-only" role="menu" hidden>
+                        <!-- User Info Section -->
+                        <div class="user-info-section-mobile-only" id="userInfoToggle">
+                            <div class="user-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
+                                    <path d="M12 10m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
+                                    <path d="M6.168 18.849a4 4 0 0 1 3.832 -2.849h4a4 4 0 0 1 3.834 2.855">
+                                    </path>
+                                </svg>
+                            </div>
+                            <div class="user-details">
+                                <div>PUSKAR GHIMIRE</div>
+                                <div>jrws@gmail.com</div>
+                            </div>
+                            <button class="dropdowntoggle" id="dropdownToggle">
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
                         </div>
 
-                </div>
-                <div class="sidebar-content">
-                    <ul style="padding-left:0 !important;">
+                        <!-- Dropdown Menu -->
+                        <div class="dropdownsection" id="dropdownsection">
+                            <li>
+                                <a href="#">
+                                    <i class="sidebar-icon fas fa-cog"></i>
+                                    <span class="link-text">Settings</span>
+                                </a>
+                            </li>
+                            <li class="sign-out" role="menuitem">
+                                <a>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="sidebar-icon">
+                                        <path
+                                            d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2">
+                                        </path>
+                                        <path d="M9 12h12l-3 -3"></path>
+                                        <path d="M18 15l3 -3"></path>
+                                    </svg>
+                                    <span class="link-text">Sign Out</span>
+                                </a>
+                            </li>
+                            <!-- Divider -->
+                            <hr class="dropdown-divider">
+                        </div>
+                    </ul>
 
+                    <ul style="padding-left:0 !important;">
                         <li>
                             <a href="@Url.Action("Webpage", "Home")">
                                 <i class="sidebar-icon fas fa-tachometer-alt"></i>
                                 <span class="link-text">Databoard</span>
+                                <button class="dropdowntoggle" id="dropdownToggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
                             </a>
                         </li>
 
@@ -201,6 +299,9 @@
                             <a href="@Url.Action("Index", "Clients")">
                                 <i class="sidebar-icon fas fa-users"></i>
                                 <span class="link-text">Clients</span>
+                                <button class="dropdowntoggle" id="dropdownToggle">
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
                             </a>
                         </li>
                         <li>
@@ -276,8 +377,7 @@
                                 <span class="link-text"">Transaction History</span>
                             </a>
                         </li>
-                    
-                </ul>
+                    </ul>
                 </div>
 
                 <div class=" sidebar-footer">
@@ -406,17 +506,17 @@
             // Profile Dropdown Functionality
             const profileButton = document.getElementById('profileButton');
             const profileDropdown = document.getElementById('profileDropdown');
-            const dropdownOverlay = document.createElement('div');
+            @* const dropdownOverlay = document.createElement('div');
 
             dropdownOverlay.className = 'dropdown-overlay';
-            document.body.appendChild(dropdownOverlay);
+            document.body.appendChild(dropdownOverlay); *@
 
-            let isProfileOpen = false;
+                let isProfileOpen = false;
 
             function toggleProfileDropdown() {
                 isProfileOpen = !isProfileOpen;
                 profileDropdown.classList.toggle('active', isProfileOpen);
-                dropdownOverlay.classList.toggle('active', isProfileOpen);
+                @* dropdownOverlay.classList.toggle('active', isProfileOpen); *@
 
                 // Close sidebar if open
                 if (isSidebarOpen) {
@@ -427,7 +527,7 @@
             function closeProfileDropdown() {
                 isProfileOpen = false;
                 profileDropdown.classList.remove('active');
-                dropdownOverlay.classList.remove('active');
+                @* dropdownOverlay.classList.remove('active'); *@
             }
 
             profileButton.addEventListener('click', function (e) {
@@ -436,14 +536,14 @@
                 toggleProfileDropdown();
             });
 
-            dropdownOverlay.addEventListener('click', closeProfileDropdown);
+            @* dropdownOverlay.addEventListener('click', closeProfileDropdown); *@
 
-            // Close dropdown when clicking outside
-            document.addEventListener('click', function (e) {
-                if (isProfileOpen && !profileButton.contains(e.target) && !profileDropdown.contains(e.target)) {
-                    closeProfileDropdown();
-                }
-            });
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function (e) {
+                    if (isProfileOpen && !profileButton.contains(e.target) && !profileDropdown.contains(e.target)) {
+                        closeProfileDropdown();
+                    }
+                });
 
             // Close dropdown when pressing Escape key
             document.addEventListener('keydown', function (e) {
@@ -456,6 +556,24 @@
             const dropdownItems = profileDropdown.querySelectorAll('.dropdown-item:not(.sign-out)');
             dropdownItems.forEach(item => {
                 item.addEventListener('click', closeProfileDropdown);
+            });
+
+
+            const userInfoToggle = document.getElementById('userInfoToggle');
+            const dropdownToggle = document.getElementById('dropdownToggle');
+            const dropdownsection = document.getElementById('dropdownsection');
+
+            // Toggle dropdown when clicking on user info section or dropdown icon
+            userInfoToggle.addEventListener('click', function () {
+                dropdownsection.classList.toggle('show');
+                dropdownToggle.classList.toggle('rotated');
+            });
+
+            // Prevent event bubbling when clicking directly on the toggle button
+            dropdownToggle.addEventListener('click', function (e) {
+                e.stopPropagation();
+                dropdownsection.classList.toggle('show');
+                dropdownToggle.classList.toggle('rotated');
             });
         });
     </script>
