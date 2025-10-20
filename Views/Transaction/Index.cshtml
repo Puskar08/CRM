@@ -68,30 +68,28 @@
     </div>
 </div>
 <div class="page">
-    <!-- Page Header -->
-    <div class="page-header">
-        <div class="page-title">
-            <h2>Transactions</h2>
-            <p>Manage and review all transactions</p>
-        </div>
-        <div class="page-actions d-flex gap-2">
-            <!-- Button trigger modal -->
-            <button type="button" class="add-button" data-bs-toggle="modal" data-bs-target="#TransactionModal">
-                <i class="fas fa-plus"></i> Add Transaction
-            </button>
-        </div>
-    </div>
-
+    
     <!-- Page Body -->
     <div class="page-body">
         <div class="body-content">
+
             <div class="content-header">
-                <h3>Transaction Records</h3>
-                <div class="global-search">
-                    <input type="text" id="globalSearch" placeholder="Global search..." />
-                    <button class="add-btn search-btn"><i class="fas fa-search"></i> Search</button>
+                <h2 class="content-title">Transactions</h2>
+                <div class="page-options">
+                    <div class="page-action-buttons">
+                        <button type="button" class="add-button" data-bs-toggle="modal"
+                            data-bs-target="#TransactionModal" style="width: 100%;">
+                            <i class="fas fa-plus"></i> Add Transaction
+                        </button>
+                    </div>
+                    <div class="global-search">
+                        <input type="text" id="globalSearch" placeholder="Global search..." />
+                        <button class="add-btn search-btn"><i class="fas fa-search"></i> Search</button>
+                    </div>
                 </div>
             </div>
+
+
             <table class="data-table">
                 <thead>
                     <tr>
